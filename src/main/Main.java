@@ -5,6 +5,7 @@ import frames.*;
 public class Main {
 	private static LoginFrame login;
 	private static MainFrame main;
+	private static String[] racers;
 
 	public static void main(String[] args) {
 		login = new LoginFrame();

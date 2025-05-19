@@ -7,8 +7,6 @@ import javax.swing.*;
 
 public class LoginFrame extends JFrame implements ActionListener {
 	int width = 400, height = 280;
-	JPanel panel;
-	JLabel label;
 	JTextField text1, text2;
 	JButton loginButton;
 	String defUser = "admin";
@@ -23,12 +21,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 		this.setResizable(false);
 
 		//Panel
-		panel = new JPanel();
-
+		JPanel panel = new JPanel();
 		panel.setLayout(null);
 
-		panel.setBackground(new Color(0x00cc00));
-		
 		//TextField
 		text1 = new JTextField(100);
 		text2 = new JTextField(100);
