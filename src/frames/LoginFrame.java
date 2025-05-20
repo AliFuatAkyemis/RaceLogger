@@ -44,6 +44,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		panel.add(loginButton);
 
 		this.add(panel, BorderLayout.CENTER);
+		this.getRootPane().setDefaultButton(loginButton);
 	}
 
 	@Override

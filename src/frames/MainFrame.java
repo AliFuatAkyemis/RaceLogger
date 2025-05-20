@@ -1,5 +1,6 @@
 package frames;
 
+import main.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -32,10 +33,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time"});
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
+		table.setEnabled(false);
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(425, 25, 350, 500);
+		scrollPane.setBounds(425, 20, 350, 500);
 
 		//TextField
 		text1 = new JTextField(100);
@@ -55,9 +57,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		raceMap.setBackground(new Color(0xaaaaaa));
 
 		//Image
-		ImageIcon map = new ImageIcon("/home/alifuatakyemis/Git/RaceLogger/images/route.png");
+		ImageIcon map = new ImageIcon("images/route.png");
 		Image scaled = map.getImage().getScaledInstance(350, 200, Image.SCALE_SMOOTH);
-
+		
 		//Compose
 		raceMap.add(new JLabel(new ImageIcon(scaled)), BorderLayout.CENTER);
 
@@ -67,17 +69,22 @@ public class MainFrame extends JFrame implements ActionListener {
 		panel.add(scrollPane);
 
 		this.add(panel);
+		this.getRootPane().setDefaultButton(addButton);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-		model.addRow(new Object[] {
-			(int) (Math.random() * 10),
-			"Ali Fuat Akyemiş",
-			Integer.valueOf(text1.getText())
-		});
+		
+		String text = text1.getText().trim();
+		if (!text.equals("")) {
+			int id = Integer.valueOf(text);
+			model.addRow(new Object[] {
+				id,
+				Main.identify(id),
+				(int) (Math.random() * 10)
+			});
+		}
 
 		text1.setText("");
 	} 
