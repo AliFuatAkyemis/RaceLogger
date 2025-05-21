@@ -38,6 +38,14 @@ public class MainFrame extends JFrame implements ActionListener {
 		table.setFillsViewportHeight(false);
 		table.setEnabled(false);
 
+		//TableColumnModel
+		TableColumnModel columnModel = table.getColumnModel(); //Getting the instance of column model
+		
+		//Then editing the size seperately
+		columnModel.getColumn(0).setPreferredWidth(50);
+		columnModel.getColumn(1).setPreferredWidth(200);
+		columnModel.getColumn(2).setPreferredWidth(100);
+
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(425, 20, 350, 500);
@@ -113,6 +121,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private void appendResult(String str) {
 		try {
+			//Initializing BufferedWriter object in order to update informations in results.csv
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/results.csv", true));
 			writer.write(str);
 			writer.close();
