@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.io.*;
+import java.util.Calendar;
 
 public class MainFrame extends JFrame implements ActionListener {
 	int width = 800, height = 600;
@@ -16,6 +18,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	ImageIcon map;
 	Image scaled;
 
+	//Constructor
 	public MainFrame() {
 		//Frame
 		this.setTitle("Main");
@@ -60,7 +63,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		ImageIcon map = new ImageIcon("images/route.png");
 		Image scaled = map.getImage().getScaledInstance(350, 200, Image.SCALE_SMOOTH);
 		
-		//Compose
+		//Composition part
 		raceMap.add(new JLabel(new ImageIcon(scaled)), BorderLayout.CENTER);
 
 		panel.add(raceMap);
@@ -70,22 +73,51 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		this.add(panel);
 		this.getRootPane().setDefaultButton(addButton);
+
+		//Initializing results.csv
+		appendResult("ID,Name,Time\n");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//Necessary objects
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		
 		String text = text1.getText().trim();
+		Calendar calendar;
+	
 		if (!text.equals("")) {
+			//Getting required attributes
+			calendar = Calendar.getInstance();
+			int hours = calendar.get(Calendar.HOUR_OF_DAY);
+			int minutes = calendar.get(Calendar.MINUTE);
+			int seconds = calendar.get(Calendar.SECOND);
+			int milliseconds = calendar.get(Calendar.MILLISECOND);			
 			int id = Integer.valueOf(text);
-			model.addRow(new Object[] {
-				id,
-				Main.identify(id),
-				(int) (Math.random() * 10)
-			});
+			String name = Main.identify(id), time = new String(hours+":"+minutes+":"+seconds+":"+milliseconds);
+			
+			//Table update phase
+			if (name != null) {
+				model.addRow(new Object[] {
+					id,
+					name,
+					time
+				});
+
+				appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to unexpected crash
+			}
 		}
 
+		//Making text field prepared for next submissions
 		text1.setText("");
-	} 
+	}
+
+	private void appendResult(String str) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/results.csv", true));
+			writer.write(str);
+			writer.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

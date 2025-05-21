@@ -39,6 +39,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginButton.setBounds(125, 175, 150, 30);
 		loginButton.addActionListener(this);
 
+		//Composition part
 		panel.add(text1);
 		panel.add(text2);
 		panel.add(loginButton);
@@ -49,10 +50,11 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//Basic if block to check authorization
 		if (e.getSource() == loginButton) {
 			String username = text1.getText();
 			String password = text2.getText();
-			if (username.equals(defUser) && password.equals(defPass)) Main.showMain();
+			if (username.equals(defUser) && password.equals(defPass)) Main.showMain(); //Static method from Main.java
 			else System.out.println("Access Denied");
 		}
 	}

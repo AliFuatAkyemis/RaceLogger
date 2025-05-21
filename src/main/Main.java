@@ -2,44 +2,47 @@ package main;
 
 import frames.*;
 import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
 	private static LoginFrame login;
 	private static MainFrame main;
-	private static String[] racers;
+	private static HashMap map;
 
 	public static void main(String[] args) {
 		login = new LoginFrame();
 		login.setVisible(true);
-//		showMain();
+		showMain();
 	}
 
 	public static void showMain() {
 		login.setVisible(false);
 		if (main == null) main = new MainFrame();
+
+		initMap(); //Before making main frame visible initialize the map
+		
 		main.setVisible(true);
 	}
-
-	public static String identify(int id) {
+	
+	@SuppressWarnings("unchecked")
+	public static void initMap() {
 		try {
-			BufferedReader read = new BufferedReader(new FileReader("data/racers.csv"));
-			List<String> list = new ArrayList<>();
-			list.add("");
-			String row = read.readLine();
+			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv"));
+			map = new HashMap<Integer, String>();
+			String row = reader.readLine();
 		
 			while (row != null) {
 				String[] temp = row.split(",");
-				list.add(temp[1]);
-				row = read.readLine();
+				map.put(Integer.valueOf(temp[0]), temp[1]);
+				row = reader.readLine();
 			}
 
-			return list.get(id);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
 
-		return null;
+	public static String identify(int id) {
+		return (String) map.get(id);
 	}
 }
