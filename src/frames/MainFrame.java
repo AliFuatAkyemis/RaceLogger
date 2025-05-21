@@ -83,7 +83,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.getRootPane().setDefaultButton(addButton);
 
 		//Initializing results.csv
-		appendResult("ID,Name,Time\n");
+		if (!isFileExist("data/results.csv")) appendResult("ID,Name,Time\n");
 	}
 
 	@Override
@@ -128,5 +128,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean isFileExist(String path) {
+		return new File(path).exists();
 	}
 }
