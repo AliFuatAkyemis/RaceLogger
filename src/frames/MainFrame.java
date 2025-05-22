@@ -8,15 +8,18 @@ import javax.swing.table.*;
 import java.io.*;
 import java.util.Calendar;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame {
 	int width = 800, height = 600;
 	JPanel panel, raceMap;
 	JTable table;
 	JScrollPane scrollPane;
 	JTextField text1;
-	JButton addButton;
+	JButton addButton, chronoButton;
+	JLabel chrono;
 	ImageIcon map;
 	Image scaled;
+	Calendar calendar;
+	long startTime;
 
 	//Constructor
 	public MainFrame() {
@@ -46,20 +49,63 @@ public class MainFrame extends JFrame implements ActionListener {
 		columnModel.getColumn(1).setPreferredWidth(200);
 		columnModel.getColumn(2).setPreferredWidth(100);
 
+		//Label
+		chrono = new JLabel("00:00:00:000", SwingConstants.CENTER);
+		chrono.setBounds(30, 250, 100, 25);
+		chrono.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chrono.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(425, 20, 350, 500);
 
 		//TextField
 		text1 = new JTextField(100);
-		text1.setBounds(30, 250, 100, 25);
+		text1.setBounds(30, 300, 100, 25);
 		text1.setFont(new Font("MV Boli", Font.PLAIN, 16));
 
 		//Button
 		addButton = new JButton("Add");
-		addButton.setBounds(150, 250, 70, 25);
+		addButton.setBounds(150, 300, 70, 25);
 		addButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		addButton.addActionListener(this);
+		addButton.addActionListener(e -> {
+			//Necessary objects
+			String text = text1.getText().trim();
+		
+			if (!text.equals("")) {
+				int id = Integer.valueOf(text);
+				String name = Main.identify(id),
+				time = chrono.getText();
+	
+				//Table update phase
+				if (name != null) {
+					model.addRow(new Object[] {
+						id,
+						name,
+						time
+					});
+	
+					appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to unexpected crash
+				}
+			}
+
+			//Making text field prepared for next submissions
+			text1.setText("");
+		});
+
+		chronoButton = new JButton("Start");
+		chronoButton.setBounds(150, 250, 75, 25);
+		chronoButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chronoButton.addActionListener(e -> {
+			if (!Main.getChronoState()) {
+				//Starting chronometer thread
+				Main.startChronometer();
+				
+				//Initialization of startTime
+				calendar = Calendar.getInstance();
+				startTime = calendar.getTimeInMillis();
+			}
+		});
 
 		//RaceMapPanel
 		raceMap = new JPanel();
@@ -77,6 +123,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		panel.add(raceMap);
 		panel.add(text1);
 		panel.add(addButton);
+		panel.add(chronoButton);
+		panel.add(chrono);
 		panel.add(scrollPane);
 
 		this.add(panel);
@@ -84,39 +132,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		//Initializing results.csv
 		if (!isFileExist("data/results.csv")) appendResult("ID,Name,Time\n");
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		//Necessary objects
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		String text = text1.getText().trim();
-		Calendar calendar;
-	
-		if (!text.equals("")) {
-			//Getting required attributes
-			calendar = Calendar.getInstance();
-			int hours = calendar.get(Calendar.HOUR_OF_DAY);
-			int minutes = calendar.get(Calendar.MINUTE);
-			int seconds = calendar.get(Calendar.SECOND);
-			int milliseconds = calendar.get(Calendar.MILLISECOND);			
-			int id = Integer.valueOf(text);
-			String name = Main.identify(id), time = new String(hours+":"+minutes+":"+seconds+":"+milliseconds);
-			
-			//Table update phase
-			if (name != null) {
-				model.addRow(new Object[] {
-					id,
-					name,
-					time
-				});
-
-				appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to unexpected crash
-			}
-		}
-
-		//Making text field prepared for next submissions
-		text1.setText("");
 	}
 
 	private void appendResult(String str) {
@@ -132,5 +147,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	private boolean isFileExist(String path) {
 		return new File(path).exists();
+	}
+
+	public void chronoUpdate() {
+		calendar = Calendar.getInstance();
+		chrono.setText(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND)+":"+calendar.get(Calendar.MILLISECOND));
 	}
 }

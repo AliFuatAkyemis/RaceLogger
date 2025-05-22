@@ -8,6 +8,7 @@ public class Main {
 	private static LoginFrame login;
 	private static MainFrame main;
 	private static HashMap map;
+	private static boolean isChronoStart = false;
 
 	public static void main(String[] args) {
 		login = new LoginFrame();
@@ -44,5 +45,25 @@ public class Main {
 
 	public static String identify(int id) {
 		return (String) map.get(id);
+	}
+
+	public static void startChronometer() {
+		Thread updateThread = new Thread(() -> {
+			while (!Thread.currentThread().isInterrupted()) {
+				try {
+					main.chronoUpdate();
+					Thread.sleep(100);
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		isChronoStart = true;
+		updateThread.start();
+	}
+
+	public static boolean getChronoState() {
+		return isChronoStart;
 	}
 }
