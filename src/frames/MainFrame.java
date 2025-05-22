@@ -72,7 +72,7 @@ public class MainFrame extends JFrame {
 			//Necessary objects
 			String text = text1.getText().trim();
 		
-			if (!text.equals("") && !Main.getIsPaused()) {
+			if (text.matches("\\d+") && !Main.getIsPaused()) {
 				int id = Integer.valueOf(text);
 				String name = Main.identify(id),
 				time = chrono.getText();
@@ -152,9 +152,6 @@ public class MainFrame extends JFrame {
 
 		this.add(panel);
 		this.getRootPane().setDefaultButton(addButton);
-
-		//Initializing results.csv
-		if (!isFileExist("data/results.csv")) appendResult("ID,Name,Time\n");
 	}
 
 	private void appendResult(String str) {
@@ -166,10 +163,6 @@ public class MainFrame extends JFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private boolean isFileExist(String path) {
-		return new File(path).exists();
 	}
 
 	public void chronoUpdate() {
