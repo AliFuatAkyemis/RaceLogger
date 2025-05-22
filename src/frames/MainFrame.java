@@ -14,12 +14,12 @@ public class MainFrame extends JFrame {
 	JTable table;
 	JScrollPane scrollPane;
 	JTextField text1;
-	JButton addButton, chronoButton;
+	JButton addButton, chronoStartButton, chronoPauseButton;
 	JLabel chrono;
 	ImageIcon map;
 	Image scaled;
 	Calendar calendar;
-	long startTime;
+	long startTime = -1, pausedTime, pausedTimeAmount = 0;
 
 	//Constructor
 	public MainFrame() {
@@ -72,7 +72,7 @@ public class MainFrame extends JFrame {
 			//Necessary objects
 			String text = text1.getText().trim();
 		
-			if (!text.equals("")) {
+			if (!text.equals("") && !Main.getIsPaused()) {
 				int id = Integer.valueOf(text);
 				String name = Main.identify(id),
 				time = chrono.getText();
@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
 						time
 					});
 	
-					appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to unexpected crash
+					appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to an unexpected crash
 				}
 			}
 
@@ -93,17 +93,39 @@ public class MainFrame extends JFrame {
 			text1.setText("");
 		});
 
-		chronoButton = new JButton("Start");
-		chronoButton.setBounds(150, 250, 75, 25);
-		chronoButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		chronoButton.addActionListener(e -> {
-			if (!Main.getChronoState()) {
+		chronoStartButton = new JButton("Start");
+		chronoStartButton.setBounds(150, 250, 75, 25);
+		chronoStartButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chronoStartButton.addActionListener(e -> {
+			if (Main.getIsPaused()) {
 				//Starting chronometer thread
+				Main.switchPauseState();
 				Main.startChronometer();
 				
 				//Initialization of startTime
+				if (startTime == -1) {
+					calendar = Calendar.getInstance();
+					startTime = calendar.getTimeInMillis();
+				} else {
+					//If recording started before calculate pausedTimeAmount
+					calendar = Calendar.getInstance();
+					pausedTimeAmount += calendar.getTimeInMillis() - pausedTime;
+				}
+
+			}
+		});
+
+		chronoPauseButton = new JButton("Pause");
+		chronoPauseButton.setBounds(240, 250, 80, 25);
+		chronoPauseButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chronoPauseButton.addActionListener(e -> {
+			if (!Main.getIsPaused()) {
+				//Switch pause state to stop recording
+				Main.switchPauseState();
+
+				//Initialize pausedTime to calculate pausedTimeAmount
 				calendar = Calendar.getInstance();
-				startTime = calendar.getTimeInMillis();
+				pausedTime = calendar.getTimeInMillis();
 			}
 		});
 
@@ -123,7 +145,8 @@ public class MainFrame extends JFrame {
 		panel.add(raceMap);
 		panel.add(text1);
 		panel.add(addButton);
-		panel.add(chronoButton);
+		panel.add(chronoStartButton);
+		panel.add(chronoPauseButton);
 		panel.add(chrono);
 		panel.add(scrollPane);
 
@@ -151,6 +174,12 @@ public class MainFrame extends JFrame {
 
 	public void chronoUpdate() {
 		calendar = Calendar.getInstance();
-		chrono.setText(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND)+":"+calendar.get(Calendar.MILLISECOND));
+		long currentTime = calendar.getTimeInMillis();
+		currentTime -= (startTime + pausedTimeAmount);
+		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
+		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
+		long second = currentTime / 1000; currentTime &= 1000;
+		long millisecond = currentTime;
+		chrono.setText(hour+":"+minute+":"+second+":"+millisecond);
 	}
 }

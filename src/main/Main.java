@@ -8,7 +8,8 @@ public class Main {
 	private static LoginFrame login;
 	private static MainFrame main;
 	private static HashMap map;
-	private static boolean isChronoStart = false;
+	private static boolean isPaused = true;
+	private static Thread chronoThread;
 
 	public static void main(String[] args) {
 		login = new LoginFrame();
@@ -19,23 +20,21 @@ public class Main {
 	public static void showMain() {
 		login.setVisible(false);
 		if (main == null) main = new MainFrame();
-
-		initMap(); //Before making main frame visible initialize the map
-		
+		mapInit(); //Before making main frame visible initialize the map
 		main.setVisible(true);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void initMap() {
+	public static void mapInit() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv"));
 			map = new HashMap<Integer, String>();
-			String row = reader.readLine();
+			String row = reader.readLine(); //First line of file
 		
 			while (row != null) {
-				String[] temp = row.split(",");
-				map.put(Integer.valueOf(temp[0]), temp[1]);
-				row = reader.readLine();
+				String[] temp = row.split(","); //Simple split method to seperate ID and Name
+				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
+				row = reader.readLine(); //Update row with next line
 			}
 
 		} catch(Exception e) {
@@ -48,22 +47,26 @@ public class Main {
 	}
 
 	public static void startChronometer() {
-		Thread updateThread = new Thread(() -> {
+		//New Thread to keep track of time
+		chronoThread = new Thread(() -> {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
-					main.chronoUpdate();
-					Thread.sleep(100);
+					if (!isPaused) main.chronoUpdate(); //Chronometer label update function
+					Thread.sleep(100); //Update wait time
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 
-		isChronoStart = true;
-		updateThread.start();
+		chronoThread.start();
 	}
 
-	public static boolean getChronoState() {
-		return isChronoStart;
+	public static boolean getIsPaused() {
+		return isPaused;
+	}
+
+	public static void switchPauseState() {
+		isPaused = !isPaused;
 	}
 }
