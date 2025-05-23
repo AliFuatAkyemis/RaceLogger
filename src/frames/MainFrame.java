@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.Calendar;
 
 public class MainFrame extends JFrame {
@@ -14,7 +15,7 @@ public class MainFrame extends JFrame {
 	JTable table;
 	JScrollPane scrollPane;
 	JTextField text1;
-	JButton addButton, chronoStartButton, chronoPauseButton;
+	JButton addButton, chronoStartButton, chronoPauseButton, saveButton;
 	JLabel chrono;
 	ImageIcon map;
 	Image scaled;
@@ -129,6 +130,13 @@ public class MainFrame extends JFrame {
 			}
 		});
 
+		saveButton = new JButton("Save");
+		saveButton.setBounds(690, 525, 80, 25);
+		saveButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		saveButton.addActionListener(e -> {
+			saveResults(0);
+		});
+
 		//RaceMapPanel
 		raceMap = new JPanel();
 		raceMap.setBounds(30, 20, 350, 200);
@@ -147,6 +155,7 @@ public class MainFrame extends JFrame {
 		panel.add(addButton);
 		panel.add(chronoStartButton);
 		panel.add(chronoPauseButton);
+		panel.add(saveButton);
 		panel.add(chrono);
 		panel.add(scrollPane);
 
@@ -161,6 +170,20 @@ public class MainFrame extends JFrame {
 			writer.write(str);
 			writer.close();
 		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void saveResults(int n) {
+		try {
+			Path source = Paths.get("data/results.csv");
+			Path target = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv");
+			
+			Files.move(source, target);
+		} catch(FileAlreadyExistsException e) {
+			saveResults(n+1);
+		} catch(Exception e) {
+			
 			e.printStackTrace();
 		}
 	}
