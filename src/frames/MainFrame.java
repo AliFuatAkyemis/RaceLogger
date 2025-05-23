@@ -11,14 +11,12 @@ import java.util.Calendar;
 
 public class MainFrame extends JFrame {
 	int width = 800, height = 600;
-	JPanel panel, raceMap;
+	JPanel panel;
 	JTable table;
 	JScrollPane scrollPane;
 	JTextField text1;
 	JButton addButton, chronoStartButton, chronoPauseButton, saveButton;
 	JLabel chrono;
-	ImageIcon map;
-	Image scaled;
 	Calendar calendar;
 	long startTime = -1, pausedTime, pausedTimeAmount = 0;
 
@@ -52,7 +50,7 @@ public class MainFrame extends JFrame {
 
 		//Label
 		chrono = new JLabel("00:00:00:000", SwingConstants.CENTER);
-		chrono.setBounds(30, 250, 100, 25);
+		chrono.setBounds(30, 20, 100, 25);
 		chrono.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		chrono.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
@@ -62,12 +60,12 @@ public class MainFrame extends JFrame {
 
 		//TextField
 		text1 = new JTextField(100);
-		text1.setBounds(30, 300, 100, 25);
+		text1.setBounds(30, 70, 100, 25);
 		text1.setFont(new Font("MV Boli", Font.PLAIN, 16));
 
 		//Button
 		addButton = new JButton("Add");
-		addButton.setBounds(150, 300, 70, 25);
+		addButton.setBounds(150, 70, 70, 25);
 		addButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		addButton.addActionListener(e -> {
 			//Necessary objects
@@ -95,7 +93,7 @@ public class MainFrame extends JFrame {
 		});
 
 		chronoStartButton = new JButton("Start");
-		chronoStartButton.setBounds(150, 250, 75, 25);
+		chronoStartButton.setBounds(150, 20, 75, 25);
 		chronoStartButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		chronoStartButton.addActionListener(e -> {
 			if (Main.getIsPaused()) {
@@ -117,7 +115,7 @@ public class MainFrame extends JFrame {
 		});
 
 		chronoPauseButton = new JButton("Pause");
-		chronoPauseButton.setBounds(240, 250, 80, 25);
+		chronoPauseButton.setBounds(240, 20, 80, 25);
 		chronoPauseButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		chronoPauseButton.addActionListener(e -> {
 			if (!Main.getIsPaused()) {
@@ -137,20 +135,7 @@ public class MainFrame extends JFrame {
 			saveResults(0);
 		});
 
-		//RaceMapPanel
-		raceMap = new JPanel();
-		raceMap.setBounds(30, 20, 350, 200);
-		raceMap.setLayout(new BorderLayout());
-		raceMap.setBackground(new Color(0xaaaaaa));
-
-		//Image
-		ImageIcon map = new ImageIcon("images/route.png");
-		Image scaled = map.getImage().getScaledInstance(350, 200, Image.SCALE_SMOOTH);
-		
 		//Composition part
-		raceMap.add(new JLabel(new ImageIcon(scaled)), BorderLayout.CENTER);
-
-		panel.add(raceMap);
 		panel.add(text1);
 		panel.add(addButton);
 		panel.add(chronoStartButton);
@@ -176,26 +161,31 @@ public class MainFrame extends JFrame {
 
 	private void saveResults(int n) {
 		try {
+			if (!new File("data/results.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
+			//Getting required paths source and destination
 			Path source = Paths.get("data/results.csv");
-			Path target = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv");
+			Path destination = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
 			
-			Files.move(source, target);
+			Files.move(source, destination);
 		} catch(FileAlreadyExistsException e) {
-			saveResults(n+1);
+			saveResults(n+1); //To handle name conflict automatically, increase n
 		} catch(Exception e) {
-			
 			e.printStackTrace();
 		}
 	}
 
 	public void chronoUpdate() {
-		calendar = Calendar.getInstance();
+		calendar = Calendar.getInstance(); //Each time we need to update calendar object because time is consistent
 		long currentTime = calendar.getTimeInMillis();
-		currentTime -= (startTime + pausedTimeAmount);
+		currentTime -= (startTime + pausedTimeAmount); //Paused time amount is should be also substracted from total time (totalTime = currentTime - startTime)
+		
+		//Time conversions
 		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
 		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
 		long second = currentTime / 1000; currentTime &= 1000;
 		long millisecond = currentTime;
+		
+		//Updating the label
 		chrono.setText(hour+":"+minute+":"+second+":"+millisecond);
 	}
 }
