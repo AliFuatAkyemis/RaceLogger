@@ -6,11 +6,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class LoginFrame extends JFrame {
-	int width = 400, height = 280;
-	JTextField text1, text2;
-	JButton loginButton;
-	String defUser = "admin";
-	String defPass = "1234";
+	private int width = 400, height = 280;
+	private JTextField text1, text2;
+	private JButton loginButton;
+	private String defUser = "admin";
+	private String defPass = "1234";
 
 	public LoginFrame() {
 		//Frame Properties

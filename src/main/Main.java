@@ -11,16 +11,21 @@ public class Main {
 	private static HashMap map;
 
 	public static void main(String[] args) {
-		login = new LoginFrame();
+		login = new LoginFrame(); //Initialize the login frame
 		login.setVisible(true);
 //		showRecord();
 	}
 
 	//Navigation
 	public static void showRecord() {
-		if (record == null) record = new RecordFrame();
+		if (record == null) record = new RecordFrame(); //If it is null create a new
 		mapInit(); //Before making main frame visible initialize the map
 		record.setVisible(true);
+	}
+
+	public static void showDash() {
+		if (dash == null) dash = new DashFrame();
+		dash.setVisible(true);
 	}
 
 	//Utility
@@ -43,6 +48,6 @@ public class Main {
 	}
 
 	public static String identify(int id) {
-		return (String) map.get(id);
+		return (String) map.get(id); //It returns the information of a racer by his/her id
 	}
 }
