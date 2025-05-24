@@ -236,7 +236,7 @@ public class RecordFrame extends TemplateFrame {
 			Path source = Paths.get("data/results.csv");
 
 			String dir = "data/oldResults/";
-			if (!Files.isDirectory(new Path(dir))) new File(dir).mkdirs();
+			if (!Files.isDirectory(Paths.get(dir))) new File(dir).mkdirs();
 			Path destination = Paths.get(dir+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
 			
 			Files.move(source, destination);
