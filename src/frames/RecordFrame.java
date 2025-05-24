@@ -9,22 +9,34 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.Calendar;
 
-public class MainFrame extends JFrame {
-	int width = 800, height = 600;
-	JPanel panel;
-	JTable table;
-	JScrollPane scrollPane;
-	JTextField text1;
-	JButton addButton, chronoStartButton, chronoPauseButton, saveButton;
-	JLabel chrono;
-	Calendar calendar;
-	long startTime = -1, pausedTime, pausedTimeAmount = 0;
+public class RecordFrame extends JFrame {
+	private int width = 800, height = 600;
+	private JPanel panel;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private JTextField text1;
+	private JButton addButton, startButton, pauseButton, saveButton;
+	private JLabel chrono;
+	private Calendar calendar;
+	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
+	private Thread chronoThread;
+	private boolean isPaused = true;
+	
 
 	//Constructor
-	public MainFrame() {
+	public RecordFrame() {
 		//Frame
 		this.setTitle("Main");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Before on close action it saves records
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				saveResults(0);
+			}
+		});
+
 		this.setSize(width, height);
 		this.setLocation((1920-width)/2, (1080-height)/2);
 		this.setResizable(false);
@@ -71,7 +83,7 @@ public class MainFrame extends JFrame {
 			//Necessary objects
 			String text = text1.getText().trim();
 		
-			if (text.matches("\\d+") && !Main.getIsPaused()) {
+			if (text.matches("\\d+") && !isPaused) {
 				int id = Integer.valueOf(text);
 				String name = Main.identify(id),
 				time = chrono.getText();
@@ -92,14 +104,14 @@ public class MainFrame extends JFrame {
 			text1.setText("");
 		});
 
-		chronoStartButton = new JButton("Start");
-		chronoStartButton.setBounds(150, 20, 75, 25);
-		chronoStartButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		chronoStartButton.addActionListener(e -> {
-			if (Main.getIsPaused()) {
+		startButton = new JButton("Start");
+		startButton.setBounds(150, 20, 75, 25);
+		startButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		startButton.addActionListener(e -> {
+			if (isPaused) {
 				//Starting chronometer thread
-				Main.switchPauseState();
-				Main.startChronometer();
+				isPaused = !isPaused;
+				startChronometer();
 				
 				//Initialization of startTime
 				if (startTime == -1) {
@@ -114,13 +126,13 @@ public class MainFrame extends JFrame {
 			}
 		});
 
-		chronoPauseButton = new JButton("Pause");
-		chronoPauseButton.setBounds(240, 20, 80, 25);
-		chronoPauseButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		chronoPauseButton.addActionListener(e -> {
-			if (!Main.getIsPaused()) {
+		pauseButton = new JButton("Pause");
+		pauseButton.setBounds(240, 20, 80, 25);
+		pauseButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		pauseButton.addActionListener(e -> {
+			if (!isPaused) {
 				//Switch pause state to stop recording
-				Main.switchPauseState();
+				isPaused = !isPaused;
 
 				//Initialize pausedTime to calculate pausedTimeAmount
 				calendar = Calendar.getInstance();
@@ -138,8 +150,8 @@ public class MainFrame extends JFrame {
 		//Composition part
 		panel.add(text1);
 		panel.add(addButton);
-		panel.add(chronoStartButton);
-		panel.add(chronoPauseButton);
+		panel.add(startButton);
+		panel.add(pauseButton);
 		panel.add(saveButton);
 		panel.add(chrono);
 		panel.add(scrollPane);
@@ -187,5 +199,21 @@ public class MainFrame extends JFrame {
 		
 		//Updating the label
 		chrono.setText(hour+":"+minute+":"+second+":"+millisecond);
+	}
+
+	public void startChronometer() {
+		//New Thread to keep track of time
+		chronoThread = new Thread(() -> {
+			while (!Thread.currentThread().isInterrupted()) {
+				try {
+					if (!isPaused) chronoUpdate(); //Chronometer label update function
+					Thread.sleep(100); //Update wait time
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		chronoThread.start();
 	}
 }

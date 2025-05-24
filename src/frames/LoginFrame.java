@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class LoginFrame extends JFrame implements ActionListener {
+public class LoginFrame extends JFrame {
 	int width = 400, height = 280;
 	JTextField text1, text2;
 	JButton loginButton;
@@ -37,7 +37,18 @@ public class LoginFrame extends JFrame implements ActionListener {
 		//Button
 		loginButton = new JButton("Login");
 		loginButton.setBounds(125, 175, 150, 30);
-		loginButton.addActionListener(this);
+		loginButton.addActionListener(e -> {
+			//Basic if block to check authorization
+			if (e.getSource() == loginButton) {
+				String username = text1.getText();
+				String password = text2.getText();
+				if (username.equals(defUser) && password.equals(defPass)) {
+					this.setVisible(false);
+					Main.showRecord();
+				} //Static method from Main.java
+				else System.out.println("Access Denied");
+			}
+		});
 
 		//Composition part
 		panel.add(text1);
@@ -46,16 +57,5 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 		this.add(panel, BorderLayout.CENTER);
 		this.getRootPane().setDefaultButton(loginButton);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		//Basic if block to check authorization
-		if (e.getSource() == loginButton) {
-			String username = text1.getText();
-			String password = text2.getText();
-			if (username.equals(defUser) && password.equals(defPass)) Main.showMain(); //Static method from Main.java
-			else System.out.println("Access Denied");
-		}
 	}
 }
