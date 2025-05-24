@@ -8,6 +8,7 @@ import javax.swing.table.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class RecordFrame extends JFrame {
 	private int width = 800, height = 600;
@@ -16,12 +17,12 @@ public class RecordFrame extends JFrame {
 	private JScrollPane scrollPane;
 	private JTextField text1;
 	private JButton addButton, startButton, pauseButton, saveButton, backButton;
-	private JLabel chrono;
+	private JLabel chronoLabel;
 	private Calendar calendar;
 	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
 	private Thread chronoThread;
 	private boolean isPaused = true;
-	
+	private HashMap<Integer, String> map;
 
 	//Constructor
 	public RecordFrame() {
@@ -85,10 +86,10 @@ public class RecordFrame extends JFrame {
 		columnModel.getColumn(2).setPreferredWidth(100);
 
 		//Label
-		chrono = new JLabel("00:00:00:000", SwingConstants.CENTER);
-		chrono.setBounds(30, 20, 100, 25);
-		chrono.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		chrono.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
+		chronoLabel.setBounds(30, 20, 100, 25);
+		chronoLabel.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
@@ -110,8 +111,8 @@ public class RecordFrame extends JFrame {
 			if (text.matches("\\d+") && !isPaused) { //If text is decimal and chronometer is running then,...
 				//Getting info
 				int id = Integer.valueOf(text);
-				String name = Main.identify(id),
-				time = chrono.getText();
+				String name = identify(id),
+				time = chronoLabel.getText();
 	
 				//Table update phase
 				if (name != null) {
@@ -214,11 +215,33 @@ public class RecordFrame extends JFrame {
 		panel.add(pauseButton);
 		panel.add(saveButton);
 		panel.add(backButton);
-		panel.add(chrono);
+		panel.add(chronoLabel);
 		panel.add(scrollPane);
 
+		mapInit(); //Before recording initialize the map of racers
+		
 		this.add(panel);
 		this.getRootPane().setDefaultButton(addButton);
+	}
+	
+	//Utility
+	public String identify(int id) {
+		return (String) map.get(id); //It returns the information of a racer by his/her id
+	}
+
+	private void saveResults(int n) {
+		try {
+			if (!new File("data/results.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
+			//Getting required paths source and destination
+			Path source = Paths.get("data/results.csv");
+			Path destination = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
+			
+			Files.move(source, destination);
+		} catch(FileAlreadyExistsException e) {
+			saveResults(n+1); //To handle name conflict automatically, increase n
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	//.csv Modifier
@@ -232,17 +255,19 @@ public class RecordFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
-	private void saveResults(int n) {
+	
+	public void mapInit() {
 		try {
-			if (!new File("data/results.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
-			//Getting required paths source and destination
-			Path source = Paths.get("data/results.csv");
-			Path destination = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
-			
-			Files.move(source, destination);
-		} catch(FileAlreadyExistsException e) {
-			saveResults(n+1); //To handle name conflict automatically, increase n
+			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv")); //Obtain the file to read
+			map = new HashMap<>(); //Initialize the map object
+			String row = reader.readLine(); //First line of file
+		
+			while (row != null) {
+				String[] temp = row.split(","); //Simple split method to seperate ID and Name
+				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
+				row = reader.readLine(); //Update row with next line
+			}
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -261,7 +286,7 @@ public class RecordFrame extends JFrame {
 		long millisecond = currentTime;
 		
 		//Updating the label
-		chrono.setText(hour+":"+minute+":"+second+":"+millisecond);
+		chronoLabel.setText(hour+":"+minute+":"+second+":"+millisecond);
 	}
 
 	//Start method to start chronometer thread

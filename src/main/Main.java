@@ -1,53 +1,28 @@
 package main;
 
 import frames.*;
-import java.io.*;
 import javax.swing.*;
-import java.util.HashMap;
 
 public class Main {
 	private static JFrame login, dash, record;
-	private static HashMap map;
 
 	public static void main(String[] args) {
-		login = new LoginFrame(); //Initialize the login frame
-		login.setVisible(true);
-//		showDash();
-//		showRecord();
+		showLogin();
 	}
 
 	//Navigation
-	public static void showRecord() {
-		record = new RecordFrame(); //Create a new frame
-		mapInit(); //Before making main frame visible initialize the map
-		record.setVisible(true);
+	public static void showLogin() {
+		login = new LoginFrame(); //Initialize the login frame
+		login.setVisible(true);
 	}
 
 	public static void showDash() {
-		if (dash == null) dash = new DashFrame();
+		if (dash == null) dash = new DashFrame(); //Initializethe login frame
 		dash.setVisible(true);
 	}
-
-	//Utility
-	@SuppressWarnings("unchecked")
-	public static void mapInit() {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv"));
-			map = new HashMap<Integer, String>();
-			String row = reader.readLine(); //First line of file
-		
-			while (row != null) {
-				String[] temp = row.split(","); //Simple split method to seperate ID and Name
-				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
-				row = reader.readLine(); //Update row with next line
-			}
-
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static String identify(int id) {
-		return (String) map.get(id); //It returns the information of a racer by his/her id
+	
+	public static void showRecord() {
+		record = new RecordFrame(); //Create a new frame
+		record.setVisible(true);
 	}
 }
