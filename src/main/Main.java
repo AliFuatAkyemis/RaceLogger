@@ -2,23 +2,23 @@ package main;
 
 import frames.*;
 import java.io.*;
+import javax.swing.*;
 import java.util.HashMap;
 
 public class Main {
-	private static LoginFrame login;
-	private static DashFrame dash;
-	private static RecordFrame record;
+	private static JFrame login, dash, record;
 	private static HashMap map;
 
 	public static void main(String[] args) {
 		login = new LoginFrame(); //Initialize the login frame
 		login.setVisible(true);
+//		showDash();
 //		showRecord();
 	}
 
 	//Navigation
 	public static void showRecord() {
-		if (record == null) record = new RecordFrame(); //If it is null create a new
+		record = new RecordFrame(); //Create a new frame
 		mapInit(); //Before making main frame visible initialize the map
 		record.setVisible(true);
 	}
