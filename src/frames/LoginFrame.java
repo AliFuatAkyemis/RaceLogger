@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends TemplateFrame {
 	private int width = 300, height = 200;
 	private JTextField text1, text2;
 	private JLabel id, password;

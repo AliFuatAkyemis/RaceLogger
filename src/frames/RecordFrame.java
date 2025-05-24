@@ -10,7 +10,7 @@ import java.nio.file.*;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class RecordFrame extends JFrame {
+public class RecordFrame extends TemplateFrame {
 	private int width = 800, height = 600;
 	private JPanel panel;
 	private JTable table;

@@ -4,7 +4,7 @@ import main.*;
 import java.awt.*;
 import javax.swing.*;
 
-public class DashFrame extends JFrame {
+public class DashFrame extends TemplateFrame {
 	private int width = 250, height = 220;
 	private JPanel panel;
 	private JButton createRecord, records, settings;
