@@ -167,11 +167,13 @@ public class RecordFrame extends TemplateFrame {
 			}
 		});
 
-		saveButton = new JButton("Save");
-		saveButton.setBounds(690, 525, 80, 25);
+		saveButton = new JButton("Save&Exit");
+		saveButton.setBounds(650, 525, 120, 25);
 		saveButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		saveButton.addActionListener(e -> {
 			saveResults(0); //Save the results into /data/oldResults
+			this.dispose();
+			Main.showDash();
 		});
 
 		backButton = new JButton("Back to Dashboard");
