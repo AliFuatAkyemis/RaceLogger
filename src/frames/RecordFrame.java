@@ -234,7 +234,10 @@ public class RecordFrame extends TemplateFrame {
 			if (!new File("data/results.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
 			//Getting required paths source and destination
 			Path source = Paths.get("data/results.csv");
-			Path destination = Paths.get("data/oldResults/"+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
+
+			String dir = "data/oldResults/";
+			if (!Files.isDirectory(new Path(dir))) new File(dir).mkdirs();
+			Path destination = Paths.get(dir+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
 			
 			Files.move(source, destination);
 		} catch(FileAlreadyExistsException e) {
