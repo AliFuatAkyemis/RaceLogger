@@ -123,7 +123,7 @@ public class RecordFrame extends TemplateFrame {
 						time
 					});
 	
-					appendResult(id+","+name+","+time+"\n"); //Updating results.csv due to an unexpected crash
+					appendResult(id+","+name+","+convertToMillisecond(time)+"\n"); //Updating results.csv due to an unexpected crash
 				}
 			}
 
@@ -249,6 +249,22 @@ public class RecordFrame extends TemplateFrame {
 		}
 	}
 
+	private String convertTime(long currentTime) {
+		//Conversions
+		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
+		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
+		long second = currentTime / 1000; currentTime &= 1000;
+		long millisecond = currentTime;
+	
+		return (String) (hour+":"+minute+":"+second+":"+millisecond);
+	}
+
+	private long convertToMillisecond(String time) {
+		//Conversions
+		String[] temp = time.split(":");
+		return (Integer.valueOf(temp[0])*60*60*1000)+(Integer.valueOf(temp[1])*60*1000)+(Integer.valueOf(temp[2])*1000)+Integer.valueOf(temp[3]);
+	}
+
 	//.csv Modifier
 	private void appendResult(String str) {
 		try {
@@ -284,14 +300,8 @@ public class RecordFrame extends TemplateFrame {
 		long currentTime = calendar.getTimeInMillis();
 		currentTime -= (startTime + pausedTimeAmount); //Paused time amount is should be also substracted from total time (totalTime = currentTime - startTime)
 		
-		//Time conversions
-		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
-		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
-		long second = currentTime / 1000; currentTime &= 1000;
-		long millisecond = currentTime;
-		
 		//Updating the label
-		chronoLabel.setText(hour+":"+minute+":"+second+":"+millisecond);
+		chronoLabel.setText(convertTime(currentTime));
 	}
 
 	//Start method to start chronometer thread
@@ -301,7 +311,7 @@ public class RecordFrame extends TemplateFrame {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					if (!isPaused) chronoUpdate(); //Chronometer label update function
-					Thread.sleep(100); //Update wait time
+					Thread.sleep(50); //Update wait time
 				} catch(Exception e) {
 					e.printStackTrace();
 				}

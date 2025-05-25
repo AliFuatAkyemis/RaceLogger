@@ -10,7 +10,7 @@ import java.io.*;
 public class ListFrame extends TemplateFrame {
 	private int width = 500, height = 500;
 	private JPanel panel;
-	private JButton backButton, analyzeButton;
+	private JButton back, analyze;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JComboBox<String> box;
@@ -28,19 +28,19 @@ public class ListFrame extends TemplateFrame {
 		panel.setLayout(null);
 
 		//Button
-		backButton = new JButton("Back to Dashboard");
-		backButton.setBounds(20, 10, 200, 25);
-		backButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		backButton.addActionListener(e -> {
+		back = new JButton("Back to Dashboard");
+		back.setBounds(20, 10, 200, 25);
+		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.addActionListener(e -> {
 			this.dispose();
 			Main.showDash();
 		});
 
-		analyzeButton = new JButton("Analyze");
-		analyzeButton.setBounds(390, 10, 80, 25);
-		analyzeButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		analyzeButton.addActionListener(e -> {
-			
+		analyze = new JButton("Analyze");
+		analyze.setBounds(390, 100, 100, 25);
+		analyze.setFont(new Font("Arial", Font.PLAIN, 16));
+		analyze.addActionListener(e -> {
+			Main.showAnalyze();
 		});
 
 		//Table
@@ -74,7 +74,8 @@ public class ListFrame extends TemplateFrame {
 
 		//Composition part
 		panel.add(box);
-		panel.add(backButton);
+		panel.add(back);
+		panel.add(analyze);
 		panel.add(scrollPane);
 
 		this.add(panel);
@@ -89,7 +90,7 @@ public class ListFrame extends TemplateFrame {
 
 			while (row != null) {
 				String[] temp = row.split(",");
-				model.addRow(new Object[] {temp[0], temp[1], temp[2]});
+				model.addRow(new Object[] {temp[0], temp[1], convertTime(Integer.valueOf(temp[2]))});
 				row = reader.readLine();
 			}
 
@@ -97,4 +98,14 @@ public class ListFrame extends TemplateFrame {
 			e.printStackTrace();
 		}
 	} 
+
+	private String convertTime(long currentTime) {
+		//Conversions
+		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
+		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
+		long second = currentTime / 1000; currentTime &= 1000;
+		long millisecond = currentTime;
+	
+		return (String) (hour+":"+minute+":"+second+":"+millisecond);
+	}
 } 

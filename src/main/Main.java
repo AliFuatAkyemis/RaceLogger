@@ -4,7 +4,7 @@ import frames.*;
 import javax.swing.*;
 
 public class Main {
-	private static JFrame login, dash, record, list;
+	private static JFrame login, dash, record, list, analyze;
 
 	public static void main(String[] args) {
 		showLogin();
@@ -29,5 +29,10 @@ public class Main {
 	public static void showList() {
 		list = new ListFrame();
 		list.setVisible(true);
+	}
+
+	public static void showAnalyze() {
+		analyze = new AnalyzeFrame();
+		analyze.setVisible(true);
 	}
 }
