@@ -16,7 +16,7 @@ public class RecordFrame extends TemplateFrame {
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JTextField text1;
-	private JButton addButton, startButton, pauseButton, saveButton, backButton;
+	private JButton add, start, pause, save, back;
 	private JLabel chronoLabel;
 	private Calendar calendar;
 	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
@@ -88,7 +88,7 @@ public class RecordFrame extends TemplateFrame {
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
 		chronoLabel.setBounds(30, 20, 100, 25);
-		chronoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		chronoLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		//ScrollPane
@@ -100,11 +100,11 @@ public class RecordFrame extends TemplateFrame {
 		text1.setBounds(30, 70, 100, 25);
 		text1.setFont(new Font("Arial", Font.PLAIN, 16));
 
-		//Button
-		addButton = new JButton("Add");
-		addButton.setBounds(150, 70, 70, 25);
-		addButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		addButton.addActionListener(e -> {
+		//
+		add = new JButton("Add");
+		add.setBounds(150, 70, 70, 25);
+		add.setFont(new Font("Arial", Font.PLAIN, 16));
+		add.addActionListener(e -> {
 			//Necessary objects
 			String text = text1.getText().trim();
 		
@@ -131,10 +131,10 @@ public class RecordFrame extends TemplateFrame {
 			text1.setText("");
 		});
 
-		startButton = new JButton("Start");
-		startButton.setBounds(150, 20, 75, 25);
-		startButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		startButton.addActionListener(e -> {
+		start = new JButton("Start");
+		start.setBounds(150, 20, 75, 25);
+		start.setFont(new Font("Arial", Font.PLAIN, 16));
+		start.addActionListener(e -> {
 			if (isPaused) {
 				//Starting chronometer thread
 				isPaused = !isPaused;
@@ -153,10 +153,10 @@ public class RecordFrame extends TemplateFrame {
 			}
 		});
 
-		pauseButton = new JButton("Pause");
-		pauseButton.setBounds(240, 20, 80, 25);
-		pauseButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		pauseButton.addActionListener(e -> {
+		pause = new JButton("Pause");
+		pause.setBounds(240, 20, 80, 25);
+		pause.setFont(new Font("Arial", Font.PLAIN, 16));
+		pause.addActionListener(e -> {
 			if (!isPaused) {
 				//Switch pause state to stop recording
 				isPaused = !isPaused;
@@ -167,19 +167,19 @@ public class RecordFrame extends TemplateFrame {
 			}
 		});
 
-		saveButton = new JButton("Save&Exit");
-		saveButton.setBounds(650, 525, 120, 25);
-		saveButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		saveButton.addActionListener(e -> {
+		save = new JButton("Save&Exit");
+		save.setBounds(650, 525, 120, 25);
+		save.setFont(new Font("Arial", Font.PLAIN, 16));
+		save.addActionListener(e -> {
 			saveResults(0); //Save the results into /data/oldResults
 			this.dispose();
 			Main.showDash();
 		});
 
-		backButton = new JButton("Back to Dashboard");
-		backButton.setBounds(30, 525, 200, 25);
-		backButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		backButton.addActionListener(e -> {
+		back = new JButton("Back");
+		back.setBounds(30, 525, 80, 25);
+		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.addActionListener(e -> {
 			File file = new File("data/records.csv"); //Obtain the file
 			if (file.exists()) { //If file is exist then, define the actions
 				int response = JOptionPane.showConfirmDialog(
@@ -212,18 +212,18 @@ public class RecordFrame extends TemplateFrame {
 
 		//Composition part
 		panel.add(text1);
-		panel.add(addButton);
-		panel.add(startButton);
-		panel.add(pauseButton);
-		panel.add(saveButton);
-		panel.add(backButton);
+		panel.add(add);
+		panel.add(start);
+		panel.add(pause);
+		panel.add(save);
+		panel.add(back);
 		panel.add(chronoLabel);
 		panel.add(scrollPane);
 
 		mapInit(); //Before recording initialize the map of racers
 		
 		this.add(panel);
-		this.getRootPane().setDefaultButton(addButton);
+		this.getRootPane().setDefaultButton(add);
 	}
 	
 	//Utility

@@ -29,8 +29,8 @@ public class ListFrame extends TemplateFrame {
 		panel.setLayout(null);
 
 		//Button
-		back = new JButton("Back to Dashboard");
-		back.setBounds(20, 10, 200, 25);
+		back = new JButton("Back");
+		back.setBounds(20, 10, 80, 25);
 		back.setFont(new Font("Arial", Font.PLAIN, 16));
 		back.addActionListener(e -> {
 			this.dispose();

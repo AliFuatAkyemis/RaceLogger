@@ -11,8 +11,8 @@ public class LoginFrame extends TemplateFrame {
 	private JPasswordField password;
 	private JLabel id, pw;
 	private JButton loginButton;
-	private String defUser = "admin";
-	private String defPass = "1234";
+	private String defUser = "";
+	private String defPass = "";
 
 	public LoginFrame() {
 		//Frame Properties
@@ -29,11 +29,11 @@ public class LoginFrame extends TemplateFrame {
 		//Label
 		id = new JLabel("ID:");
 		id.setBounds(25, 20, 30, 30);
-		id.setFont(new Font("Arial", Font.PLAIN, 16));
+		id.setFont(new Font("Arial", Font.BOLD, 16));
 
 		pw = new JLabel("PW:");
 		pw.setBounds(20, 60, 30, 30);
-		pw.setFont(new Font("Arial", Font.PLAIN, 16));
+		pw.setFont(new Font("Arial", Font.BOLD, 16));
 
 		//TextField
 		username = new JTextField();
@@ -51,7 +51,7 @@ public class LoginFrame extends TemplateFrame {
 		loginButton.addActionListener(e -> {
 			//Basic if block to check authorization
 			if (e.getSource() == loginButton) {
-				if (username.getText().equals(defUser) && String.valueOf(password.getPassword()).equals(defPass)) {
+				if (username.getText().trim().equals(defUser) && String.valueOf(password.getPassword()).equals(defPass)) {
 					this.setVisible(false);
 					Main.showDash();
 				} //Static method from Main.java
