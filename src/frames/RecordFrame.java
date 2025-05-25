@@ -88,7 +88,7 @@ public class RecordFrame extends TemplateFrame {
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
 		chronoLabel.setBounds(30, 20, 100, 25);
-		chronoLabel.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		chronoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		//ScrollPane
@@ -98,12 +98,12 @@ public class RecordFrame extends TemplateFrame {
 		//TextField
 		text1 = new JTextField(100);
 		text1.setBounds(30, 70, 100, 25);
-		text1.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		text1.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Button
 		addButton = new JButton("Add");
 		addButton.setBounds(150, 70, 70, 25);
-		addButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		addButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		addButton.addActionListener(e -> {
 			//Necessary objects
 			String text = text1.getText().trim();
@@ -133,7 +133,7 @@ public class RecordFrame extends TemplateFrame {
 
 		startButton = new JButton("Start");
 		startButton.setBounds(150, 20, 75, 25);
-		startButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		startButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		startButton.addActionListener(e -> {
 			if (isPaused) {
 				//Starting chronometer thread
@@ -155,7 +155,7 @@ public class RecordFrame extends TemplateFrame {
 
 		pauseButton = new JButton("Pause");
 		pauseButton.setBounds(240, 20, 80, 25);
-		pauseButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		pauseButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		pauseButton.addActionListener(e -> {
 			if (!isPaused) {
 				//Switch pause state to stop recording
@@ -169,7 +169,7 @@ public class RecordFrame extends TemplateFrame {
 
 		saveButton = new JButton("Save&Exit");
 		saveButton.setBounds(650, 525, 120, 25);
-		saveButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		saveButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		saveButton.addActionListener(e -> {
 			saveResults(0); //Save the results into /data/oldResults
 			this.dispose();
@@ -178,7 +178,7 @@ public class RecordFrame extends TemplateFrame {
 
 		backButton = new JButton("Back to Dashboard");
 		backButton.setBounds(30, 525, 200, 25);
-		backButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		backButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		backButton.addActionListener(e -> {
 			File file = new File("data/records.csv"); //Obtain the file
 			if (file.exists()) { //If file is exist then, define the actions

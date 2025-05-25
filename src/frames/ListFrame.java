@@ -30,7 +30,7 @@ public class ListFrame extends TemplateFrame {
 		//Button
 		backButton = new JButton("Back to Dashboard");
 		backButton.setBounds(20, 10, 200, 25);
-		backButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		backButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		backButton.addActionListener(e -> {
 			this.dispose();
 			Main.showDash();
@@ -38,7 +38,7 @@ public class ListFrame extends TemplateFrame {
 
 		analyzeButton = new JButton("Analyze");
 		analyzeButton.setBounds(390, 10, 80, 25);
-		analyzeButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
+		analyzeButton.setFont(new Font("Arial", Font.PLAIN, 16));
 		analyzeButton.addActionListener(e -> {
 			
 		});
