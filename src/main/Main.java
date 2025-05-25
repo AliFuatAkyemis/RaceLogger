@@ -12,27 +12,32 @@ public class Main {
 
 	//Navigation
 	public static void showLogin() {
-		login = new LoginFrame(); //Initialize the login frame
+		if (login != null) login.dispose();
+		login = new LoginFrame();
 		login.setVisible(true);
 	}
 
 	public static void showDash() {
-		if (dash == null) dash = new DashFrame(); //Initializethe login frame
+		if (dash != null) dash.dispose();
+		dash = new DashFrame();
 		dash.setVisible(true);
 	}
 	
 	public static void showRecord() {
-		record = new RecordFrame(); //Create a new frame
+		if (record != null) record.dispose();
+		record = new RecordFrame();
 		record.setVisible(true);
 	}
 
 	public static void showList() {
+		if (list != null) list.dispose();
 		list = new ListFrame();
 		list.setVisible(true);
 	}
 
-	public static void showAnalyze() {
-		analyze = new AnalyzeFrame();
+	public static void showAnalyze(String filename) {
+		if (analyze != null) analyze.dispose();
+		analyze = new AnalyzeFrame(filename);
 		analyze.setVisible(true);
 	}
 }

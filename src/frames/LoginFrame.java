@@ -29,11 +29,11 @@ public class LoginFrame extends TemplateFrame {
 		//Label
 		id = new JLabel("ID:");
 		id.setBounds(25, 20, 30, 30);
-		id.setFont(new Font("Arial", Font.BOLD, 16));
+		id.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		pw = new JLabel("PW:");
 		pw.setBounds(20, 60, 30, 30);
-		pw.setFont(new Font("Arial", Font.BOLD, 16));
+		pw.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//TextField
 		username = new JTextField();

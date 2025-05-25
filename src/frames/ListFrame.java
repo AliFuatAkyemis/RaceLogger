@@ -9,6 +9,7 @@ import java.io.*;
 
 public class ListFrame extends TemplateFrame {
 	private int width = 500, height = 500;
+	private String selected;
 	private JPanel panel;
 	private JButton back, analyze;
 	private JTable table;
@@ -40,7 +41,7 @@ public class ListFrame extends TemplateFrame {
 		analyze.setBounds(390, 100, 100, 25);
 		analyze.setFont(new Font("Arial", Font.PLAIN, 16));
 		analyze.addActionListener(e -> {
-			Main.showAnalyze();
+			if (selected != null) Main.showAnalyze(selected);
 		});
 
 		//Table
@@ -62,9 +63,10 @@ public class ListFrame extends TemplateFrame {
 		String[] names = new File("data/oldRecords").list();
 		if (names == null) names = new String[0];
 		box = new JComboBox<>(names);
-		box.setBounds(390, 10, 100, 25);
+		box.setBounds(360, 10, 130, 25);
+		box.setFont(new Font("Arial", Font.PLAIN, 16));
 		box.addActionListener(e -> {
-			String selected = (String) box.getSelectedItem();
+			selected = (String) box.getSelectedItem();
 			updateTable(model, selected);
 		});
 
