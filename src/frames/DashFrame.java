@@ -33,7 +33,10 @@ public class DashFrame extends TemplateFrame {
 		records = new JButton("Records");
 		records.setBounds((width-150)/2, 75, 150, 25);
 		records.setFont(new Font("MV Boli", Font.PLAIN, 16));
-		records.addActionListener(e -> {});
+		records.addActionListener(e -> {
+			this.setVisible(false);
+			Main.showList();
+		});
 		
 		settings = new JButton("Settings");
 		settings.setBounds((width-150)/2, 125, 150, 25);

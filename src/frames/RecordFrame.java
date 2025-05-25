@@ -27,14 +27,14 @@ public class RecordFrame extends TemplateFrame {
 	//Constructor
 	public RecordFrame() {
 		//Frame
-		this.setTitle("Main");
+		this.setTitle("Record");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		//Before on close action it saves records
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				File file = new File("data/results.csv"); //Obtain the file
+				File file = new File("data/records.csv"); //Obtain the file
 				if (file.exists()) { //If it is exist then, define the actions
 					int response = JOptionPane.showConfirmDialog(
 						RecordFrame.this,
@@ -93,7 +93,7 @@ public class RecordFrame extends TemplateFrame {
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(425, 20, 350, 500);
+		scrollPane.setBounds(425, 20, 350, 480);
 
 		//TextField
 		text1 = new JTextField(100);
@@ -180,7 +180,7 @@ public class RecordFrame extends TemplateFrame {
 		backButton.setBounds(30, 525, 200, 25);
 		backButton.setFont(new Font("MV Boli", Font.PLAIN, 16));
 		backButton.addActionListener(e -> {
-			File file = new File("data/results.csv"); //Obtain the file
+			File file = new File("data/records.csv"); //Obtain the file
 			if (file.exists()) { //If file is exist then, define the actions
 				int response = JOptionPane.showConfirmDialog(
 					this,
@@ -227,19 +227,19 @@ public class RecordFrame extends TemplateFrame {
 	}
 	
 	//Utility
-	public String identify(int id) {
+	private String identify(int id) {
 		return (String) map.get(id); //It returns the information of a racer by his/her id
 	}
 
 	private void saveResults(int n) {
 		try {
-			if (!new File("data/results.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
+			if (!new File("data/records.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
 			//Getting required paths source and destination
-			Path source = Paths.get("data/results.csv");
+			Path source = Paths.get("data/records.csv");
 
-			String dir = "data/oldResults/";
+			String dir = "data/oldRecords/";
 			if (!Files.isDirectory(Paths.get(dir))) new File(dir).mkdirs();
-			Path destination = Paths.get(dir+"_".repeat(n)+"results.csv"); //Underscore will be repeated as many as n
+			Path destination = Paths.get(dir+"_".repeat(n)+"records.csv"); //Underscore will be repeated as many as n
 			
 			Files.move(source, destination);
 		} catch(FileAlreadyExistsException e) {
@@ -253,7 +253,7 @@ public class RecordFrame extends TemplateFrame {
 	private void appendResult(String str) {
 		try {
 			//Initializing BufferedWriter object in order to update informations in results.csv
-			BufferedWriter writer = new BufferedWriter(new FileWriter("data/results.csv", true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/records.csv", true));
 			writer.write(str);
 			writer.close();
 		} catch(Exception e) {
@@ -261,7 +261,7 @@ public class RecordFrame extends TemplateFrame {
 		}
 	}
 	
-	public void mapInit() {
+	private void mapInit() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv")); //Obtain the file to read
 			map = new HashMap<>(); //Initialize the map object
@@ -279,7 +279,7 @@ public class RecordFrame extends TemplateFrame {
 	}
 
 	//Chronometer utility method to update its state
-	public void chronoUpdate() {
+	private void chronoUpdate() {
 		calendar = Calendar.getInstance(); //Each time we need to update calendar object because time is consistent
 		long currentTime = calendar.getTimeInMillis();
 		currentTime -= (startTime + pausedTimeAmount); //Paused time amount is should be also substracted from total time (totalTime = currentTime - startTime)
@@ -295,7 +295,7 @@ public class RecordFrame extends TemplateFrame {
 	}
 
 	//Start method to start chronometer thread
-	public void startChronometer() {
+	private void startChronometer() {
 		//New Thread to keep track of time
 		chronoThread = new Thread(() -> {
 			while (!Thread.currentThread().isInterrupted()) {
