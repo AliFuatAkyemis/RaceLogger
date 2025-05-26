@@ -11,9 +11,9 @@ import java.util.HashMap;
 public class AnalyzeFrame extends TemplateFrame {
 	private int width = 400, height = 400;
 	private JPanel panel;
-	private JLabel lapLabel, timeLimit, hourLabel, minuteLabel;
-	private JComboBox<Integer> lap, hour, minute;
-	private JButton go;
+	private JLabel timeLimit, hourLabel, minuteLabel;
+	private JComboBox<Integer> hour, minute;
+	private JButton calculate;
 	private JTable table;
 	private JScrollPane scrollPane;
 
@@ -38,33 +38,25 @@ public class AnalyzeFrame extends TemplateFrame {
 		panel.setLayout(null);
 
 		//Label
-		lapLabel = new JLabel("Lap:");
-		lapLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		lapLabel.setBounds(20, 10, 40, 25);
-
 		timeLimit = new JLabel("Time Limit:");
 		timeLimit.setFont(new Font("Arial", Font.PLAIN, 16));
-		timeLimit.setBounds(120, 10, 90, 25);
+		timeLimit.setBounds(20, 10, 90, 25);
 
 		hourLabel = new JLabel("h :");
 		hourLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		hourLabel.setBounds(260, 10, 30, 25);
+		hourLabel.setBounds(160, 10, 30, 25);
 
 		minuteLabel = new JLabel("min");
 		minuteLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-		minuteLabel.setBounds(330, 10, 40, 25);
+		minuteLabel.setBounds(230, 10, 40, 25);
 
 		//ComboBox
-		lap = new JComboBox<>(range(0, 9));
-		lap.setBounds(60, 10, 40, 25);
-		lap.setFont(new Font("Arial", Font.PLAIN, 16));
-
 		hour = new JComboBox<>(range(0, 24));
-		hour.setBounds(210, 10, 45, 25);
+		hour.setBounds(110, 10, 45, 25);
 		hour.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		minute = new JComboBox<>(range(0, 60));
-		minute.setBounds(280, 10, 45, 25);
+		minute.setBounds(180, 10, 45, 25);
 		minute.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Table
@@ -85,32 +77,30 @@ public class AnalyzeFrame extends TemplateFrame {
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(15, 80, 375, 270);
+		scrollPane.setBounds(15, 50, 375, 300);
 
 		//Button
-		go = new JButton("Go");
-		go.setBounds(330, 45, 60, 25);
-		go.setFont(new Font("Arial", Font.PLAIN, 16));
-		go.addActionListener(e -> {
+		calculate = new JButton("Calculate");
+		calculate.setBounds(280, 10, 110, 25);
+		calculate.setFont(new Font("Arial", Font.PLAIN, 16));
+		calculate.addActionListener(e -> {
 			model.setRowCount(0);
-			int lapCount = (int) lap.getSelectedItem();
 			long milliseconds = ((int) hour.getSelectedItem())*60*60*1000 + ((int) minute.getSelectedItem())*60*1000;
-			Object[][] rows = matchNames(calculateAverage(getData(filename)));
+			Object[][] rows = matchNames(calculateAverage(getData(filename), milliseconds));
 
 			for (int i = 0; i < rows.length; i++) {
+				if (milliseconds != 0 && milliseconds < convertToMillisecond((String) rows[i][2])) rows[i][1] += "(DNF)";
 				model.addRow(rows[i]);
 			}
 		});
 
 		//Composition part
-		panel.add(lapLabel);
 		panel.add(timeLimit);
 		panel.add(hourLabel);
 		panel.add(minuteLabel);
-		panel.add(lap);
 		panel.add(hour);
 		panel.add(minute);
-		panel.add(go);
+		panel.add(calculate);
 		panel.add(scrollPane);
 
 		this.add(panel);
@@ -161,7 +151,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		return 0;
 	}
 
-	private Object[][] calculateAverage(String[][] data) { //Calculation of lap counts and average lap times
+	private Object[][] calculateAverage(String[][] data, long milliseconds) { //Calculation of lap counts and average lap times
 		HashMap<Integer, Integer> laps = new HashMap<>(); //To hold lap data a HashMap created
 		HashMap<Integer, Long> times = new HashMap<>(); //To hold time data a HashMap created
 
@@ -182,7 +172,8 @@ public class AnalyzeFrame extends TemplateFrame {
 		for (int i : laps.keySet()) { //Values calculated to put into final average table
 			long time = times.get(i);
 			int lap = laps.get(i);
-			newData[j++] = new Object[] {i, null, time/lap, lap};
+			String str = milliseconds != 0 && milliseconds < time ? "(DNF)" : "";
+			newData[j++] = new Object[] {i, str, time/lap, lap};
 		}
 
 		return newData;
@@ -202,7 +193,7 @@ public class AnalyzeFrame extends TemplateFrame {
 
 			//Matching part
 			for (int i = 0; i < arr.length; i++) {
-				arr[i][1] = map.get(arr[i][0]);
+				arr[i][1] = map.get(arr[i][0]) + arr[i][1];
 				arr[i][2] = convertTime((long) arr[i][2]); //Also converting milliseconds to readable format
 			}
 
@@ -221,5 +212,11 @@ public class AnalyzeFrame extends TemplateFrame {
 		long millisecond = currentTime;
 
 		return String.format("%02d:%02d:%02d:%03d", hour, minute, second, millisecond);
+	}
+
+	private long convertToMillisecond(String time) {
+		//Conversions
+		String[] temp = time.split(":");
+		return (Integer.valueOf(temp[0])*60*60*1000)+(Integer.valueOf(temp[1])*60*1000)+(Integer.valueOf(temp[2])*1000)+Integer.valueOf(temp[3]);
 	}
 }
