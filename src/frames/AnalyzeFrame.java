@@ -65,8 +65,11 @@ public class AnalyzeFrame extends TemplateFrame {
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
 		table.setEnabled(false);
+		
+		//Table sorting configurations
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(2);
+		table.getRowSorter().toggleSortOrder(3); //There is double occurrance of toggleSortOrder(3) because
+		table.getRowSorter().toggleSortOrder(3); //first one is toggles to ascending order but we need descending order. So, it is called twice
 
 		//Column size fix
 		TableColumnModel columnModel = table.getColumnModel();

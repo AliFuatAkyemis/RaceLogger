@@ -311,7 +311,7 @@ public class RecordFrame extends TemplateFrame {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					if (!isPaused) chronoUpdate(); //Chronometer label update function
-					Thread.sleep(50); //Wait 50 milliseconds to slow down cpu core
+//					Thread.sleep(50); //Wait 50 milliseconds to slow down cpu core
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
