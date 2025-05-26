@@ -18,7 +18,7 @@ public class ListFrame extends TemplateFrame {
 
 	public ListFrame() {
 		//Frame
-		this.setTitle("Records");
+		this.setTitle("Past Records");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
 		this.setLocation((1920-width)/2, (1080-height)/2);
@@ -105,9 +105,9 @@ public class ListFrame extends TemplateFrame {
 		//Conversions
 		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
 		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
-		long second = currentTime / 1000; currentTime &= 1000;
+		long second = currentTime / 1000; currentTime %= 1000;
 		long millisecond = currentTime;
-	
-		return (String) (hour+":"+minute+":"+second+":"+millisecond);
+
+		return String.format("%02d:%02d:%02d:%03d", hour, minute, second, millisecond);
 	}
 } 

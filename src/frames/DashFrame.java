@@ -30,7 +30,7 @@ public class DashFrame extends TemplateFrame {
 			Main.showRecord();
 		});
 		
-		records = new JButton("Records");
+		records = new JButton("Past Records");
 		records.setBounds((width-150)/2, 75, 150, 25);
 		records.setFont(new Font("Arial", Font.PLAIN, 16));
 		records.addActionListener(e -> {

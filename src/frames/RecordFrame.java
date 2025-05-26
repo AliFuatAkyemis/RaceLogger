@@ -253,10 +253,10 @@ public class RecordFrame extends TemplateFrame {
 		//Conversions
 		long hour = currentTime / (60 * 60 * 1000); currentTime %= (60 * 60 * 1000);
 		long minute = currentTime / (60 * 1000); currentTime %= (60 * 1000);
-		long second = currentTime / 1000; currentTime &= 1000;
+		long second = currentTime / 1000; currentTime %= 1000;
 		long millisecond = currentTime;
-	
-		return (String) (hour+":"+minute+":"+second+":"+millisecond);
+
+		return String.format("%02d:%02d:%02d:%03d", hour, minute, second, millisecond);
 	}
 
 	private long convertToMillisecond(String time) {
@@ -311,7 +311,7 @@ public class RecordFrame extends TemplateFrame {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					if (!isPaused) chronoUpdate(); //Chronometer label update function
-					Thread.sleep(50); //Update wait time
+					Thread.sleep(50); //Wait 50 milliseconds to slow down cpu core
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
