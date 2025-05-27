@@ -38,7 +38,7 @@ public class ListFrame extends TemplateFrame {
 		});
 
 		analyze = new JButton("Analyze");
-		analyze.setBounds(390, 100, 100, 25);
+		analyze.setBounds(380, 10, 100, 25);
 		analyze.setFont(new Font("Arial", Font.PLAIN, 16));
 		analyze.addActionListener(e -> {
 			if (selected != null) Main.showAnalyze(selected);
@@ -56,14 +56,14 @@ public class ListFrame extends TemplateFrame {
 		
 		//Then editing the size seperately
 		columnModel.getColumn(0).setPreferredWidth(50);
-		columnModel.getColumn(1).setPreferredWidth(200);
-		columnModel.getColumn(2).setPreferredWidth(100);
+		columnModel.getColumn(1).setPreferredWidth(300);
+		columnModel.getColumn(2).setPreferredWidth(130);
 
 		//ComboBox
 		String[] names = new File("data/oldRecords").list();
 		if (names == null) names = new String[0];
 		box = new JComboBox<>(names);
-		box.setBounds(360, 10, 130, 25);
+		box.setBounds((width-130)/2, 10, 130, 25);
 		box.setFont(new Font("Arial", Font.PLAIN, 16));
 		box.addActionListener(e -> {
 			selected = (String) box.getSelectedItem();
@@ -72,7 +72,7 @@ public class ListFrame extends TemplateFrame {
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(20, 50, 350, 390);
+		scrollPane.setBounds(10, 50, 480, 390);
 
 		//Composition part
 		panel.add(box);
