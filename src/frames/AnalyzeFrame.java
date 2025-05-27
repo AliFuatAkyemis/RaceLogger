@@ -92,7 +92,6 @@ public class AnalyzeFrame extends TemplateFrame {
 			Object[][] rows = matchNames(calculateAverage(getData(filename), milliseconds));
 
 			for (int i = 0; i < rows.length; i++) {
-				if (milliseconds != 0 && milliseconds < convertToMillisecond((String) rows[i][2])) rows[i][1] += "(DNF)";
 				model.addRow(rows[i]);
 			}
 		});
@@ -215,11 +214,5 @@ public class AnalyzeFrame extends TemplateFrame {
 		long millisecond = currentTime;
 
 		return String.format("%02d:%02d:%02d:%03d", hour, minute, second, millisecond);
-	}
-
-	private long convertToMillisecond(String time) {
-		//Conversions
-		String[] temp = time.split(":");
-		return (Integer.valueOf(temp[0])*60*60*1000)+(Integer.valueOf(temp[1])*60*1000)+(Integer.valueOf(temp[2])*1000)+Integer.valueOf(temp[3]);
 	}
 }
