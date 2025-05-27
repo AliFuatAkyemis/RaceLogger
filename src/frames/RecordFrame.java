@@ -104,7 +104,7 @@ public class RecordFrame extends TemplateFrame {
 		racers.setFillsViewportHeight(false);
 		racers.setEnabled(false);
 		racers.setAutoCreateRowSorter(true);
-		racers.getRowSorter().toggleSortOrder(0); //To sort according to ids (ascending order)
+		racers.getRowSorter().toggleSortOrder(0); //To sort according to IDs (ascending order)
 
 		//TableColumnModel
 		TableColumnModel columnModel2 = racers.getColumnModel();
