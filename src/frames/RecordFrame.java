@@ -13,8 +13,8 @@ import java.util.HashMap;
 public class RecordFrame extends TemplateFrame {
 	private int width = 800, height = 600;
 	private JPanel panel;
-	private JTable table;
-	private JScrollPane scrollPane;
+	private JTable records, racers;
+	private JScrollPane recordPane, racerPane;
 	private JTextField text1;
 	private JButton add, start, pause, save, back;
 	private JLabel chronoLabel;
@@ -74,22 +74,60 @@ public class RecordFrame extends TemplateFrame {
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
 		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time", "Laps"});
-		table = new JTable(model);
-		table.setFillsViewportHeight(false);
-		table.setEnabled(false);
-
+		
+		records = new JTable(model);
+		records.setFillsViewportHeight(false);
+		records.setEnabled(false);
+		
 		//TableColumnModel
-		TableColumnModel columnModel = table.getColumnModel(); //Getting the instance of column model
+		TableColumnModel columnModel = records.getColumnModel(); //Getting the instance of column model
 		
 		//Then editing the size seperately
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(200);
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(50);
+	
+		//To disable dragging action from table an override is needed here
+		records.setTableHeader(new JTableHeader(columnModel) {
+		    @Override
+		    public void setDraggedColumn(TableColumn column) {}
+		});
+
+		//To disable resizing of columns
+		records.getTableHeader().setResizingAllowed(false);
+
+		DefaultTableModel model2 = new DefaultTableModel();
+		model2.setColumnIdentifiers(new String[] {"ID", "Name"});
+		
+		racers = new JTable(model2);
+		racers.setFillsViewportHeight(false);
+		racers.setEnabled(false);
+		racers.setAutoCreateRowSorter(true);
+		racers.getRowSorter().toggleSortOrder(0); //To sort according to ids (ascending order)
+
+		//TableColumnModel
+		TableColumnModel columnModel2 = racers.getColumnModel();
+
+		//Column size
+		columnModel2.getColumn(0).setPreferredWidth(50);
+		columnModel2.getColumn(1).setPreferredWidth(200);
+	
+		//To disable column dragging action we need to override drag function
+		racers.setTableHeader(new JTableHeader(columnModel2) {
+			@Override
+			public void setDraggedColumn(TableColumn column) {}
+		});
+
+		//To disable resizing of columns
+		racers.getTableHeader().setResizingAllowed(false);
 
 		//ScrollPane
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(375, 20, 400, 480);
+		recordPane = new JScrollPane(records);
+		recordPane.setBounds(375, 20, 400, 480);
+
+		racerPane = new JScrollPane(racers);
+		racerPane.setBounds(30, 120, 250, 390);
 
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
@@ -222,9 +260,10 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(save);
 		panel.add(back);
 		panel.add(chronoLabel);
-		panel.add(scrollPane);
+		panel.add(recordPane);
+		panel.add(racerPane);
 
-		mapInit(); //Before recording initialize the map of racers
+		mapInit(model2); //Before recording initialize the map of racers
 		
 		this.add(panel);
 		this.getRootPane().setDefaultButton(add);
@@ -291,7 +330,7 @@ public class RecordFrame extends TemplateFrame {
 		}
 	}
 	
-	private void mapInit() {
+	private void mapInit(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv")); //Obtain the file to read
 			map = new HashMap<>(); //Initialize the map object
@@ -300,6 +339,7 @@ public class RecordFrame extends TemplateFrame {
 			while (row != null) {
 				String[] temp = row.split(","); //Simple split method to seperate ID and Name
 				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
+				model.addRow(new Object[] {temp[0], temp[1]});
 				row = reader.readLine(); //Update row with next line
 			}
 
