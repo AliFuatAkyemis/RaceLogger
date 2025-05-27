@@ -23,6 +23,7 @@ public class RecordFrame extends TemplateFrame {
 	private Thread chronoThread;
 	private boolean isPaused = true;
 	private HashMap<Integer, String> map;
+	private HashMap<Integer, Integer> laps;
 
 	//Constructor
 	public RecordFrame() {
@@ -72,7 +73,7 @@ public class RecordFrame extends TemplateFrame {
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time"});
+		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time", "Laps"});
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
 		table.setEnabled(false);
@@ -84,6 +85,11 @@ public class RecordFrame extends TemplateFrame {
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(200);
 		columnModel.getColumn(2).setPreferredWidth(100);
+		columnModel.getColumn(3).setPreferredWidth(50);
+
+		//ScrollPane
+		scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(375, 20, 400, 480);
 
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
@@ -91,16 +97,12 @@ public class RecordFrame extends TemplateFrame {
 		chronoLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-		//ScrollPane
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(425, 20, 350, 480);
-
 		//TextField
 		text1 = new JTextField(100);
 		text1.setBounds(30, 70, 100, 25);
 		text1.setFont(new Font("Arial", Font.PLAIN, 16));
 
-		//
+		//Button
 		add = new JButton("Add");
 		add.setBounds(150, 70, 70, 25);
 		add.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -110,7 +112,8 @@ public class RecordFrame extends TemplateFrame {
 		
 			if (text.matches("\\d+") && !isPaused) { //If text is decimal and chronometer is running then,...
 				//Getting info
-				int id = Integer.valueOf(text);
+				int id = Integer.valueOf(text),
+				lap = lapUpdate(id);
 				String name = identify(id),
 				time = chronoLabel.getText();
 	
@@ -120,10 +123,11 @@ public class RecordFrame extends TemplateFrame {
 					model.addRow(new Object[] {
 						id,
 						name,
-						time
+						time,
+						lap
 					});
 	
-					appendResult(id+","+name+","+convertToMillisecond(time)+"\n"); //Updating results.csv due to an unexpected crash
+					appendResult(id+","+name+","+convertToMillisecond(time)+","+lap+"\n"); //Updating results.csv due to an unexpected crash
 				}
 			}
 
@@ -229,6 +233,16 @@ public class RecordFrame extends TemplateFrame {
 	//Utility
 	private String identify(int id) {
 		return (String) map.get(id); //It returns the information of a racer by his/her id
+	}
+
+	private int lapUpdate(int id) { //Updates the lap counter
+		if (laps == null) laps = new HashMap<>(); //Initialize if object is null
+		if (laps.get(id) == null) laps.put(id, 0); //Initial value is null for Integer class so check is needed
+
+		//Update and return
+		int i = laps.get(id);
+		laps.put(id, i+1);
+		return i+1;
 	}
 
 	private void saveResults(int n) {

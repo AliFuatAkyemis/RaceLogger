@@ -46,7 +46,7 @@ public class ListFrame extends TemplateFrame {
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time"});
+		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time", "Laps"});
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
 		table.setEnabled(false);
@@ -56,8 +56,9 @@ public class ListFrame extends TemplateFrame {
 		
 		//Then editing the size seperately
 		columnModel.getColumn(0).setPreferredWidth(50);
-		columnModel.getColumn(1).setPreferredWidth(300);
-		columnModel.getColumn(2).setPreferredWidth(130);
+		columnModel.getColumn(1).setPreferredWidth(250);
+		columnModel.getColumn(2).setPreferredWidth(100);
+		columnModel.getColumn(3).setPreferredWidth(50);
 
 		//ComboBox
 		String[] names = new File("data/oldRecords").list();
@@ -72,7 +73,7 @@ public class ListFrame extends TemplateFrame {
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 50, 480, 390);
+		scrollPane.setBounds(25, 50, 450, 390);
 
 		//Composition part
 		panel.add(box);
@@ -92,7 +93,7 @@ public class ListFrame extends TemplateFrame {
 
 			while (row != null) {
 				String[] temp = row.split(",");
-				model.addRow(new Object[] {temp[0], temp[1], convertTime(Integer.valueOf(temp[2]))});
+				model.addRow(new Object[] {temp[0], temp[1], convertTime(Integer.valueOf(temp[2])), temp[3]});
 				row = reader.readLine();
 			}
 
