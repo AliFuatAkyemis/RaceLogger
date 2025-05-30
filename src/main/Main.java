@@ -4,7 +4,7 @@ import frames.*;
 import javax.swing.*;
 
 public class Main {
-	private static JFrame login, dash, record, list, analyze;
+	private static JFrame login, dash, record, list, analyze, setting;
 
 	public static void main(String[] args) {
 		showLogin();
@@ -39,5 +39,11 @@ public class Main {
 		if (analyze != null) analyze.dispose();
 		analyze = new AnalyzeFrame(filename);
 		analyze.setVisible(true);
+	}
+
+	public static void showSetting() {
+		if (setting != null) setting.dispose();
+		setting = new SettingFrame();
+		setting.setVisible(true);
 	}
 }

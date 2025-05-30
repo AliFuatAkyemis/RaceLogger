@@ -41,7 +41,10 @@ public class DashFrame extends TemplateFrame {
 		settings = new JButton("Settings");
 		settings.setBounds((width-150)/2, 125, 150, 25);
 		settings.setFont(new Font("Arial", Font.PLAIN, 16));
-		settings.addActionListener(e -> {});
+		settings.addActionListener(e -> {
+			this.setVisible(false);
+			Main.showSetting();
+		});
 
 		exit = new JButton("Exit");
 		exit.setBounds((width-150)/2, 175, 150, 25);
