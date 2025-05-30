@@ -183,7 +183,7 @@ public class AnalyzeFrame extends TemplateFrame {
 
 	private Object[][] matchNames(Object[][] arr) { //This phase is matching the names of racers(This is a design preference to do this in calculateAverage() method)
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv"));
 			HashMap<Integer, String> map = new HashMap<>();
 			String row = reader.readLine();
 

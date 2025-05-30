@@ -332,7 +332,7 @@ public class RecordFrame extends TemplateFrame {
 	
 	private void mapInit(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/racers.csv")); //Obtain the file to read
+			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv")); //Obtain the file to read
 			map = new HashMap<>(); //Initialize the map object
 			String row = reader.readLine(); //First line of file
 		
