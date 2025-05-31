@@ -44,6 +44,7 @@ public class RecordFrame extends TemplateFrame {
 						JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.PLAIN_MESSAGE
 					);
+					
 					switch(response) {
 					case JOptionPane.YES_OPTION: //Save and close
 						saveResults(0);

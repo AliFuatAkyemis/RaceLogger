@@ -65,11 +65,23 @@ public class ListFrame extends TemplateFrame {
 		delete.setFont(new Font("Arial", Font.PLAIN, 16));
 		delete.addActionListener(e -> {
 			if (selected != null) {
-				deleteRecord(selected);
-				tableModel.setRowCount(0);
-				DefaultComboBoxModel<String> boxModel = (DefaultComboBoxModel<String>) box.getModel();
-				boxModel.removeAllElements();
-				for (String str : new File("data/oldRecords/").list()) boxModel.addElement(str);
+				int response = JOptionPane.showConfirmDialog(
+					this,
+					"Are you sure to delete this record?",
+					"Delete record",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE
+				);
+				
+				switch(response) {
+				case JOptionPane.YES_OPTION:
+					deleteRecord(selected);
+					tableModel.setRowCount(0);
+					DefaultComboBoxModel<String> boxModel = (DefaultComboBoxModel<String>) box.getModel();
+					boxModel.removeAllElements();
+					for (String str : new File("data/oldRecords/").list()) boxModel.addElement(str);
+					break;
+				}
 			}
 		});
 
