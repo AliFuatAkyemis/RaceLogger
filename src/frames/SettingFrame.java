@@ -21,6 +21,7 @@ public class SettingFrame extends TemplateFrame {
 		this.setSize(width, height);
 		this.setLocation((1920-width)/2, (1080-height)/2);
 		this.setResizable(false);
+		loadConfig();
 
 		//Panel
 		panel = new JPanel();
@@ -47,8 +48,13 @@ public class SettingFrame extends TemplateFrame {
 		login.setBounds(220, 40, 70, 25);
 		login.setFont(new Font("Arial", Font.PLAIN, 16));
 		login.addItemListener(e -> {
-			if (login.getText().equals("OFF")) login.setText("ON");
-			else login.setText("OFF");
+			if (login.isSelected()) {
+				login.setText("OFF");
+				values[0] = false;
+			} else {
+				login.setText("ON");
+				values[0] = true;
+			}
 		});
 
 		//Composition part
@@ -59,7 +65,8 @@ public class SettingFrame extends TemplateFrame {
 		this.add(panel);
 	}
 
-	private void saveConfig() {
+	//Utility
+	private void saveConfig() { //Config save function to settings.csv
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/configurations/settings.csv"));
 			for (int i = 0; i < config.length; i++) {
@@ -71,13 +78,13 @@ public class SettingFrame extends TemplateFrame {
 		}
 	}
 
-	private void loadConfig() {
+	private void loadConfig() { //Config load function to load on startup
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/configurations/settings.csv"));
 			String row = reader.readLine();
 			int i = 0;
 
-			while (row != null) {
+			while (row != null && i < values.length) {
 				String[] temp = row.split(",");
 				config[i] = temp[0];
 				values[i++] = Boolean.parseBoolean(temp[1]);
@@ -87,5 +94,9 @@ public class SettingFrame extends TemplateFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean[] getConfig() {
+		return this.values;
 	}
 }

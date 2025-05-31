@@ -4,10 +4,16 @@ import frames.*;
 import javax.swing.*;
 
 public class Main {
-	private static JFrame login, dash, record, list, analyze, setting;
+	private static LoginFrame login;
+	private static DashFrame dash;
+	private static RecordFrame record;
+	private static ListFrame list;
+	private static AnalyzeFrame analyze;
+	private static SettingFrame setting;
 
 	public static void main(String[] args) {
-		showLogin();
+		if (new SettingFrame().getConfig()[0]) showLogin();
+		else showDash();
 	}
 
 	//Navigation
