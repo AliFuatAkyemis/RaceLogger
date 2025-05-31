@@ -97,6 +97,7 @@ public class ListFrame extends TemplateFrame {
 				row = reader.readLine();
 			}
 
+			reader.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

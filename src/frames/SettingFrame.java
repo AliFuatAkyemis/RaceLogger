@@ -8,10 +8,11 @@ import java.io.*;
 
 public class SettingFrame extends TemplateFrame {
 	private int width = 300, height = 500;
-	private String[] config = {"login", "theme"};
-	private boolean[] values = {false, true};
+	private String[] config = {"login"};
+	private boolean[] values = {false};
 	private JPanel panel;
 	private JButton back, save;
+	private JToggleButton login;
 
 	public SettingFrame() {
 		//Frame
@@ -41,20 +42,48 @@ public class SettingFrame extends TemplateFrame {
 			saveConfig();
 		});
 
+		//ToggleButton
+		login = new JToggleButton("OFF");
+		login.setBounds(220, 40, 70, 25);
+		login.setFont(new Font("Arial", Font.PLAIN, 16));
+		login.addItemListener(e -> {
+			if (login.getText().equals("OFF")) login.setText("ON");
+			else login.setText("OFF");
+		});
+
 		//Composition part
 		panel.add(back);
 		panel.add(save);
+		panel.add(login);
 
 		this.add(panel);
 	}
 
 	private void saveConfig() {
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("data/configurations/settings.csv", true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/configurations/settings.csv"));
 			for (int i = 0; i < config.length; i++) {
 				writer.write(config[i]+","+String.valueOf(values[i])+"\n");
 			}
 			writer.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadConfig() {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("data/configurations/settings.csv"));
+			String row = reader.readLine();
+			int i = 0;
+
+			while (row != null) {
+				String[] temp = row.split(",");
+				config[i] = temp[0];
+				values[i++] = Boolean.parseBoolean(temp[1]);
+			}
+
+			reader.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

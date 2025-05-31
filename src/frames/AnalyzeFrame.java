@@ -127,6 +127,7 @@ public class AnalyzeFrame extends TemplateFrame {
 				data[i++] = new String[] {temp[0], temp[1], temp[2], ""}; //4th column is added to place lap count later
 				row = reader.readLine();
 			}
+			reader.close();
 
 			return data;
 		} catch(Exception e) {
@@ -145,6 +146,7 @@ public class AnalyzeFrame extends TemplateFrame {
 				i++;
 				row = reader.readLine();
 			}
+			reader.close();
 
 			return i;
 		} catch(Exception e) {
@@ -198,6 +200,7 @@ public class AnalyzeFrame extends TemplateFrame {
 				arr[i][1] = map.get(arr[i][0]) + arr[i][1];
 				arr[i][2] = convertTime((long) arr[i][2]); //Also converting milliseconds to readable format
 			}
+			reader.close();
 
 			return arr;
 		} catch(Exception e) {

@@ -26,7 +26,7 @@ public class DashFrame extends TemplateFrame {
 		createRecord.setBounds((width-150)/2, 25, 150, 25);
 		createRecord.setFont(new Font("Arial", Font.PLAIN, 16));
 		createRecord.addActionListener(e -> {
-			this.setVisible(false);
+			this.dispose();
 			Main.showRecord();
 		});
 		
@@ -34,7 +34,7 @@ public class DashFrame extends TemplateFrame {
 		records.setBounds((width-150)/2, 75, 150, 25);
 		records.setFont(new Font("Arial", Font.PLAIN, 16));
 		records.addActionListener(e -> {
-			this.setVisible(false);
+			this.dispose();
 			Main.showList();
 		});
 		
@@ -42,7 +42,7 @@ public class DashFrame extends TemplateFrame {
 		settings.setBounds((width-150)/2, 125, 150, 25);
 		settings.setFont(new Font("Arial", Font.PLAIN, 16));
 		settings.addActionListener(e -> {
-			this.setVisible(false);
+			this.dispose();
 			Main.showSetting();
 		});
 

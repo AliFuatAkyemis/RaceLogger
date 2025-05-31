@@ -343,6 +343,7 @@ public class RecordFrame extends TemplateFrame {
 				row = reader.readLine(); //Update row with next line
 			}
 
+			reader.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
