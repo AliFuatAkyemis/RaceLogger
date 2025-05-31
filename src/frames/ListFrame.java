@@ -11,7 +11,7 @@ public class ListFrame extends TemplateFrame {
 	private int width = 500, height = 500;
 	private String selected;
 	private JPanel panel;
-	private JButton back, analyze;
+	private JButton back, analyze, delete;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JComboBox<String> box;
@@ -27,6 +27,22 @@ public class ListFrame extends TemplateFrame {
 		//Panel
 		panel = new JPanel();
 		panel.setLayout(null);
+
+		//Table
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.setColumnIdentifiers(new String[] {"ID", "Name", "Time", "Laps"});
+		table = new JTable(tableModel);
+		table.setFillsViewportHeight(false);
+		table.setEnabled(false);
+
+		//TableColumnModel
+		TableColumnModel columnModel = table.getColumnModel(); //Getting the instance of column model
+		
+		//Then editing the size seperately
+		columnModel.getColumn(0).setPreferredWidth(50);
+		columnModel.getColumn(1).setPreferredWidth(250);
+		columnModel.getColumn(2).setPreferredWidth(100);
+		columnModel.getColumn(3).setPreferredWidth(50);
 
 		//Button
 		back = new JButton("Back");
@@ -44,21 +60,18 @@ public class ListFrame extends TemplateFrame {
 			if (selected != null) Main.showAnalyze(selected);
 		});
 
-		//Table
-		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(new String[] {"ID", "Name", "Time", "Laps"});
-		table = new JTable(model);
-		table.setFillsViewportHeight(false);
-		table.setEnabled(false);
-
-		//TableColumnModel
-		TableColumnModel columnModel = table.getColumnModel(); //Getting the instance of column model
-		
-		//Then editing the size seperately
-		columnModel.getColumn(0).setPreferredWidth(50);
-		columnModel.getColumn(1).setPreferredWidth(250);
-		columnModel.getColumn(2).setPreferredWidth(100);
-		columnModel.getColumn(3).setPreferredWidth(50);
+		delete = new JButton("Delete");
+		delete.setBounds(20, 430, 90, 25);
+		delete.setFont(new Font("Arial", Font.PLAIN, 16));
+		delete.addActionListener(e -> {
+			if (selected != null) {
+				deleteRecord(selected);
+				tableModel.setRowCount(0);
+				DefaultComboBoxModel<String> boxModel = (DefaultComboBoxModel<String>) box.getModel();
+				boxModel.removeAllElements();
+				for (String str : new File("data/oldRecords/").list()) boxModel.addElement(str);
+			}
+		});
 
 		//ComboBox
 		String[] names = new File("data/oldRecords").list();
@@ -68,22 +81,24 @@ public class ListFrame extends TemplateFrame {
 		box.setFont(new Font("Arial", Font.PLAIN, 16));
 		box.addActionListener(e -> {
 			selected = (String) box.getSelectedItem();
-			updateTable(model, selected);
+			if (selected != null) updateTable(tableModel, selected);
 		});
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(25, 50, 450, 390);
+		scrollPane.setBounds(25, 50, 450, 370);
 
 		//Composition part
 		panel.add(box);
 		panel.add(back);
 		panel.add(analyze);
 		panel.add(scrollPane);
+		panel.add(delete);
 
 		this.add(panel);
 	}
 
+	//Utility
 	private void updateTable(DefaultTableModel model, String filename) {
 		try {
 			model.setRowCount(0);
@@ -101,7 +116,15 @@ public class ListFrame extends TemplateFrame {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	} 
+	}
+
+	private void deleteRecord(String filename) {
+		try {
+			new File("data/oldRecords/"+filename).delete();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private String convertTime(long currentTime) {
 		//Conversions
