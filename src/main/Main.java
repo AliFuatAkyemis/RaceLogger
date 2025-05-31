@@ -47,6 +47,10 @@ public class Main {
 		analyze.setVisible(true);
 	}
 
+	public static void closeAnalyze() { //It is required for a special case that causes a bug
+		if (analyze != null) analyze.dispose();
+	}
+
 	public static void showSetting() {
 		if (setting != null) setting.dispose();
 		setting = new SettingFrame();

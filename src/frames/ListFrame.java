@@ -75,6 +75,7 @@ public class ListFrame extends TemplateFrame {
 				
 				switch(response) {
 				case JOptionPane.YES_OPTION:
+					Main.closeAnalyze();
 					deleteRecord(selected);
 					tableModel.setRowCount(0);
 					DefaultComboBoxModel<String> boxModel = (DefaultComboBoxModel<String>) box.getModel();
