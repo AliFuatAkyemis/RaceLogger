@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.util.HashMap;
 
 public class SettingFrame extends TemplateFrame {
 	private int width = 300, height = 500;
-	private String[] config = {"login"};
-	private boolean[] values = {false};
+	private HashMap<String, Boolean> config = new HashMap<>();
 	private JPanel panel;
 	private JLabel loginL;
 	private JButton back, save, login;
@@ -50,17 +50,16 @@ public class SettingFrame extends TemplateFrame {
 			saveConfig();
 		});
 
-		String str = values[0] ? "ON" : "OFF"; 
-		login = new JButton(str);
+		login = new JButton(config.get("login") ? "ON" : "OFF");
 		login.setBounds(200, 50, 70, 25);
 		login.setFont(new Font("Arial", Font.PLAIN, 16));
 		login.addActionListener(e -> {
 			if (login.getText().equals("ON")) {
 				login.setText("OFF");
-				values[0] = false;
+				config.put("login", false);
 			} else {
 				login.setText("ON");
-				values[0] = true;
+				config.put("login", true);
 			}
 		});
 
@@ -77,8 +76,8 @@ public class SettingFrame extends TemplateFrame {
 	private void saveConfig() { //Config save function to settings.csv
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/configurations/settings.csv"));
-			for (int i = 0; i < config.length; i++) {
-				writer.write(config[i]+","+String.valueOf(values[i])+"\n");
+			for (String str : config.keySet()) {
+				writer.write(str+","+config.get(str)+"\n");
 			}
 			writer.close();
 		} catch(Exception e) {
@@ -90,12 +89,11 @@ public class SettingFrame extends TemplateFrame {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/configurations/settings.csv"));
 			String row = reader.readLine();
-			int i = 0;
 
-			while (row != null && i < values.length) {
+			while (row != null) {
 				String[] temp = row.split(",");
-				config[i] = temp[0];
-				values[i++] = Boolean.parseBoolean(temp[1]);
+				config.put(temp[0], Boolean.parseBoolean(temp[1]));
+				row = reader.readLine();
 			}
 
 			reader.close();
@@ -104,7 +102,7 @@ public class SettingFrame extends TemplateFrame {
 		}
 	}
 
-	public boolean[] getConfig() {
-		return this.values;
+	public HashMap<String, Boolean> getConfig() {
+		return this.config;
 	}
 }

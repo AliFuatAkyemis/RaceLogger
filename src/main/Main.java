@@ -12,7 +12,7 @@ public class Main {
 	private static SettingFrame setting;
 
 	public static void main(String[] args) {
-		if (new SettingFrame().getConfig()[0]) showLogin();
+		if (new SettingFrame().getConfig().get("login")) showLogin();
 		else showDash();
 	}
 
