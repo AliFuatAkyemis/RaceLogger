@@ -87,16 +87,21 @@ public class SettingFrame extends TemplateFrame {
 
 	private void loadConfig() { //Config load function to load on startup
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/configurations/settings.csv"));
-			String row = reader.readLine();
-
-			while (row != null) {
-				String[] temp = row.split(",");
-				config.put(temp[0], Boolean.parseBoolean(temp[1]));
-				row = reader.readLine();
+			File file = new File("data/configurations/settings.csv");
+			if (file.exists()) {
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String row = reader.readLine();
+	
+				while (row != null) {
+					String[] temp = row.split(",");
+					config.put(temp[0], Boolean.parseBoolean(temp[1]));
+					row = reader.readLine();
+				}
+	
+				reader.close();
+			} else { //If the file does not exist use default configurations
+				config.put("login", false);
 			}
-
-			reader.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
