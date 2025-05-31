@@ -11,21 +11,28 @@ public class SettingFrame extends TemplateFrame {
 	private String[] config = {"login"};
 	private boolean[] values = {false};
 	private JPanel panel;
-	private JButton back, save;
-	private JToggleButton login;
+	private JLabel loginL;
+	private JButton back, save, login;
 
 	public SettingFrame() {
+		//Load Configs before startup
+		loadConfig();
+
 		//Frame
 		this.setTitle("Settings");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
 		this.setLocation((1920-width)/2, (1080-height)/2);
 		this.setResizable(false);
-		loadConfig();
 
 		//Panel
 		panel = new JPanel();
 		panel.setLayout(null);
+
+		//Label
+		loginL = new JLabel("Login Required");
+		loginL.setBounds(20, 50, 130, 25);
+		loginL.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Button
 		back = new JButton("Back");
@@ -43,12 +50,12 @@ public class SettingFrame extends TemplateFrame {
 			saveConfig();
 		});
 
-		//ToggleButton
-		login = new JToggleButton("OFF");
-		login.setBounds(220, 40, 70, 25);
+		String str = values[0] ? "ON" : "OFF"; 
+		login = new JButton(str);
+		login.setBounds(200, 50, 70, 25);
 		login.setFont(new Font("Arial", Font.PLAIN, 16));
-		login.addItemListener(e -> {
-			if (login.isSelected()) {
+		login.addActionListener(e -> {
+			if (login.getText().equals("ON")) {
 				login.setText("OFF");
 				values[0] = false;
 			} else {
@@ -60,6 +67,7 @@ public class SettingFrame extends TemplateFrame {
 		//Composition part
 		panel.add(back);
 		panel.add(save);
+		panel.add(loginL);
 		panel.add(login);
 
 		this.add(panel);
