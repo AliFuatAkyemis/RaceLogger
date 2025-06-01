@@ -44,6 +44,12 @@ public class ListFrame extends TemplateFrame {
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(50);
 
+		//Avoiding drag movement of columns
+		table.setTableHeader(new JTableHeader(columnModel) {
+			@Override
+			public void setDraggedColumn(TableColumn column) {} 
+		});
+
 		//Button
 		back = new JButton("Back");
 		back.setBounds(20, 10, 80, 25);

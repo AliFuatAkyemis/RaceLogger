@@ -1,0 +1,143 @@
+package frames;
+
+import main.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
+import java.io.*;
+
+public class RacerEditFrame extends TemplateFrame {
+	private int width = 600, height = 400;
+	private JPanel panel;
+	private JLabel idL, nameL;
+	private JTextField id, name;
+	private JButton add, remove, save, load, back;
+	private JTable table;
+	private JScrollPane scrollPane;
+
+	public RacerEditFrame() {
+		//Frame
+		this.setTitle("Racer Edit");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(width, height);
+		this.setLocation((1920-width)/2, (1080-height)/2);
+		this.setResizable(false);
+
+		//Panel
+		panel = new JPanel();
+		panel.setLayout(null);
+
+		//Table
+		DefaultTableModel model = new DefaultTableModel();
+		model.setColumnIdentifiers(new String[] {"ID", "Name"});
+		
+		table = new JTable(model);
+		table.setFillsViewportHeight(false);
+		table.setEnabled(false);
+
+		//Column Model
+		TableColumnModel columnModel = table.getColumnModel();
+
+		//Resize columns
+		columnModel.getColumn(0).setPreferredWidth(50);
+		columnModel.getColumn(1).setPreferredWidth(200);
+
+		//ScrollPane
+		scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(330, 10, 250, 340);
+
+		//Label
+		idL = new JLabel("ID:");
+		idL.setBounds(20, 50, 50, 25);
+		idL.setFont(new Font("Arial", Font.PLAIN, 16));
+
+		nameL = new JLabel("Name:");
+		nameL.setBounds(120, 50, 80, 25);
+		nameL.setFont(new Font("Arial", Font.PLAIN, 16));
+
+		//TextField
+		id = new JTextField();
+		id.setBounds(50, 50, 60, 25);
+		id.setFont(new Font("Arial", Font.PLAIN, 16));
+
+		name = new JTextField();
+		name.setBounds(180, 50, 120, 25);
+		name.setFont(new Font("Arial", Font.PLAIN, 16));
+
+		//Button
+		back = new JButton("Back");
+		back.setBounds(20, 10, 80, 25);
+		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.addActionListener(e -> {
+			this.dispose();
+			Main.showRecord();
+		});
+
+		add = new JButton("Add");
+		add.setBounds(230, 90, 70, 25);
+		add.setFont(new Font("Arial", Font.PLAIN, 16));
+		add.addActionListener(e -> {
+			if (id.getText().matches("\\d+") && !name.getText().equals("")) { //ID must be digit so we first check it and name must be entered
+				boolean found = false; //Duplicate control state
+				for (int i = 0; i < model.getRowCount(); i++) if (!found) found = model.getValueAt(i, 0).equals(Integer.valueOf(id.getText())) ? true : false; //Iteration of all entries is check
+				if (!found) model.addRow(new Object[] {Integer.valueOf(id.getText()), name.getText()}); //If id is unique then, add new
+			}
+
+			//Reset textfields
+			id.setText("");
+			name.setText("");
+		});
+
+		remove = new JButton("Remove");
+		remove.setBounds(20, 90, 100, 25);
+		remove.setFont(new Font("Arial", Font.PLAIN, 16));
+		remove.addActionListener(e -> {
+			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
+				for (int i = 0; i < model.getRowCount(); i++) { //Iteration of all entries
+					if (model.getValueAt(i, 0).equals(Integer.valueOf(id.getText()))) { //Check for matches
+						model.removeRow(i); //Then, remove
+						break;
+					}
+				}
+			}
+			
+			//Reset textfields
+			id.setText("");
+			name.setText("");
+		});
+
+		//Composition part
+		panel.add(back);
+		panel.add(idL);
+		panel.add(nameL);
+		panel.add(id);
+		panel.add(name);
+		panel.add(add);
+		panel.add(remove);
+		panel.add(scrollPane);
+	
+		tableInit(model); //Obtain info from file
+
+		this.add(panel);
+		this.getRootPane().setDefaultButton(add);
+	}
+
+	//Utility
+	private void tableInit(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv")); //Obtain the file to read
+			String row = reader.readLine(); //First line of file
+		
+			while (row != null) {
+				String[] temp = row.split(","); //Simple split method to seperate ID and Name
+				model.addRow(new Object[] {Integer.valueOf(temp[0]), temp[1]});
+				row = reader.readLine(); //Update row with next line
+			}
+
+			reader.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

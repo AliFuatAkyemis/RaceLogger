@@ -10,10 +10,13 @@ public class Main {
 	private static ListFrame list;
 	private static AnalyzeFrame analyze;
 	private static SettingFrame setting;
+	private static RacerEditFrame racerEdit;
 
 	public static void main(String[] args) {
-		if (new SettingFrame().getConfig().get("login")) showLogin();
-		else showDash();
+		SwingUtilities.invokeLater(() -> {
+			if (new SettingFrame().getConfig().get("login")) showLogin();
+			else showDash();
+		});
 	}
 
 	//Navigation
@@ -55,5 +58,11 @@ public class Main {
 		if (setting != null) setting.dispose();
 		setting = new SettingFrame();
 		setting.setVisible(true);
+	}
+
+	public static void showRacerEdit() {
+		if (racerEdit != null) racerEdit.dispose();
+		racerEdit = new RacerEditFrame();
+		racerEdit.setVisible(true);
 	}
 }

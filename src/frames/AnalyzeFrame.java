@@ -78,6 +78,12 @@ public class AnalyzeFrame extends TemplateFrame {
 		columnModel.getColumn(2).setPreferredWidth(100);
 		columnModel.getColumn(3).setPreferredWidth(50);
 
+		//Avoiding column drag action
+		table.setTableHeader(new JTableHeader(columnModel) {
+			@Override
+			public void setDraggedColumn(TableColumn column) {}
+		});
+
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(15, 50, 375, 300);

@@ -15,8 +15,8 @@ public class RecordFrame extends TemplateFrame {
 	private JPanel panel;
 	private JTable records, racers;
 	private JScrollPane recordPane, racerPane;
-	private JTextField text1;
-	private JButton add, start, pause, save, back;
+	private JTextField text;
+	private JButton add, start, pause, save, back, edit;
 	private JLabel chronoLabel;
 	private Calendar calendar;
 	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
@@ -51,10 +51,12 @@ public class RecordFrame extends TemplateFrame {
 							RecordFrame.this,
 							"Record name?",
 							"Save record",
-							JOptionPane.QUESTION_MESSAGE
+							JOptionPane.PLAIN_MESSAGE
 						);
-						saveResults(0, str);
-						System.exit(0);
+						if (str != null) {
+							saveResults(0, str);
+							System.exit(0);
+						}
 						break;
 					case JOptionPane.NO_OPTION: //Do not save and close
 						file.delete();
@@ -101,9 +103,6 @@ public class RecordFrame extends TemplateFrame {
 		    public void setDraggedColumn(TableColumn column) {}
 		});
 
-		//To disable resizing of columns
-		records.getTableHeader().setResizingAllowed(false);
-
 		DefaultTableModel model2 = new DefaultTableModel();
 		model2.setColumnIdentifiers(new String[] {"ID", "Name"});
 		
@@ -126,15 +125,12 @@ public class RecordFrame extends TemplateFrame {
 			public void setDraggedColumn(TableColumn column) {}
 		});
 
-		//To disable resizing of columns
-		racers.getTableHeader().setResizingAllowed(false);
-
 		//ScrollPane
 		recordPane = new JScrollPane(records);
 		recordPane.setBounds(375, 20, 400, 480);
 
 		racerPane = new JScrollPane(racers);
-		racerPane.setBounds(30, 120, 250, 390);
+		racerPane.setBounds(30, 120, 250, 300);
 
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
@@ -143,9 +139,9 @@ public class RecordFrame extends TemplateFrame {
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
 		//TextField
-		text1 = new JTextField(100);
-		text1.setBounds(30, 70, 100, 25);
-		text1.setFont(new Font("Arial", Font.PLAIN, 16));
+		text = new JTextField(100);
+		text.setBounds(30, 70, 100, 25);
+		text.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Button
 		add = new JButton("Add");
@@ -153,11 +149,11 @@ public class RecordFrame extends TemplateFrame {
 		add.setFont(new Font("Arial", Font.PLAIN, 16));
 		add.addActionListener(e -> {
 			//Necessary objects
-			String text = text1.getText().trim();
+			String input = text.getText().trim();
 		
-			if (text.matches("\\d+") && !isPaused) { //If text is decimal and chronometer is running then,...
+			if (input.matches("\\d+") && !isPaused) { //If text is decimal and chronometer is running then,...
 				//Getting info
-				int id = Integer.valueOf(text),
+				int id = Integer.valueOf(input),
 				lap = lapUpdate(id);
 				String name = identify(id),
 				time = chronoLabel.getText();
@@ -177,7 +173,7 @@ public class RecordFrame extends TemplateFrame {
 			}
 
 			//Making text field prepared for next submissions
-			text1.setText("");
+			text.setText("");
 		});
 
 		start = new JButton("Start");
@@ -254,11 +250,13 @@ public class RecordFrame extends TemplateFrame {
 						this,
 						"Record name?",
 						"Save record",
-						JOptionPane.QUESTION_MESSAGE
+						JOptionPane.PLAIN_MESSAGE
 					);
-					saveResults(0, str);
-					this.dispose();
-					Main.showDash();
+					if (str != null) {
+						saveResults(0, str);
+						this.dispose();
+						Main.showDash();
+					}
 					break;
 				case JOptionPane.NO_OPTION: //Do not save and close
 					file.delete();
@@ -275,13 +273,22 @@ public class RecordFrame extends TemplateFrame {
 			}
 		});
 
+		edit = new JButton("Edit");
+		edit.setBounds(30, 430, 80, 25);
+		edit.setFont(new Font("Arial", Font.PLAIN, 16));
+		edit.addActionListener(e -> {
+			this.dispose();
+			Main.showRacerEdit();
+		});
+
 		//Composition part
-		panel.add(text1);
+		panel.add(text);
 		panel.add(add);
 		panel.add(start);
 		panel.add(pause);
 		panel.add(save);
 		panel.add(back);
+		panel.add(edit);
 		panel.add(chronoLabel);
 		panel.add(recordPane);
 		panel.add(racerPane);
