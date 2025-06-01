@@ -220,16 +220,18 @@ public class RecordFrame extends TemplateFrame {
 		save.setBounds(650, 525, 120, 25);
 		save.setFont(new Font("Arial", Font.PLAIN, 16));
 		save.addActionListener(e -> {
-			if (new File("data/record.csv").exists()) {
+			if (new File("data/record.csv").exists()) { //If there a record exists an optionpane pops up.
 				String str = JOptionPane.showInputDialog(
 					this,
 					"Record name?",
 					"Save record",
 					JOptionPane.PLAIN_MESSAGE
 				);
-				saveResults(0, str); //Save the results into /data/oldResults
-				this.dispose();
-				Main.showDash();
+				if (str != null) { //According to input results are saved
+					saveResults(0, str); //Save the results into /data/oldResults
+					this.dispose();
+					Main.showDash();
+				}
 			}
 		});
 

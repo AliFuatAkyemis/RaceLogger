@@ -107,7 +107,7 @@ public class SettingFrame extends TemplateFrame {
 		}
 	}
 
-	public HashMap<String, Boolean> getConfig() {
+	public HashMap<String, Boolean> getConfig() { //Basic getter function for config load in Main
 		return this.config;
 	}
 }

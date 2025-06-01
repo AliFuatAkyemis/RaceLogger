@@ -64,7 +64,7 @@ public class ListFrame extends TemplateFrame {
 		delete.setBounds(20, 430, 90, 25);
 		delete.setFont(new Font("Arial", Font.PLAIN, 16));
 		delete.addActionListener(e -> {
-			if (selected != null) {
+			if (selected != null) { //If a file selected ask for deletion
 				int response = JOptionPane.showConfirmDialog(
 					this,
 					"Are you sure to delete this record?",
@@ -73,13 +73,13 @@ public class ListFrame extends TemplateFrame {
 					JOptionPane.PLAIN_MESSAGE
 				);
 				
-				switch(response) {
+				switch(response) { //According to confirm dialog execute deletion
 				case JOptionPane.YES_OPTION:
-					Main.closeAnalyze();
+					Main.closeAnalyze(); //Maybe analyze screen would be opened so it should be closed
 					deleteRecord(selected);
-					tableModel.setRowCount(0);
+					tableModel.setRowCount(0); //To reset table
 					DefaultComboBoxModel<String> boxModel = (DefaultComboBoxModel<String>) box.getModel();
-					boxModel.removeAllElements();
+					boxModel.removeAllElements(); //To reset drowdown menu
 					for (String str : new File("data/oldRecords/").list()) boxModel.addElement(str);
 					break;
 				}
