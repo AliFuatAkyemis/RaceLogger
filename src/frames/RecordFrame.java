@@ -307,7 +307,7 @@ public class RecordFrame extends TemplateFrame {
 
 	private void saveResults(int n, String str) {
 		try {
-			if (str == null) str = "record";
+			if (str == null || str.equals("")) str = "record";
 			if (!new File("data/record.csv").exists()) return; //If record.csv is doesn't exist then, do nothing
 			//Getting required paths source and destination
 			Path source = Paths.get("data/record.csv");
