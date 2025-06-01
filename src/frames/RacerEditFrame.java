@@ -8,7 +8,7 @@ import javax.swing.table.*;
 import java.io.*;
 
 public class RacerEditFrame extends TemplateFrame {
-	private int width = 600, height = 400;
+	private int width = 460, height = 400;
 	private JPanel panel;
 	private JLabel idL, nameL;
 	private JTextField id, name;
@@ -43,31 +43,37 @@ public class RacerEditFrame extends TemplateFrame {
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(200);
 
+		//Disabling dragging action of columns
+		table.setTableHeader(new JTableHeader(columnModel) {
+			@Override
+			public void setDraggedColumn(TableColumn column) {}
+		});
+
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(330, 10, 250, 340);
+		scrollPane.setBounds(40, 60, 250, 250);
 
 		//Label
 		idL = new JLabel("ID:");
-		idL.setBounds(20, 50, 50, 25);
+		idL.setBounds(20, 10, 50, 25);
 		idL.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		nameL = new JLabel("Name:");
-		nameL.setBounds(120, 50, 80, 25);
+		nameL.setBounds(120, 10, 80, 25);
 		nameL.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//TextField
 		id = new JTextField();
-		id.setBounds(50, 50, 60, 25);
+		id.setBounds(50, 10, 60, 25);
 		id.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		name = new JTextField();
-		name.setBounds(180, 50, 120, 25);
+		name.setBounds(180, 10, 120, 25);
 		name.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Button
 		back = new JButton("Back");
-		back.setBounds(20, 10, 80, 25);
+		back.setBounds(20, 325, 80, 25);
 		back.setFont(new Font("Arial", Font.PLAIN, 16));
 		back.addActionListener(e -> {
 			this.dispose();
@@ -75,7 +81,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		add = new JButton("Add");
-		add.setBounds(230, 90, 70, 25);
+		add.setBounds(330, 50, 100, 25);
 		add.setFont(new Font("Arial", Font.PLAIN, 16));
 		add.addActionListener(e -> {
 			if (id.getText().matches("\\d+") && !name.getText().equals("")) { //ID must be digit so we first check it and name must be entered
@@ -87,10 +93,11 @@ public class RacerEditFrame extends TemplateFrame {
 			//Reset textfields
 			id.setText("");
 			name.setText("");
+			id.requestFocusInWindow();
 		});
 
 		remove = new JButton("Remove");
-		remove.setBounds(20, 90, 100, 25);
+		remove.setBounds(330, 110, 100, 25);
 		remove.setFont(new Font("Arial", Font.PLAIN, 16));
 		remove.addActionListener(e -> {
 			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
@@ -105,6 +112,21 @@ public class RacerEditFrame extends TemplateFrame {
 			//Reset textfields
 			id.setText("");
 			name.setText("");
+			id.requestFocusInWindow();
+		});
+
+		save = new JButton("Save");
+		save.setBounds(330, 230, 100, 25);
+		save.setFont(new Font("Arial", Font.PLAIN, 16));
+		save.addActionListener(e -> {
+			if (model.getRowCount() != 0) saveTable(model);
+		});
+
+		load = new JButton("Load");
+		load.setBounds(330, 290, 100, 25);
+		load.setFont(new Font("Arial", Font.PLAIN, 16));
+		load.addActionListener(e -> {
+			if (model.getRowCount() == 0) loadTable(model);
 		});
 
 		//Composition part
@@ -115,16 +137,16 @@ public class RacerEditFrame extends TemplateFrame {
 		panel.add(name);
 		panel.add(add);
 		panel.add(remove);
+		panel.add(save);
+		panel.add(load);
 		panel.add(scrollPane);
 	
-		tableInit(model); //Obtain info from file
-
 		this.add(panel);
 		this.getRootPane().setDefaultButton(add);
 	}
 
 	//Utility
-	private void tableInit(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
+	private void loadTable(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv")); //Obtain the file to read
 			String row = reader.readLine(); //First line of file
@@ -136,6 +158,25 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			reader.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void saveTable(DefaultTableModel model) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/racerinfo/racers.csv"));
+			String[] row = new String[model.getColumnCount()];
+
+			for (int i = 0; i < model.getRowCount(); i++) {
+				for (int j = 0; j < row.length; j++) {
+					row[j] = String.valueOf(model.getValueAt(i, j));
+				}
+				String str = String.join(",", row);
+				writer.write(str+"\n");
+			}
+
+			writer.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

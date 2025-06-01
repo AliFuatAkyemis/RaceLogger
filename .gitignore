@@ -1,4 +1,6 @@
 #Ignore oldRecords
-data/configurations
 data/oldRecords
+#Ignore config
+data/config
+#Ignore racerinfo
 data/racerinfo
