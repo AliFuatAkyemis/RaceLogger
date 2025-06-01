@@ -32,7 +32,7 @@ public class LoginFrame extends TemplateFrame {
 		id.setFont(new Font("Arial", Font.BOLD, 16));
 
 		pw = new JLabel("PW:");
-		pw.setBounds(20, 60, 30, 30);
+		pw.setBounds(20, 60, 35, 30);
 		pw.setFont(new Font("Arial", Font.BOLD, 16));
 
 		//TextField

@@ -75,7 +75,7 @@ public class SettingFrame extends TemplateFrame {
 	//Utility
 	private void saveConfig() { //Config save function to settings.csv
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("data/configurations/settings.csv"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/config/settings.csv"));
 			for (String str : config.keySet()) {
 				writer.write(str+","+config.get(str)+"\n");
 			}
@@ -87,7 +87,7 @@ public class SettingFrame extends TemplateFrame {
 
 	private void loadConfig() { //Config load function to load on startup
 		try {
-			File file = new File("data/configurations/settings.csv");
+			File file = new File("data/config/settings.csv");
 			if (file.exists()) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 				String row = reader.readLine();
