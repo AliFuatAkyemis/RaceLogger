@@ -35,7 +35,7 @@ public class RecordFrame extends TemplateFrame {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				File file = new File("data/records.csv"); //Obtain the file
+				File file = new File("data/record.csv"); //Obtain the file
 				if (file.exists()) { //If it is exist then, define the actions
 					int response = JOptionPane.showConfirmDialog(
 						RecordFrame.this,
@@ -47,7 +47,13 @@ public class RecordFrame extends TemplateFrame {
 					
 					switch(response) {
 					case JOptionPane.YES_OPTION: //Save and close
-						saveResults(0);
+						String str = JOptionPane.showInputDialog(
+							RecordFrame.this,
+							"Record name?",
+							"Save record",
+							JOptionPane.QUESTION_MESSAGE
+						);
+						saveResults(0, str);
 						System.exit(0);
 						break;
 					case JOptionPane.NO_OPTION: //Do not save and close
@@ -214,16 +220,24 @@ public class RecordFrame extends TemplateFrame {
 		save.setBounds(650, 525, 120, 25);
 		save.setFont(new Font("Arial", Font.PLAIN, 16));
 		save.addActionListener(e -> {
-			saveResults(0); //Save the results into /data/oldResults
-			this.dispose();
-			Main.showDash();
+			if (new File("data/record.csv").exists()) {
+				String str = JOptionPane.showInputDialog(
+					this,
+					"Record name?",
+					"Save record",
+					JOptionPane.PLAIN_MESSAGE
+				);
+				saveResults(0, str); //Save the results into /data/oldResults
+				this.dispose();
+				Main.showDash();
+			}
 		});
 
 		back = new JButton("Back");
 		back.setBounds(30, 525, 80, 25);
 		back.setFont(new Font("Arial", Font.PLAIN, 16));
 		back.addActionListener(e -> {
-			File file = new File("data/records.csv"); //Obtain the file
+			File file = new File("data/record.csv"); //Obtain the file
 			if (file.exists()) { //If file is exist then, define the actions
 				int response = JOptionPane.showConfirmDialog(
 					this,
@@ -234,7 +248,13 @@ public class RecordFrame extends TemplateFrame {
 				);
 				switch(response) {
 				case JOptionPane.YES_OPTION: //Save and close
-					saveResults(0);
+					String str = JOptionPane.showInputDialog(
+						this,
+						"Record name?",
+						"Save record",
+						JOptionPane.QUESTION_MESSAGE
+					);
+					saveResults(0, str);
 					this.dispose();
 					Main.showDash();
 					break;
@@ -285,19 +305,20 @@ public class RecordFrame extends TemplateFrame {
 		return i+1;
 	}
 
-	private void saveResults(int n) {
+	private void saveResults(int n, String str) {
 		try {
-			if (!new File("data/records.csv").exists()) return; //If result.csv is doesn't exist then, do nothing
+			if (str == null) str = "record";
+			if (!new File("data/record.csv").exists()) return; //If record.csv is doesn't exist then, do nothing
 			//Getting required paths source and destination
-			Path source = Paths.get("data/records.csv");
+			Path source = Paths.get("data/record.csv");
 
 			String dir = "data/oldRecords/";
 			if (!Files.isDirectory(Paths.get(dir))) new File(dir).mkdirs();
-			Path destination = Paths.get(dir+"_".repeat(n)+"records.csv"); //Underscore will be repeated as many as n
+			Path destination = Paths.get(dir+"_".repeat(n)+str+".csv"); //Underscore will be repeated as many as n
 			
 			Files.move(source, destination);
 		} catch(FileAlreadyExistsException e) {
-			saveResults(n+1); //To handle name conflict automatically, increase n
+			saveResults(n+1, str); //To handle name conflict automatically, increase n
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -323,7 +344,7 @@ public class RecordFrame extends TemplateFrame {
 	private void appendResult(String str) {
 		try {
 			//Initializing BufferedWriter object in order to update informations in results.csv
-			BufferedWriter writer = new BufferedWriter(new FileWriter("data/records.csv", true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("data/record.csv", true));
 			writer.write(str);
 			writer.close();
 		} catch(Exception e) {
