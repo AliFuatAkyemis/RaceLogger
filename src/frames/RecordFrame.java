@@ -176,6 +176,16 @@ public class RecordFrame extends TemplateFrame {
 			text.setText("");
 		});
 
+		edit = new JButton("Edit");
+		edit.setBounds(30, 430, 80, 25);
+		edit.setFont(new Font("Arial", Font.PLAIN, 16));
+		edit.addActionListener(e -> {
+			if (startTime == -1) {
+				this.dispose();
+				Main.showRacerEdit();
+			}
+		});
+
 		start = new JButton("Start");
 		start.setBounds(150, 20, 75, 25);
 		start.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -189,6 +199,7 @@ public class RecordFrame extends TemplateFrame {
 				if (startTime == -1) {
 					calendar = Calendar.getInstance();
 					startTime = calendar.getTimeInMillis();
+					edit.setVisible(false);
 				} else {
 					//If recording started before calculate pausedTimeAmount
 					calendar = Calendar.getInstance();
@@ -271,14 +282,6 @@ public class RecordFrame extends TemplateFrame {
 				this.dispose();
 				Main.showDash();
 			}
-		});
-
-		edit = new JButton("Edit");
-		edit.setBounds(30, 430, 80, 25);
-		edit.setFont(new Font("Arial", Font.PLAIN, 16));
-		edit.addActionListener(e -> {
-			this.dispose();
-			Main.showRacerEdit();
 		});
 
 		//Composition part
