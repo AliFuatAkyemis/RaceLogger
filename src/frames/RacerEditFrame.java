@@ -12,7 +12,7 @@ public class RacerEditFrame extends TemplateFrame {
 	private JPanel panel;
 	private JLabel idL, nameL;
 	private JTextField id, name;
-	private JButton add, remove, save, load, back;
+	private JButton add, remove, save, load, back, reset;
 	private JTable table;
 	private JScrollPane scrollPane;
 
@@ -129,6 +129,26 @@ public class RacerEditFrame extends TemplateFrame {
 			if (model.getRowCount() == 0) loadTable(model);
 		});
 
+		reset = new JButton("Reset");
+		reset.setBounds(330, 170, 100, 25);
+		reset.setFont(new Font("Arial", Font.PLAIN, 16));
+		reset.addActionListener(e -> {
+			if (model.getRowCount() != 0) {
+				int response = JOptionPane.showConfirmDialog(
+					this,
+					"Are you sure to reset racer info?",
+					"Reset racer info",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE
+				);
+			
+				if (response == JOptionPane.YES_OPTION) {
+					deleteTable(model);
+					model.setRowCount(0);
+				}
+			}
+		});
+
 		//Composition part
 		panel.add(back);
 		panel.add(idL);
@@ -139,6 +159,7 @@ public class RacerEditFrame extends TemplateFrame {
 		panel.add(remove);
 		panel.add(save);
 		panel.add(load);
+		panel.add(reset);
 		panel.add(scrollPane);
 	
 		this.add(panel);
@@ -148,6 +169,7 @@ public class RacerEditFrame extends TemplateFrame {
 	//Utility
 	private void loadTable(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
 		try {
+			if (!new File("data/racerinfo/racers.csv").exists()) return;
 			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv")); //Obtain the file to read
 			String row = reader.readLine(); //First line of file
 		
@@ -177,6 +199,14 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			writer.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void deleteTable(DefaultTableModel model) {
+		try {
+			new File("data/racerinfo/racers.csv").delete();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

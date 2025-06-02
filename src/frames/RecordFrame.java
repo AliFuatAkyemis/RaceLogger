@@ -366,6 +366,7 @@ public class RecordFrame extends TemplateFrame {
 	
 	private void mapInit(DefaultTableModel model) { //This method initializes the id-racer info to map and to the racers table at the same time
 		try {
+			if (!new File("data/racerinfo/racers.csv").exists()) return;
 			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv")); //Obtain the file to read
 			map = new HashMap<>(); //Initialize the map object
 			String row = reader.readLine(); //First line of file
