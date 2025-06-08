@@ -5,7 +5,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public class DashFrame extends TemplateFrame {
-	private int width = 250, height = 275;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int width = 250, height = 275, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
 	private JButton createRecord, records, settings, exit;
 
@@ -14,8 +15,7 @@ public class DashFrame extends TemplateFrame {
 		this.setTitle("DashBoard");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+                this.setLocation(x, y);
 
 		//Panel
 		panel = new JPanel();

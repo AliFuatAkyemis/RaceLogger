@@ -6,7 +6,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class LoginFrame extends TemplateFrame {
-	private int width = 300, height = 200;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int width = 300, height = 200, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JTextField username;
 	private JPasswordField password;
 	private JLabel id, pw;
@@ -19,8 +20,7 @@ public class LoginFrame extends TemplateFrame {
 		this.setTitle("Login");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+                this.setLocation(x, y);
 
 		//Panel
 		JPanel panel = new JPanel();

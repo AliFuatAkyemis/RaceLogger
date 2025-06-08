@@ -11,13 +11,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class RecordFrame extends TemplateFrame {
-	private int width = 800, height = 600;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        private int width = 800, height = 600, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
 	private JTable records, racers;
 	private JScrollPane recordPane, racerPane;
 	private JTextField text;
 	private JButton add, start, pause, save, back, edit;
-	private JLabel chronoLabel;
+	private JLabel chronoLabel, editLabel;
 	private Calendar calendar;
 	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
 	private Thread chronoThread;
@@ -73,8 +74,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+		this.setLocation(x, y);
 
 		//Panel
 		panel = new JPanel();
@@ -134,18 +134,24 @@ public class RecordFrame extends TemplateFrame {
 
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
-		chronoLabel.setBounds(30, 20, 100, 25);
+		chronoLabel.setBounds(30, 20, 120, 25);
 		chronoLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
+                editLabel = new JLabel("Edit", SwingConstants.CENTER);
+		editLabel.setBounds(30, 430, 80, 25);
+		editLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		editLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+                editLabel.setVisible(false);
+
 		//TextField
 		text = new JTextField(100);
-		text.setBounds(30, 70, 100, 25);
+		text.setBounds(30, 70, 120, 25);
 		text.setFont(new Font("Arial", Font.PLAIN, 16));
 
 		//Button
 		add = new JButton("Add");
-		add.setBounds(150, 70, 70, 25);
+		add.setBounds(170, 70, 70, 25);
 		add.setFont(new Font("Arial", Font.PLAIN, 16));
 		add.addActionListener(e -> {
 			//Necessary objects
@@ -187,7 +193,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		start = new JButton("Start");
-		start.setBounds(150, 20, 75, 25);
+		start.setBounds(170, 20, 75, 25);
 		start.setFont(new Font("Arial", Font.PLAIN, 16));
 		start.addActionListener(e -> {
 			if (isPaused) {
@@ -200,6 +206,7 @@ public class RecordFrame extends TemplateFrame {
 					calendar = Calendar.getInstance();
 					startTime = calendar.getTimeInMillis();
 					edit.setVisible(false);
+                                        editLabel.setVisible(true);
 				} else {
 					//If recording started before calculate pausedTimeAmount
 					calendar = Calendar.getInstance();
@@ -210,7 +217,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		pause = new JButton("Pause");
-		pause.setBounds(240, 20, 80, 25);
+		pause.setBounds(260, 20, 80, 25);
 		pause.setFont(new Font("Arial", Font.PLAIN, 16));
 		pause.addActionListener(e -> {
 			if (!isPaused) {
@@ -293,6 +300,7 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(back);
 		panel.add(edit);
 		panel.add(chronoLabel);
+                panel.add(editLabel);
 		panel.add(recordPane);
 		panel.add(racerPane);
 

@@ -8,7 +8,8 @@ import javax.swing.table.*;
 import java.io.*;
 
 public class ListFrame extends TemplateFrame {
-	private int width = 500, height = 500;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int width = 500, height = 500, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private String selected;
 	private JPanel panel;
 	private JButton back, analyze, delete;
@@ -21,8 +22,7 @@ public class ListFrame extends TemplateFrame {
 		this.setTitle("Past Records");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+                this.setLocation(x, y);
 
 		//Panel
 		panel = new JPanel();
@@ -55,6 +55,7 @@ public class ListFrame extends TemplateFrame {
 		back.setBounds(20, 10, 80, 25);
 		back.setFont(new Font("Arial", Font.PLAIN, 16));
 		back.addActionListener(e -> {
+			Main.closeAnalyze(); //Maybe analyze screen would be opened so it should be closed
 			this.dispose();
 			Main.showDash();
 		});

@@ -9,7 +9,8 @@ import java.io.*;
 import java.util.HashMap;
 
 public class AnalyzeFrame extends TemplateFrame {
-	private int width = 400, height = 400;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int width = 400, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
 	private JLabel timeLimit, hourLabel, minuteLabel;
 	private JComboBox<Integer> hour, minute;
@@ -30,8 +31,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		});
 
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+                this.setLocation(x, y);
 
 		//Panel
 		panel = new JPanel();

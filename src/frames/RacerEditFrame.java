@@ -8,7 +8,8 @@ import javax.swing.table.*;
 import java.io.*;
 
 public class RacerEditFrame extends TemplateFrame {
-	private int width = 460, height = 400;
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int width = 460, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
 	private JLabel idL, nameL;
 	private JTextField id, name;
@@ -21,8 +22,7 @@ public class RacerEditFrame extends TemplateFrame {
 		this.setTitle("Racer Edit");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
-		this.setLocation((1920-width)/2, (1080-height)/2);
-		this.setResizable(false);
+                this.setLocation(x, y);
 
 		//Panel
 		panel = new JPanel();
@@ -84,10 +84,10 @@ public class RacerEditFrame extends TemplateFrame {
 		add.setBounds(330, 50, 100, 25);
 		add.setFont(new Font("Arial", Font.PLAIN, 16));
 		add.addActionListener(e -> {
-			if (id.getText().matches("\\d+") && !name.getText().equals("")) { //ID must be digit so we first check it and name must be entered
+			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
 				boolean found = false; //Duplicate control state
-				for (int i = 0; i < model.getRowCount(); i++) if (!found) found = model.getValueAt(i, 0).equals(Integer.valueOf(id.getText())) ? true : false; //Iteration of all entries is check
-				if (!found) model.addRow(new Object[] {Integer.valueOf(id.getText()), name.getText()}); //If id is unique then, add new
+				for (int i = 0; i < model.getRowCount(); i++) if (!found) found = model.getValueAt(i, 0).equals(Integer.valueOf(id.getText().trim())) ? true : false; //Iteration of all entries is check
+				if (!found) model.addRow(new Object[] {Integer.valueOf(id.getText().trim()), name.getText().trim()}); //If id is unique then, add new
 			}
 
 			//Reset textfields
