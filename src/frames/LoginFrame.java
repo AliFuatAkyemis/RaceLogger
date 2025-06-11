@@ -2,8 +2,8 @@ package frames;
 
 import main.*;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
 
 public class LoginFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,7 +55,11 @@ public class LoginFrame extends TemplateFrame {
 					this.setVisible(false);
 					Main.showDash();
 				} //Static method from Main.java
-				else System.out.println("Access Denied");
+				else {
+                                        System.out.println("Access Denied");
+                                        username.setText("");
+                                        password.setText("");
+                                }
 			}
 		});
 
@@ -66,7 +70,24 @@ public class LoginFrame extends TemplateFrame {
 		panel.add(password);
 		panel.add(loginButton);
 
+                loadAuth(); //Load authorization informations
+
 		this.add(panel, BorderLayout.CENTER);
 		this.getRootPane().setDefaultButton(loginButton);
 	}
+
+        private void loadAuth() {
+                try {
+                        File file = new File("data/logininfo/authorization.csv");
+                        BufferedReader reader = null;
+                        if (file.exists()) {
+                                reader = new BufferedReader(new FileReader(file));
+                                String[] temp = reader.readLine().split(",");
+                                defUser = temp[0];
+                                defPass = temp[1];
+                        }
+                } catch(Exception e) {
+                        e.printStackTrace();
+                }
+        }
 }

@@ -2,7 +2,6 @@ package frames;
 
 import main.*;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import java.util.HashMap;
@@ -12,7 +11,8 @@ public class SettingFrame extends TemplateFrame {
 	private int width = 300, height = 500, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private HashMap<String, Boolean> config = new HashMap<>();
 	private JPanel panel;
-	private JLabel loginL;
+	private JLabel loginL, idL, passwordL, authL;
+        private JTextField id, password;
 	private JButton back, save, login;
 
 	public SettingFrame() {
@@ -34,6 +34,27 @@ public class SettingFrame extends TemplateFrame {
 		loginL.setBounds(20, 50, 130, 25);
 		loginL.setFont(new Font("Arial", Font.PLAIN, 16));
 
+                authL = new JLabel("Authentication Info:");
+                authL.setBounds(50, 120, 180, 25);
+                authL.setFont(new Font("Arial", Font.PLAIN, 16));
+
+                idL = new JLabel("ID:");
+                idL.setBounds(40, 160, 80, 25);
+                idL.setFont(new Font("Arial", Font.PLAIN, 16));
+
+                passwordL = new JLabel("PW:");
+                passwordL.setBounds(40, 190, 80, 25);
+                passwordL.setFont(new Font("Arial", Font.PLAIN, 16));
+
+                //TextField
+                id = new JTextField();
+                id.setBounds(80, 160, 150, 25);
+                id.setFont(new Font("Arial", Font.PLAIN, 16));
+
+                password = new JTextField();
+                password.setBounds(80, 190, 150, 25);
+                password.setFont(new Font("Arial", Font.PLAIN, 16));
+
 		//Button
 		back = new JButton("Back");
 		back.setBounds(20, 10, 80, 25);
@@ -47,7 +68,8 @@ public class SettingFrame extends TemplateFrame {
 		save.setBounds(200, 420, 80, 25);
 		save.setFont(new Font("Arial", Font.PLAIN, 16));
 		save.addActionListener(e -> {
-			saveConfig();
+			saveConfig(); //Config save
+                        updateAuth(id.getText().trim(), password.getText()); //Authorizations info save
 		});
 
 		login = new JButton(config.get("login") ? "ON" : "OFF");
@@ -68,6 +90,11 @@ public class SettingFrame extends TemplateFrame {
 		panel.add(save);
 		panel.add(loginL);
 		panel.add(login);
+                panel.add(authL);
+                panel.add(idL);
+                panel.add(passwordL);
+                panel.add(id);
+                panel.add(password);
 
 		this.add(panel);
 	}
@@ -110,4 +137,18 @@ public class SettingFrame extends TemplateFrame {
 	public HashMap<String, Boolean> getConfig() { //Basic getter function for config load in Main
 		return this.config;
 	}
+
+        private void updateAuth(String id, String password) { //Update function for authorization informations
+                try {
+                        if (id.equals("") || password.equals("")) return; //If textfields are empty do nothing
+                        
+                        //Otherwise go on save process
+                        File file = new File("data/logininfo/authorization.csv");
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                        writer.write(id+","+password);
+                        writer.close();
+                } catch(Exception e) {
+                        e.printStackTrace();
+                }
+        }
 }
