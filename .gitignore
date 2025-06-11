@@ -4,3 +4,5 @@ data/oldRecords
 data/config
 #Ignore racerinfo
 data/racerinfo
+#Ignore logininfo
+data/logininfo

@@ -86,11 +86,12 @@ public class LoginFrame extends TemplateFrame {
 		this.getRootPane().setDefaultButton(loginButton);
 	}
 
-        private void loadAuth() {
+        private void loadAuth() { //Saving authorization informations to a .csv file
                 try {
-                        File file = new File("data/logininfo/authorization.csv");
-                        BufferedReader reader = null;
-                        if (file.exists()) {
+                        File file = new File("data/logininfo/authorization.csv"); //Create a File instace
+                        BufferedReader reader = null; //Define a BufferedReader instance
+                        if (file.exists()) { //file check if it is exists
+                                //Then, do opertions to save
                                 reader = new BufferedReader(new FileReader(file));
                                 String[] temp = reader.readLine().split(",");
                                 defUser = temp[0];
