@@ -1,10 +1,22 @@
 package frames;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 
 public class AnalyzeFrame extends TemplateFrame {
@@ -38,25 +50,25 @@ public class AnalyzeFrame extends TemplateFrame {
 
 		//Label
 		timeLimit = new JLabel("Time Limit:");
-		timeLimit.setFont(new Font("Arial", Font.PLAIN, 16));
+		timeLimit.setFont(super.defaultPlainFont);
 		timeLimit.setBounds(20, 10, 90, 25);
 
 		hourLabel = new JLabel("h :");
-		hourLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		hourLabel.setFont(super.defaultPlainFont);
 		hourLabel.setBounds(160, 10, 30, 25);
 
 		minuteLabel = new JLabel("min");
-		minuteLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		minuteLabel.setFont(super.defaultPlainFont);
 		minuteLabel.setBounds(230, 10, 40, 25);
 
 		//ComboBox
 		hour = new JComboBox<>(range(0, 24));
 		hour.setBounds(110, 10, 45, 25);
-		hour.setFont(new Font("Arial", Font.PLAIN, 16));
+		hour.setFont(super.defaultPlainFont);
 
 		minute = new JComboBox<>(range(0, 60));
 		minute.setBounds(180, 10, 45, 25);
-		minute.setFont(new Font("Arial", Font.PLAIN, 16));
+		minute.setFont(super.defaultPlainFont);
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
@@ -90,7 +102,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		//Button
 		calculate = new JButton("Calculate");
 		calculate.setBounds(280, 10, 110, 25);
-		calculate.setFont(new Font("Arial", Font.PLAIN, 16));
+		calculate.setFont(super.defaultPlainFont);
 		calculate.addActionListener(e -> {
 			model.setRowCount(0);
 			long milliseconds = ((int) hour.getSelectedItem())*60*60*1000 + ((int) minute.getSelectedItem())*60*1000;

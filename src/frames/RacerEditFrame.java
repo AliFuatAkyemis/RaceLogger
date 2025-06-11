@@ -1,10 +1,25 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.File;
 
 public class RacerEditFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,25 +70,25 @@ public class RacerEditFrame extends TemplateFrame {
 		//Label
 		idL = new JLabel("ID:");
 		idL.setBounds(20, 10, 50, 25);
-		idL.setFont(new Font("Arial", Font.PLAIN, 16));
+		idL.setFont(super.defaultPlainFont);
 
 		nameL = new JLabel("Name:");
 		nameL.setBounds(120, 10, 80, 25);
-		nameL.setFont(new Font("Arial", Font.PLAIN, 16));
+		nameL.setFont(super.defaultPlainFont);
 
 		//TextField
 		id = new JTextField();
 		id.setBounds(50, 10, 60, 25);
-		id.setFont(new Font("Arial", Font.PLAIN, 16));
+		id.setFont(super.defaultPlainFont);
 
 		name = new JTextField();
 		name.setBounds(180, 10, 120, 25);
-		name.setFont(new Font("Arial", Font.PLAIN, 16));
+		name.setFont(super.defaultPlainFont);
 
 		//Button
 		back = new JButton("Back");
 		back.setBounds(20, 325, 80, 25);
-		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.setFont(super.defaultPlainFont);
 		back.addActionListener(e -> {
 			this.dispose();
 			Main.showRecord();
@@ -81,7 +96,7 @@ public class RacerEditFrame extends TemplateFrame {
 
 		add = new JButton("Add");
 		add.setBounds(330, 50, 100, 25);
-		add.setFont(new Font("Arial", Font.PLAIN, 16));
+		add.setFont(super.defaultPlainFont);
 		add.addActionListener(e -> {
 			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
 				boolean found = false; //Duplicate control state
@@ -97,7 +112,7 @@ public class RacerEditFrame extends TemplateFrame {
 
 		remove = new JButton("Remove");
 		remove.setBounds(330, 110, 100, 25);
-		remove.setFont(new Font("Arial", Font.PLAIN, 16));
+		remove.setFont(super.defaultPlainFont);
 		remove.addActionListener(e -> {
 			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
 				for (int i = 0; i < model.getRowCount(); i++) { //Iteration of all entries
@@ -116,21 +131,21 @@ public class RacerEditFrame extends TemplateFrame {
 
 		save = new JButton("Save");
 		save.setBounds(330, 230, 100, 25);
-		save.setFont(new Font("Arial", Font.PLAIN, 16));
+		save.setFont(super.defaultPlainFont);
 		save.addActionListener(e -> {
 			if (model.getRowCount() != 0) saveTable(model);
 		});
 
 		load = new JButton("Load");
 		load.setBounds(330, 290, 100, 25);
-		load.setFont(new Font("Arial", Font.PLAIN, 16));
+		load.setFont(super.defaultPlainFont);
 		load.addActionListener(e -> {
 			if (model.getRowCount() == 0) loadTable(model);
 		});
 
 		reset = new JButton("Reset");
 		reset.setBounds(330, 170, 100, 25);
-		reset.setFont(new Font("Arial", Font.PLAIN, 16));
+		reset.setFont(super.defaultPlainFont);
 		reset.addActionListener(e -> {
 			if (model.getRowCount() != 0) {
 				int response = JOptionPane.showConfirmDialog(

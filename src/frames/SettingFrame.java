@@ -1,9 +1,18 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.File;
 import java.util.HashMap;
 
 public class SettingFrame extends TemplateFrame {
@@ -32,33 +41,33 @@ public class SettingFrame extends TemplateFrame {
 		//Label
 		loginL = new JLabel("Login Required");
 		loginL.setBounds(20, 50, 130, 25);
-		loginL.setFont(new Font("Arial", Font.PLAIN, 16));
+		loginL.setFont(super.defaultPlainFont);
 
                 authL = new JLabel("Authentication Info:");
                 authL.setBounds(50, 120, 180, 25);
-                authL.setFont(new Font("Arial", Font.PLAIN, 16));
+                authL.setFont(defaultPlainFont);
 
                 idL = new JLabel("ID:");
                 idL.setBounds(40, 160, 80, 25);
-                idL.setFont(new Font("Arial", Font.PLAIN, 16));
+                idL.setFont(defaultPlainFont);
 
                 passwordL = new JLabel("PW:");
                 passwordL.setBounds(40, 190, 80, 25);
-                passwordL.setFont(new Font("Arial", Font.PLAIN, 16));
+                passwordL.setFont(defaultPlainFont);
 
                 //TextField
                 id = new JTextField();
                 id.setBounds(80, 160, 150, 25);
-                id.setFont(new Font("Arial", Font.PLAIN, 16));
+                id.setFont(defaultPlainFont);
 
                 password = new JTextField();
                 password.setBounds(80, 190, 150, 25);
-                password.setFont(new Font("Arial", Font.PLAIN, 16));
+                password.setFont(defaultPlainFont);
 
 		//Button
 		back = new JButton("Back");
 		back.setBounds(20, 10, 80, 25);
-		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.setFont(defaultPlainFont);
 		back.addActionListener(e -> {
 			this.dispose();
 			Main.showDash();
@@ -66,7 +75,7 @@ public class SettingFrame extends TemplateFrame {
 
 		save = new JButton("Save");
 		save.setBounds(200, 420, 80, 25);
-		save.setFont(new Font("Arial", Font.PLAIN, 16));
+		save.setFont(defaultPlainFont);
 		save.addActionListener(e -> {
 			saveConfig(); //Config save
                         updateAuth(id.getText().trim(), password.getText()); //Authorizations info save
@@ -74,7 +83,7 @@ public class SettingFrame extends TemplateFrame {
 
 		login = new JButton(config.get("login") ? "ON" : "OFF");
 		login.setBounds(200, 50, 70, 25);
-		login.setFont(new Font("Arial", Font.PLAIN, 16));
+		login.setFont(defaultPlainFont);
 		login.addActionListener(e -> {
 			if (login.getText().equals("ON")) {
 				login.setText("OFF");

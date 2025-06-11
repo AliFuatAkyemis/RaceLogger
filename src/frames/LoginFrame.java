@@ -1,9 +1,19 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import javax.swing.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
 
 public class LoginFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -29,11 +39,11 @@ public class LoginFrame extends TemplateFrame {
 		//Label
 		id = new JLabel("ID:");
 		id.setBounds(25, 20, 30, 30);
-		id.setFont(new Font("Arial", Font.BOLD, 16));
+		id.setFont(super.defaultBoldFont);
 
 		pw = new JLabel("PW:");
 		pw.setBounds(20, 60, 35, 30);
-		pw.setFont(new Font("Arial", Font.BOLD, 16));
+		pw.setFont(super.defaultBoldFont);
 
 		//TextField
 		username = new JTextField();

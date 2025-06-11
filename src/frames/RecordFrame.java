@@ -1,12 +1,34 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.io.*;
-import java.nio.file.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -135,24 +157,24 @@ public class RecordFrame extends TemplateFrame {
 		//Label
 		chronoLabel = new JLabel("00:00:00:000", SwingConstants.CENTER);
 		chronoLabel.setBounds(30, 20, 120, 25);
-		chronoLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		chronoLabel.setFont(super.defaultBoldFont);
 		chronoLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
                 editLabel = new JLabel("Edit", SwingConstants.CENTER);
 		editLabel.setBounds(30, 430, 80, 25);
-		editLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		editLabel.setFont(super.defaultPlainFont);
 		editLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
                 editLabel.setVisible(false);
 
 		//TextField
 		text = new JTextField(100);
 		text.setBounds(30, 70, 120, 25);
-		text.setFont(new Font("Arial", Font.PLAIN, 16));
+		text.setFont(super.defaultPlainFont);
 
 		//Button
 		add = new JButton("Add");
 		add.setBounds(170, 70, 70, 25);
-		add.setFont(new Font("Arial", Font.PLAIN, 16));
+		add.setFont(super.defaultPlainFont);
 		add.addActionListener(e -> {
 			//Necessary objects
 			String input = text.getText().trim();
@@ -184,7 +206,7 @@ public class RecordFrame extends TemplateFrame {
 
 		edit = new JButton("Edit");
 		edit.setBounds(30, 430, 80, 25);
-		edit.setFont(new Font("Arial", Font.PLAIN, 16));
+		edit.setFont(super.defaultPlainFont);
 		edit.addActionListener(e -> {
 			if (startTime == -1) {
 				this.dispose();
@@ -194,7 +216,7 @@ public class RecordFrame extends TemplateFrame {
 
 		start = new JButton("Start");
 		start.setBounds(170, 20, 75, 25);
-		start.setFont(new Font("Arial", Font.PLAIN, 16));
+		start.setFont(super.defaultPlainFont);
 		start.addActionListener(e -> {
 			if (isPaused) {
 				//Starting chronometer thread
@@ -218,7 +240,7 @@ public class RecordFrame extends TemplateFrame {
 
 		pause = new JButton("Pause");
 		pause.setBounds(260, 20, 80, 25);
-		pause.setFont(new Font("Arial", Font.PLAIN, 16));
+		pause.setFont(super.defaultPlainFont);
 		pause.addActionListener(e -> {
 			if (!isPaused) {
 				//Switch pause state to stop recording
@@ -232,7 +254,7 @@ public class RecordFrame extends TemplateFrame {
 
 		save = new JButton("Save&Exit");
 		save.setBounds(650, 525, 120, 25);
-		save.setFont(new Font("Arial", Font.PLAIN, 16));
+		save.setFont(super.defaultPlainFont);
 		save.addActionListener(e -> {
 			if (new File("data/record.csv").exists()) { //If there a record exists an optionpane pops up.
 				String str = JOptionPane.showInputDialog(
@@ -251,7 +273,7 @@ public class RecordFrame extends TemplateFrame {
 
 		back = new JButton("Back");
 		back.setBounds(30, 525, 80, 25);
-		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.setFont(super.defaultPlainFont);
 		back.addActionListener(e -> {
 			File file = new File("data/record.csv"); //Obtain the file
 			if (file.exists()) { //If file is exist then, define the actions

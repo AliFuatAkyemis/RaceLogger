@@ -1,10 +1,23 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
 
 public class ListFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -52,7 +65,7 @@ public class ListFrame extends TemplateFrame {
 		//Button
 		back = new JButton("Back");
 		back.setBounds(20, 10, 80, 25);
-		back.setFont(new Font("Arial", Font.PLAIN, 16));
+		back.setFont(super.defaultPlainFont);
 		back.addActionListener(e -> {
 			Main.closeAnalyze(); //Maybe analyze screen would be opened so it should be closed
 			this.dispose();
@@ -61,14 +74,14 @@ public class ListFrame extends TemplateFrame {
 
 		analyze = new JButton("Analyze");
 		analyze.setBounds(380, 10, 100, 25);
-		analyze.setFont(new Font("Arial", Font.PLAIN, 16));
+		analyze.setFont(super.defaultPlainFont);
 		analyze.addActionListener(e -> {
 			if (selected != null) Main.showAnalyze(selected);
 		});
 
 		delete = new JButton("Delete");
 		delete.setBounds(20, 430, 90, 25);
-		delete.setFont(new Font("Arial", Font.PLAIN, 16));
+		delete.setFont(super.defaultPlainFont);
 		delete.addActionListener(e -> {
 			if (selected != null) { //If a file selected ask for deletion
 				int response = JOptionPane.showConfirmDialog(
@@ -97,7 +110,7 @@ public class ListFrame extends TemplateFrame {
 		if (names == null) names = new String[0];
 		box = new JComboBox<>(names);
 		box.setBounds((width-130)/2, 10, 130, 25);
-		box.setFont(new Font("Arial", Font.PLAIN, 16));
+		box.setFont(super.defaultPlainFont);
 		box.addActionListener(e -> {
 			selected = (String) box.getSelectedItem();
 			if (selected != null) updateTable(tableModel, selected);

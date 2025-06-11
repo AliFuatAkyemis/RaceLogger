@@ -1,8 +1,11 @@
 package frames;
 
 import main.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class DashFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -24,7 +27,7 @@ public class DashFrame extends TemplateFrame {
 		//Button
 		createRecord = new JButton("Create Record");
 		createRecord.setBounds((width-150)/2, 25, 150, 25);
-		createRecord.setFont(new Font("Arial", Font.PLAIN, 16));
+		createRecord.setFont(super.defaultPlainFont);
 		createRecord.addActionListener(e -> {
 			this.dispose();
 			Main.showRecord();
@@ -32,7 +35,7 @@ public class DashFrame extends TemplateFrame {
 		
 		records = new JButton("Past Records");
 		records.setBounds((width-150)/2, 75, 150, 25);
-		records.setFont(new Font("Arial", Font.PLAIN, 16));
+		records.setFont(super.defaultPlainFont);
 		records.addActionListener(e -> {
 			this.dispose();
 			Main.showList();
@@ -40,7 +43,7 @@ public class DashFrame extends TemplateFrame {
 		
 		settings = new JButton("Settings");
 		settings.setBounds((width-150)/2, 125, 150, 25);
-		settings.setFont(new Font("Arial", Font.PLAIN, 16));
+		settings.setFont(super.defaultPlainFont);
 		settings.addActionListener(e -> {
 			this.dispose();
 			Main.showSetting();
@@ -48,7 +51,7 @@ public class DashFrame extends TemplateFrame {
 
 		exit = new JButton("Exit");
 		exit.setBounds((width-150)/2, 175, 150, 25);
-		exit.setFont(new Font("Arial", Font.PLAIN, 16));
+		exit.setFont(super.defaultPlainFont);
 		exit.addActionListener(e -> {
 			System.exit(0);
 		});
