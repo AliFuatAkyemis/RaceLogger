@@ -215,7 +215,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		start = new JButton("Start");
-		start.setBounds(170, 20, 75, 25);
+		start.setBounds(170, 20, 85, 25);
 		start.setFont(super.defaultPlainFont);
 		start.addActionListener(e -> {
 			if (isPaused) {
@@ -239,7 +239,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		pause = new JButton("Pause");
-		pause.setBounds(260, 20, 80, 25);
+		pause.setBounds(270, 20, 90, 25);
 		pause.setFont(super.defaultPlainFont);
 		pause.addActionListener(e -> {
 			if (!isPaused) {
