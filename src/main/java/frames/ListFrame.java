@@ -127,11 +127,19 @@ public class ListFrame extends TemplateFrame {
 		panel.add(scrollPane);
 		panel.add(delete);
 
+                checkFileStructure(); //Creates required folders
+
 		this.add(panel);
 	}
 
 	//Utility
-	private void updateTable(DefaultTableModel model, String filename) {
+	private void checkFileStructure() {
+                File folder = new File("data/oldRecords");
+
+                if (!folder.exists()) folder.mkdirs();
+        }
+
+        private void updateTable(DefaultTableModel model, String filename) {
 		try {
 			model.setRowCount(0);
 			File file = new File("data/oldRecords/"+filename);

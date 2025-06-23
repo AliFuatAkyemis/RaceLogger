@@ -327,12 +327,20 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(racerPane);
 
 		mapInit(model2); //Before recording initialize the map of racers
-		
+                checkFileStructure(); //Creates required folders
+
 		this.add(panel);
 		this.getRootPane().setDefaultButton(add);
 	}
 	
 	//Utility
+        private void checkFileStructure() {
+                File folder = new File("data/racerinfo"), folder2 = new File("data/oldRecords");
+
+                if (!folder.exists()) folder.mkdirs();
+                if (!folder2.exists()) folder.mkdirs();
+        }
+        
 	private String identify(int id) {
 		return (String) map.get(id); //It returns the information of a racer by his/her id
 	}

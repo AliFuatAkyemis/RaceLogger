@@ -81,10 +81,17 @@ public class LoginFrame extends TemplateFrame {
 		panel.add(loginButton);
 
                 loadAuth(); //Load authorization informations
-
-		this.add(panel, BorderLayout.CENTER);
+                checkFileStructure(); //Creates required folders
+		
+                this.add(panel, BorderLayout.CENTER);
 		this.getRootPane().setDefaultButton(loginButton);
 	}
+
+        private void checkFileStructure() {
+                File folder = new File("data/logininfo");
+
+                if (!folder.exists()) folder.mkdirs();
+        }
 
         private void loadAuth() { //Saving authorization informations to a .csv file
                 try {

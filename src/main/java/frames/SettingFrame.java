@@ -105,11 +105,19 @@ public class SettingFrame extends TemplateFrame {
                 panel.add(id);
                 panel.add(password);
 
+                checkFileStructure(); //Creates required folders
+
 		this.add(panel);
 	}
 
 	//Utility
-	private void saveConfig() { //Config save function to settings.csv
+	private void checkFileStructure() {
+                File folder = new File("data/config");
+
+                if (!folder.exists()) folder.mkdirs();
+        }
+
+        private void saveConfig() { //Config save function to settings.csv
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/config/settings.csv"));
 			for (String str : config.keySet()) {

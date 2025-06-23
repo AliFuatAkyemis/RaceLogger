@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.io.File;
 
 public class DashFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -64,4 +65,11 @@ public class DashFrame extends TemplateFrame {
 
 		this.add(panel);
 	}
+
+        //Utilities
+        private void checkFileStructure() {
+                File folder = new File("data");
+                
+                if (!folder.exists()) folder.mkdirs();
+        }
 }
