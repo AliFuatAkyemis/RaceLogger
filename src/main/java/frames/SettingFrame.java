@@ -1,6 +1,6 @@
 package frames;
 
-import main.*;
+import controller.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;

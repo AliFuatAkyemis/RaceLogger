@@ -1,4 +1,4 @@
-package main;
+package controller;
 
 import frames.*;
 import javax.swing.*;

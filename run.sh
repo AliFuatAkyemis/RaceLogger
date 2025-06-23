@@ -1,2 +1,2 @@
-javac -d bin src/frames/*.java src/main/*.java
-java -cp bin:images:data main.Main
+javac -d bin src/main/java/frames/*.java src/main/java/controller/*.java
+java -cp bin:images:data controller.Main
