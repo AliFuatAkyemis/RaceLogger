@@ -338,7 +338,7 @@ public class RecordFrame extends TemplateFrame {
                 File folder = new File("data/racerinfo"), folder2 = new File("data/oldRecords");
 
                 if (!folder.exists()) folder.mkdirs();
-                if (!folder2.exists()) folder.mkdirs();
+                if (!folder2.exists()) folder2.mkdirs();
         }
         
 	private String identify(int id) {
