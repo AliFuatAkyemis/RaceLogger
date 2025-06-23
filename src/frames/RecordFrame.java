@@ -53,7 +53,7 @@ public class RecordFrame extends TemplateFrame {
 		//Frame
 		this.setTitle("Record");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+                
 		//Before on close action it saves records
 		this.addWindowListener(new WindowAdapter() {
 			@Override
