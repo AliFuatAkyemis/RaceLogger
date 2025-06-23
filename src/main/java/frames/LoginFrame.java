@@ -64,7 +64,7 @@ public class LoginFrame extends TemplateFrame {
 				if (username.getText().trim().equals(defUser) && String.valueOf(password.getPassword()).equals(defPass)) {
 					this.setVisible(false);
 					Main.showDash();
-				} //Static method from Main.java
+				}
 				else {
                                         System.out.println("Access Denied");
                                         username.setText("");
@@ -87,6 +87,7 @@ public class LoginFrame extends TemplateFrame {
 		this.getRootPane().setDefaultButton(loginButton);
 	}
 
+        //Utility
         private void checkFileStructure() {
                 File folder = new File("data/logininfo");
 

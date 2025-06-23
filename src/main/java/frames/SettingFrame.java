@@ -112,9 +112,10 @@ public class SettingFrame extends TemplateFrame {
 
 	//Utility
 	private void checkFileStructure() {
-                File folder = new File("data/config");
+                File folder = new File("data/config"), folder2 = new File("data/logininfo");
 
                 if (!folder.exists()) folder.mkdirs();
+                if (!folder2.exists()) folder2.mkdirs();
         }
 
         private void saveConfig() { //Config save function to settings.csv
