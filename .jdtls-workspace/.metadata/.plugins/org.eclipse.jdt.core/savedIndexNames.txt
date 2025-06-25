@@ -1,4 +1,0 @@
-INDEX VERSION 1.134+/home/alifuat/Git/Race-Logger/.jdtls-workspace/.metadata/.plugins/org.eclipse.jdt.core
-1865797976.index
-900586112.index
-3842426239.index
