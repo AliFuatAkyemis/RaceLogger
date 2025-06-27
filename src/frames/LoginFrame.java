@@ -14,6 +14,7 @@ import javax.swing.JPasswordField;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.IOException;
 
 public class LoginFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -105,7 +106,7 @@ public class LoginFrame extends TemplateFrame {
                                 defUser = temp[0];
                                 defPass = temp[1];
                         }
-                } catch(Exception e) {
+                } catch(IOException e) {
                         e.printStackTrace();
                 }
         }

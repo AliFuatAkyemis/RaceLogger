@@ -18,6 +18,7 @@ import javax.swing.table.TableColumn;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
+import java.io.IOException;
 
 public class ListFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -153,7 +154,7 @@ public class ListFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -161,7 +162,7 @@ public class ListFrame extends TemplateFrame {
 	private void deleteRecord(String filename) {
 		try {
 			new File("data/oldRecords/"+filename).delete();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

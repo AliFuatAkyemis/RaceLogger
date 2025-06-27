@@ -13,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SettingFrame extends TemplateFrame {
@@ -125,7 +126,7 @@ public class SettingFrame extends TemplateFrame {
 				writer.write(str+","+config.get(str)+"\n");
 			}
 			writer.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -147,7 +148,7 @@ public class SettingFrame extends TemplateFrame {
 			} else { //If the file does not exist use default configurations
 				config.put("login", false);
 			}
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -165,7 +166,7 @@ public class SettingFrame extends TemplateFrame {
                         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                         writer.write(id+","+password);
                         writer.close();
-                } catch(Exception e) {
+                } catch(IOException e) {
                         e.printStackTrace();
                 }
         }

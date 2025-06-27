@@ -20,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.File;
+import java.io.IOException;
 
 public class RacerEditFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -194,7 +195,7 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -213,7 +214,7 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			writer.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -221,7 +222,7 @@ public class RacerEditFrame extends TemplateFrame {
 	private void deleteTable(DefaultTableModel model) {
 		try {
 			new File("data/racerinfo/racers.csv").delete();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

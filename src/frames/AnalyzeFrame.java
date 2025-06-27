@@ -17,6 +17,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class AnalyzeFrame extends TemplateFrame {
@@ -147,7 +148,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			reader.close();
 
 			return data;
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -166,7 +167,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			reader.close();
 
 			return i;
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return 0;
@@ -220,7 +221,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			reader.close();
 
 			return arr;
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return null;
