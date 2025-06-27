@@ -107,7 +107,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		calculate.addActionListener(e -> {
 			model.setRowCount(0);
 			long milliseconds = ((int) hour.getSelectedItem())*60*60*1000 + ((int) minute.getSelectedItem())*60*1000;
-			Object[][] rows = matchNames(calculateAverage(getData(filename), milliseconds));
+			Object[][] rows = prepareToDisplay(calculateAverage(getData(filename), milliseconds));
 
 			for (int i = 0; i < rows.length; i++) {
 				model.addRow(rows[i]);
@@ -148,7 +148,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			reader.close();
 
 			return data;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -167,7 +167,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			reader.close();
 
 			return i;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return 0;
@@ -176,6 +176,7 @@ public class AnalyzeFrame extends TemplateFrame {
 	private Object[][] calculateAverage(String[][] data, long milliseconds) { //Calculation of lap counts and average lap times
 		HashMap<Integer, Integer> laps = new HashMap<>(); //To hold lap data a HashMap created
 		HashMap<Integer, Long> times = new HashMap<>(); //To hold time data a HashMap created
+                HashMap<Integer, String> names = new HashMap<>(); //To hold name data a HashMap created
 
 		//In this for loop data is read completely by updating lap and time values
 		for (int i = 0; i < data.length; i++) {
@@ -185,6 +186,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			laps.put(id, laps.get(id)+1); //Each hit means one more lap
 			long time = Integer.valueOf(data[i][2]);
 			if (time > times.get(id)) times.put(id, time); //To get biggest number of time
+                        names.put(id, data[i][1]);
 		}
 		
 		int size = laps.size();
@@ -194,37 +196,20 @@ public class AnalyzeFrame extends TemplateFrame {
 		for (int i : laps.keySet()) { //Values calculated to put into final average table
 			long time = times.get(i);
 			int lap = laps.get(i);
-			String str = milliseconds != 0 && milliseconds < time ? "(DNF)" : "";
+                        String str = names.get(i);
+			str += milliseconds != 0 && milliseconds < time ? "(DNF)" : "";
 			newData[j++] = new Object[] {i, str, time/lap, lap};
 		}
 
 		return newData;
 	}
 
-	private Object[][] matchNames(Object[][] arr) { //This phase is matching the names of racers(This is a design preference to do this in calculateAverage() method)
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("data/racerinfo/racers.csv"));
-			HashMap<Integer, String> map = new HashMap<>();
-			String row = reader.readLine();
-
-			while (row != null) {
-				String[] temp = row.split(",");
-				map.put(Integer.valueOf(temp[0]), temp[1]);
-				row = reader.readLine();
-			}
-
-			//Matching part
-			for (int i = 0; i < arr.length; i++) {
-				arr[i][1] = map.get(arr[i][0]) + arr[i][1];
-				arr[i][2] = convertTime((long) arr[i][2]); //Also converting milliseconds to readable format
-			}
-			reader.close();
-
-			return arr;
-		} catch(IOException e) {
-			e.printStackTrace();
+	private Object[][] prepareToDisplay(Object[][] arr) { //This phase makes output more readable
+		for (int i = 0; i < arr.length; i++) {
+			arr[i][2] = convertTime((long) arr[i][2]); //Also converting milliseconds to readable format
 		}
-		return null;
+
+		return arr;
 	}
 
 	private String convertTime(long currentTime) {

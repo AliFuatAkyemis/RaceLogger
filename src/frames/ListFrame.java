@@ -154,18 +154,18 @@ public class ListFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void deleteRecord(String filename) {
-		try {
-			new File("data/oldRecords/"+filename).delete();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+                try {
+		        new File("data/oldRecords/"+filename).delete();
+                } catch (SecurityException e) {
+                        e.printStackTrace();
+                }
+        }
 
 	private String convertTime(long currentTime) {
 		//Conversions

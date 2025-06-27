@@ -195,7 +195,7 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -214,16 +214,16 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			writer.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void deleteTable(DefaultTableModel model) {
-		try {
-			new File("data/racerinfo/racers.csv").delete();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+                try {
+		        new File("data/racerinfo/racers.csv").delete();
+                } catch (SecurityException e) {
+                        e.printStackTrace();
+                }
 	}
 }

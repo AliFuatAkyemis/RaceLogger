@@ -126,7 +126,7 @@ public class SettingFrame extends TemplateFrame {
 				writer.write(str+","+config.get(str)+"\n");
 			}
 			writer.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -148,7 +148,7 @@ public class SettingFrame extends TemplateFrame {
 			} else { //If the file does not exist use default configurations
 				config.put("login", false);
 			}
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -166,7 +166,7 @@ public class SettingFrame extends TemplateFrame {
                         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                         writer.write(id+","+password);
                         writer.close();
-                } catch(IOException e) {
+                } catch (IOException e) {
                         e.printStackTrace();
                 }
         }

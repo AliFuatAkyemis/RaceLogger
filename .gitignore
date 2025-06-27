@@ -1,10 +1,4 @@
-#Ignore oldRecords
-data/oldRecords/
-#Ignore config
-data/config/
-#Ignore racerinfo
-data/racerinfo/
-#Ignore logininfo
-data/logininfo/
+#Ignore Data 
+data/
 #Ignore .jdtls-workspace
 .jdtls-workspace/

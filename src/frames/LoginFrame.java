@@ -106,7 +106,7 @@ public class LoginFrame extends TemplateFrame {
                                 defUser = temp[0];
                                 defPass = temp[1];
                         }
-                } catch(IOException e) {
+                } catch (IOException e) {
                         e.printStackTrace();
                 }
         }

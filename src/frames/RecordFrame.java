@@ -181,24 +181,27 @@ public class RecordFrame extends TemplateFrame {
 			String input = text.getText().trim();
 		
 			if (input.matches("\\d+") && !isPaused) { //If text is decimal and chronometer is running then,...
-				//Getting info
-				int id = Integer.valueOf(input),
-				lap = lapUpdate(id);
-				String name = identify(id),
-				time = chronoLabel.getText();
-	
-				//Table update phase
-				if (name != null) {
-					//Inserting to table
-					model.addRow(new Object[] {
-						id,
-						name,
-						time,
-						lap
-					});
-	
-					appendResult(id+","+name+","+convertToMillisecond(time)+","+lap+"\n"); //Updating results.csv due to an unexpected crash
-				}
+                                //Additional check for racerinfo.csv
+                                if (new File("data/racerinfo/racers.csv").exists()) {
+        				//Getting info
+        				int id = Integer.valueOf(input),
+        				lap = lapUpdate(id);
+        				String name = identify(id),
+        				time = chronoLabel.getText();
+        	
+        				//Table update phase
+        				if (name != null) {
+        					//Inserting to table
+        					model.addRow(new Object[] {
+        						id,
+        						name,
+        						time,
+        						lap
+        					});
+        	
+        					appendResult(id+","+name+","+convertToMillisecond(time)+","+lap+"\n"); //Updating results.csv due to an unexpected crash
+        				}
+                                }
 			}
 
 			//Making text field prepared for next submissions
@@ -368,9 +371,9 @@ public class RecordFrame extends TemplateFrame {
 			Path destination = Paths.get(dir+"_".repeat(n)+str+".csv"); //Underscore will be repeated as many as n
 			
 			Files.move(source, destination);
-		} catch(FileAlreadyExistsException e) {
+		} catch (FileAlreadyExistsException e) {
 			saveResults(n+1, str); //To handle name conflict automatically, increase n
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -398,7 +401,7 @@ public class RecordFrame extends TemplateFrame {
 			BufferedWriter writer = new BufferedWriter(new FileWriter("data/record.csv", true));
 			writer.write(str);
 			writer.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -418,7 +421,7 @@ public class RecordFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -441,7 +444,7 @@ public class RecordFrame extends TemplateFrame {
 				try {
 					if (!isPaused) chronoUpdate(); //Chronometer label update function
 //					Thread.sleep(50); //Wait 50 milliseconds to slow down cpu core
-				} catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
