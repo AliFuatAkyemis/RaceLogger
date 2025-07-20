@@ -22,10 +22,10 @@ import java.util.HashMap;
 
 public class AnalyzeFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int width = 400, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
+	private int width = 400, height = 440, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
-	private JLabel timeLimit, hourLabel, minuteLabel;
-	private JComboBox<Integer> hour, minute;
+	private JLabel timeLimit, hourLabel, minuteLabel, lapLimit;
+	private JComboBox<Integer> hour, minute, lap;
 	private JButton calculate;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -62,6 +62,10 @@ public class AnalyzeFrame extends TemplateFrame {
 		minuteLabel.setFont(super.defaultPlainFont);
 		minuteLabel.setBounds(230, 10, 40, 25);
 
+                lapLimit = new JLabel("Lap Limit:");
+                lapLimit.setFont(super.defaultPlainFont);
+                lapLimit.setBounds(20, 45, 90, 25);
+
 		//ComboBox
 		hour = new JComboBox<>(range(0, 24));
 		hour.setBounds(110, 10, 45, 25);
@@ -70,6 +74,10 @@ public class AnalyzeFrame extends TemplateFrame {
 		minute = new JComboBox<>(range(0, 60));
 		minute.setBounds(180, 10, 45, 25);
 		minute.setFont(super.defaultPlainFont);
+
+                lap = new JComboBox<>(range(0, 10));
+                lap.setBounds(110, 45, 45, 25);
+                lap.setFont(super.defaultPlainFont);
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
@@ -98,7 +106,7 @@ public class AnalyzeFrame extends TemplateFrame {
 
 		//ScrollPane
 		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(15, 50, 375, 300);
+		scrollPane.setBounds(15, 90, 375, 300);
 
 		//Button
 		calculate = new JButton("Calculate");
@@ -118,8 +126,10 @@ public class AnalyzeFrame extends TemplateFrame {
 		panel.add(timeLimit);
 		panel.add(hourLabel);
 		panel.add(minuteLabel);
+                panel.add(lapLimit);
 		panel.add(hour);
 		panel.add(minute);
+                panel.add(lap);
 		panel.add(calculate);
 		panel.add(scrollPane);
 
@@ -177,6 +187,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		HashMap<Integer, Integer> laps = new HashMap<>(); //To hold lap data a HashMap created
 		HashMap<Integer, Long> times = new HashMap<>(); //To hold time data a HashMap created
                 HashMap<Integer, String> names = new HashMap<>(); //To hold name data a HashMap created
+                int lapMax = 0;
 
 		//In this for loop data is read completely by updating lap and time values
 		for (int i = 0; i < data.length; i++) {
