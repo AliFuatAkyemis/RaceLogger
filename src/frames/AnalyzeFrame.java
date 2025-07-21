@@ -62,9 +62,9 @@ public class AnalyzeFrame extends TemplateFrame {
 		minuteLabel.setFont(super.defaultPlainFont);
 		minuteLabel.setBounds(230, 10, 40, 25);
 
-                lapLimit = new JLabel("Lap Limit:");
+                lapLimit = new JLabel("Lap:");
                 lapLimit.setFont(super.defaultPlainFont);
-                lapLimit.setBounds(20, 45, 90, 25);
+                lapLimit.setBounds(73, 45, 90, 25);
 
 		//ComboBox
 		hour = new JComboBox<>(range(0, 24));
@@ -115,7 +115,8 @@ public class AnalyzeFrame extends TemplateFrame {
 		calculate.addActionListener(e -> {
 			model.setRowCount(0);
 			long milliseconds = ((int) hour.getSelectedItem())*60*60*1000 + ((int) minute.getSelectedItem())*60*1000;
-			Object[][] rows = prepareToDisplay(calculateAverage(getData(filename), milliseconds));
+                        int maxLap = ((int) lap.getSelectedItem());
+			Object[][] rows = prepareToDisplay(calculateAverage(getData(filename), milliseconds, maxLap));
 
 			for (int i = 0; i < rows.length; i++) {
 				model.addRow(rows[i]);
@@ -183,11 +184,10 @@ public class AnalyzeFrame extends TemplateFrame {
 		return 0;
 	}
 
-	private Object[][] calculateAverage(String[][] data, long milliseconds) { //Calculation of lap counts and average lap times
+	private Object[][] calculateAverage(String[][] data, long milliseconds, int maxLap) { //Calculation of lap counts and average lap times
 		HashMap<Integer, Integer> laps = new HashMap<>(); //To hold lap data a HashMap created
 		HashMap<Integer, Long> times = new HashMap<>(); //To hold time data a HashMap created
                 HashMap<Integer, String> names = new HashMap<>(); //To hold name data a HashMap created
-                int lapMax = 0;
 
 		//In this for loop data is read completely by updating lap and time values
 		for (int i = 0; i < data.length; i++) {
@@ -208,7 +208,7 @@ public class AnalyzeFrame extends TemplateFrame {
 			long time = times.get(i);
 			int lap = laps.get(i);
                         String str = names.get(i);
-			str += milliseconds != 0 && milliseconds < time ? "(DNF)" : "";
+			str += (milliseconds != 0 && milliseconds < time) || (maxLap != 0 && lap < maxLap) ? "(DNF)" : "";
 			newData[j++] = new Object[] {i, str, time/lap, lap};
 		}
 
