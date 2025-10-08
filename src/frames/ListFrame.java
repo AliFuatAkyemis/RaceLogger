@@ -158,8 +158,8 @@ public class ListFrame extends TemplateFrame {
 		panel.add(back);
 		panel.add(analyze);
                 panel.add(adjust);
-		panel.add(scrollPane);
 		panel.add(delete);
+		panel.add(scrollPane);
 
                 checkFileStructure(); //Creates required folders
 
