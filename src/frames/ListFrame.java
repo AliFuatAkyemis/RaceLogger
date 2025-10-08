@@ -19,13 +19,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ListFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int width = 500, height = 500, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private String selected;
 	private JPanel panel;
-	private JButton back, analyze, delete;
+	private JButton back, analyze, adjust, delete;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JComboBox<String> box;
@@ -80,6 +81,37 @@ public class ListFrame extends TemplateFrame {
 			if (selected != null) Main.showAnalyze(selected);
 		});
 
+                adjust = new JButton("Adjust");
+		adjust.setBounds(380, 430, 100, 25);
+                adjust.setFont(super.defaultPlainFont);
+                adjust.addActionListener(e -> {
+                        HashMap<Integer, Integer> map = new HashMap<>();
+
+                        int a = tableModel.getRowCount(), b = tableModel.getColumnCount();
+
+                        Object[][] temp = new Object[a][b];
+
+                        for (int i = 0; i < a; i++) {
+                                for (int j = 0; j < b; j++) {
+                                        temp[i][j] = tableModel.getValueAt(i, j);
+                                }
+                        }
+
+                        for (int i = 0; i < a; i++) {
+                                Object[] row = temp[i];
+                                int id = Integer.valueOf(row[0].toString());
+                                if (map.get(id) == null) map.put(id, 0);
+                                map.put(id, map.get(id)+1);
+                                temp[i][3] = map.get(id);
+                        }
+
+                        tableModel.setRowCount(0);
+
+                        for (int i = 0; i < temp.length; i++) {
+                                tableModel.addRow(temp[i]);
+                        }
+                });
+
 		delete = new JButton("Delete");
 		delete.setBounds(20, 430, 90, 25);
 		delete.setFont(super.defaultPlainFont);
@@ -125,6 +157,7 @@ public class ListFrame extends TemplateFrame {
 		panel.add(box);
 		panel.add(back);
 		panel.add(analyze);
+                panel.add(adjust);
 		panel.add(scrollPane);
 		panel.add(delete);
 
