@@ -83,7 +83,7 @@ public class RecordFrame extends TemplateFrame {
 						}
 						break;
 					case JOptionPane.NO_OPTION: //Do not save and close
-						file.delete();
+                                                saveResults(0, "Deleted-"+System.currentTimeMillis());
 						System.exit(0);
 						break;
 					}
@@ -303,7 +303,7 @@ public class RecordFrame extends TemplateFrame {
 					}
 					break;
 				case JOptionPane.NO_OPTION: //Do not save and close
-					file.delete();
+                                        saveResults(0, "Deleted-"+System.currentTimeMillis());
 					this.dispose();
 					Main.showDash();
 					break;
