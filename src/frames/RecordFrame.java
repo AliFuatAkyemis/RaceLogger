@@ -199,7 +199,7 @@ public class RecordFrame extends TemplateFrame {
         						lap
         					});
         	
-        					appendResult(id+","+name+","+convertToMillisecond(time)+","+lap+"\n"); //Updating results.csv due to an unexpected crash
+        					appendResult(id+","+name+","+convertToMillisecond(time)+","+lap+"\n"); //Updating records.csv due to an unexpected crash
         				}
                                 }
 			}
@@ -330,6 +330,7 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(recordPane);
 		panel.add(racerPane);
 
+                //if (new File("data/record.csv").exists()) recoverRecords(model);
 		mapInit(model2); //Before recording initialize the map of racers
                 checkFileStructure(); //Creates required folders
 
@@ -425,6 +426,28 @@ public class RecordFrame extends TemplateFrame {
 			e.printStackTrace();
 		}
 	}
+
+        private void recoverRecords(DefaultTableModel model) {
+                try {
+                        File file = new File("data/record.csv");
+                        BufferedReader reader = new BufferedReader(new FileReader(file));
+                        String str = reader.readLine();
+                        String[] row = str.split(",");
+
+                        while (str != null) {
+                                model.addRow(new Object[] {
+                                        row[0],
+                                        row[1],
+                                        row[2],
+                                        row[3]
+                                });
+                        }
+
+                        reader.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
 
 	//Chronometer utility method to update its state
 	private void chronoUpdate() {
