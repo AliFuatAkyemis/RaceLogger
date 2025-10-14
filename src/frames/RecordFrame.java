@@ -330,7 +330,7 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(recordPane);
 		panel.add(racerPane);
 
-                //if (new File("data/record.csv").exists()) recoverRecords(model);
+                if (new File("data/record.csv").exists()) recoverRecords(model);
 		mapInit(model2); //Before recording initialize the map of racers
                 checkFileStructure(); //Creates required folders
 
@@ -432,15 +432,18 @@ public class RecordFrame extends TemplateFrame {
                         File file = new File("data/record.csv");
                         BufferedReader reader = new BufferedReader(new FileReader(file));
                         String str = reader.readLine();
-                        String[] row = str.split(",");
 
                         while (str != null) {
+                                String[] row = str.split(",");
+
                                 model.addRow(new Object[] {
                                         row[0],
                                         row[1],
                                         row[2],
                                         row[3]
                                 });
+
+                                str = reader.readLine();
                         }
 
                         reader.close();
