@@ -43,7 +43,7 @@ public class RecordFrame extends TemplateFrame {
 	private JButton add, start, pause, save, back, edit;
 	private JLabel chronoLabel, editLabel;
 	private Calendar calendar;
-	private long startTime = -1, pausedTime, pausedTimeAmount = 0;
+	private long startTime = -1, pausedTime, pausedTimeAmount = 0, recoveredTime = 0;
 	private Thread chronoThread;
 	private boolean isPaused = true;
 	private HashMap<Integer, String> map;
@@ -225,7 +225,7 @@ public class RecordFrame extends TemplateFrame {
 			if (isPaused) {
 				//Starting chronometer thread
 				isPaused = !isPaused;
-				startChronometer();
+				startChronometer(recoveredTime);
 				
 				//Initialization of startTime
 				if (startTime == -1) {
@@ -433,7 +433,7 @@ public class RecordFrame extends TemplateFrame {
                         if (!file.exists()) return; //If it is not located then, terminate the function.
 
                         BufferedReader reader = new BufferedReader(new FileReader(file)); //Create a reader object to transfer records.csv content to record screen table.
-                        String str = reader.readLine(); //Initialization
+                        String lastLine = "", str = reader.readLine(); //Initialization
 
                         //Iteration part
                         while (str != null) { //If the content is finished then, reader returns null(stop condition)
@@ -443,12 +443,17 @@ public class RecordFrame extends TemplateFrame {
                                 model.addRow(new Object[] {
                                         row[0],
                                         row[1],
-                                        row[2],
+                                        convertTime(Integer.valueOf(row[2])),
                                         row[3]
                                 });
 
+                                lastLine = str;
+
                                 str = reader.readLine(); //Took the next row
                         }
+
+                        String[] row = lastLine.split(",");
+                        recoveredTime = Integer.valueOf(row[2]);
 
                         reader.close(); //Close the reader object to free memory
                 } catch (IOException e) {
@@ -457,22 +462,22 @@ public class RecordFrame extends TemplateFrame {
         }
 
 	//Chronometer utility method to update its state
-	private void chronoUpdate() {
+	private void chronoUpdate(long offTime) {
 		calendar = Calendar.getInstance(); //Each time we need to update calendar object because time is consistent
 		long currentTime = calendar.getTimeInMillis();
 		currentTime -= (startTime + pausedTimeAmount); //Paused time amount is should be also substracted from total time (totalTime = currentTime - startTime)
 		
 		//Updating the label
-		chronoLabel.setText(convertTime(currentTime));
+		chronoLabel.setText(convertTime(offTime+currentTime));
 	}
 
 	//Start method to start chronometer thread
-	private void startChronometer() {
+	private void startChronometer(long offTime) {
 		//New Thread to keep track of time
 		chronoThread = new Thread(() -> {
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
-					if (!isPaused) chronoUpdate(); //Chronometer label update function
+					if (!isPaused) chronoUpdate(offTime); //Chronometer label update function
 //					Thread.sleep(50); //Wait 50 milliseconds to slow down cpu core
 				} catch (Exception e) {
 					e.printStackTrace();
