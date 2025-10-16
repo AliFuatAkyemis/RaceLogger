@@ -177,7 +177,8 @@ public class RacerEditFrame extends TemplateFrame {
                                 file = fileChooser.getSelectedFile();
                         }
 
-                        saveRacerInfo(file, model);
+                        saveRacerInfo(file);
+                        loadTable(model);
                 });
 
 		//Composition part
@@ -244,7 +245,7 @@ public class RacerEditFrame extends TemplateFrame {
                 }
 	}
 
-        private void saveRacerInfo(File file, DefaultTableModel model) {
+        private void saveRacerInfo(File file) {
                 try {
                         if (file == null) {
                                 JOptionPane.showMessageDialog(
@@ -270,8 +271,6 @@ public class RacerEditFrame extends TemplateFrame {
 
                                 str = reader.readLine();
                         }
-
-                        loadTable(model);
 
                         reader.close();
                         writer.close();
