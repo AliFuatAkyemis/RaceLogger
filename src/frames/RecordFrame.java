@@ -330,7 +330,7 @@ public class RecordFrame extends TemplateFrame {
 		panel.add(recordPane);
 		panel.add(racerPane);
 
-                if (new File("data/record.csv").exists()) recoverRecords(model);
+                recoverRecords(model);
 		mapInit(model2); //Before recording initialize the map of racers
                 checkFileStructure(); //Creates required folders
 
@@ -427,15 +427,19 @@ public class RecordFrame extends TemplateFrame {
 		}
 	}
 
-        private void recoverRecords(DefaultTableModel model) {
+        private void recoverRecords(DefaultTableModel model) { //This method recovers the previous record if it is still unsaved due to a immeidate shutdown.
                 try {
-                        File file = new File("data/record.csv");
-                        BufferedReader reader = new BufferedReader(new FileReader(file));
-                        String str = reader.readLine();
+                        File file = new File("data/record.csv"); //Create a File object that points to the record.csv
+                        if (!file.exists()) return; //If it is not located then, terminate the function.
 
-                        while (str != null) {
-                                String[] row = str.split(",");
+                        BufferedReader reader = new BufferedReader(new FileReader(file)); //Create a reader object to transfer records.csv content to record screen table.
+                        String str = reader.readLine(); //Initialization
 
+                        //Iteration part
+                        while (str != null) { //If the content is finished then, reader returns null(stop condition)
+                                String[] row = str.split(","); //Turn str content into String[] to reach each element by its index
+
+                                //Append to the table
                                 model.addRow(new Object[] {
                                         row[0],
                                         row[1],
@@ -443,10 +447,10 @@ public class RecordFrame extends TemplateFrame {
                                         row[3]
                                 });
 
-                                str = reader.readLine();
+                                str = reader.readLine(); //Took the next row
                         }
 
-                        reader.close();
+                        reader.close(); //Close the reader object to free memory
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
