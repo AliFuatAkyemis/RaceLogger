@@ -1,4 +1,6 @@
 #Ignore Data 
 data/
+#Ignore Binaries
+bin/
 #Ignore .jdtls-workspace
 .jdtls-workspace/
