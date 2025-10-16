@@ -456,6 +456,13 @@ public class RecordFrame extends TemplateFrame {
                         String[] row = lastLine.split(",");
                         recoveredTime = Integer.valueOf(row[2]);
 
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Last session is recovered",
+                                "Information",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
                         reader.close(); //Close the reader object to free memory
                 } catch (IOException e) {
                         e.printStackTrace();
