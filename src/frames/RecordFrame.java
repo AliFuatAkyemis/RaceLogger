@@ -225,7 +225,7 @@ public class RecordFrame extends TemplateFrame {
 			if (isPaused) {
 				//Starting chronometer thread
 				isPaused = !isPaused;
-				startChronometer(recoveredTime);
+				startChronometer(recoveredTime); //If recoveredTime is not zero then, it means previous session is halted unexpectedly
 				
 				//Initialization of startTime
 				if (startTime == -1) {
@@ -447,11 +447,12 @@ public class RecordFrame extends TemplateFrame {
                                         row[3]
                                 });
 
-                                lastLine = str;
+                                lastLine = str; //save previous value of str before update it with a new value
 
                                 str = reader.readLine(); //Took the next row
                         }
 
+                        //Update recoveredTime with last entry's lap time
                         String[] row = lastLine.split(",");
                         recoveredTime = Integer.valueOf(row[2]);
 
