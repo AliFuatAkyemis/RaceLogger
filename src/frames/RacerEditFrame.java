@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.JTableHeader;
@@ -28,7 +29,7 @@ public class RacerEditFrame extends TemplateFrame {
 	private JPanel panel;
 	private JLabel idL, nameL;
 	private JTextField id, name;
-	private JButton add, remove, save, load, back, reset;
+	private JButton add, remove, save, load, back, reset, choose;
 	private JTable table;
 	private JScrollPane scrollPane;
 
@@ -96,7 +97,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		add = new JButton("Add");
-		add.setBounds(330, 50, 100, 25);
+		add.setBounds(330, 28, 100, 25);
 		add.setFont(super.defaultPlainFont);
 		add.addActionListener(e -> {
 			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
@@ -112,7 +113,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		remove = new JButton("Remove");
-		remove.setBounds(330, 110, 100, 25);
+		remove.setBounds(330, 81, 100, 25);
 		remove.setFont(super.defaultPlainFont);
 		remove.addActionListener(e -> {
 			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
@@ -131,21 +132,21 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		save = new JButton("Save");
-		save.setBounds(330, 230, 100, 25);
+		save.setBounds(330, 134, 100, 25);
 		save.setFont(super.defaultPlainFont);
 		save.addActionListener(e -> {
 			if (model.getRowCount() != 0) saveTable(model);
 		});
 
 		load = new JButton("Load");
-		load.setBounds(330, 290, 100, 25);
+		load.setBounds(330, 187, 100, 25);
 		load.setFont(super.defaultPlainFont);
 		load.addActionListener(e -> {
 			if (model.getRowCount() == 0) loadTable(model);
 		});
 
 		reset = new JButton("Reset");
-		reset.setBounds(330, 170, 100, 25);
+		reset.setBounds(330, 240, 100, 25);
 		reset.setFont(super.defaultPlainFont);
 		reset.addActionListener(e -> {
 			if (model.getRowCount() != 0) {
@@ -164,6 +165,21 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 		});
 
+                choose = new JButton("Import");
+                choose.setBounds(330, 293, 100, 25);
+                choose.setFont(super.defaultPlainFont);
+                choose.addActionListener(e -> {
+                        File file = null;
+                        JFileChooser fileChooser = new JFileChooser();
+                        int result = fileChooser.showOpenDialog(this);
+
+                        if (result == fileChooser.APPROVE_OPTION) {
+                                file = fileChooser.getSelectedFile();
+                        }
+
+                        saveRacerInfo(file, model);
+                });
+
 		//Composition part
 		panel.add(back);
 		panel.add(idL);
@@ -175,6 +191,7 @@ public class RacerEditFrame extends TemplateFrame {
 		panel.add(save);
 		panel.add(load);
 		panel.add(reset);
+                panel.add(choose);
 		panel.add(scrollPane);
 	
 		this.add(panel);
@@ -226,4 +243,40 @@ public class RacerEditFrame extends TemplateFrame {
                         e.printStackTrace();
                 }
 	}
+
+        private void saveRacerInfo(File file, DefaultTableModel model) {
+                try {
+                        if (file == null) {
+                                JOptionPane.showMessageDialog(
+                                        this,
+                                        "Invalid File Type!",
+                                        "Warning",
+                                        JOptionPane.WARNING_MESSAGE
+                                );
+
+                                return;
+                        }
+
+                        File saved = new File("data/racerinfo/racers.csv");
+                        BufferedReader reader = new BufferedReader(new FileReader(file));
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(saved));
+                        String str = reader.readLine();
+
+                        while (str != null) {
+                                String[] row = str.split(",");
+
+                                writer.write(str);
+                                writer.newLine();
+
+                                str = reader.readLine();
+                        }
+
+                        loadTable(model);
+
+                        reader.close();
+                        writer.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
 }
