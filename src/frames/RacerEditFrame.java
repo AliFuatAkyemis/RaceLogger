@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -25,10 +26,11 @@ import java.io.IOException;
 
 public class RacerEditFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int width = 460, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
+	private int width = 520, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
-	private JLabel idL, nameL;
+	private JLabel idL, nameL, sexL;
 	private JTextField id, name;
+        private JComboBox<String> sex;
 	private JButton add, remove, save, load, back, reset, choose;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -46,7 +48,7 @@ public class RacerEditFrame extends TemplateFrame {
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(new String[] {"ID", "Name"});
+		model.setColumnIdentifiers(new String[] {"ID", "Name", "Gender"});
 		
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
@@ -58,6 +60,7 @@ public class RacerEditFrame extends TemplateFrame {
 		//Resize columns
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(200);
+		columnModel.getColumn(2).setPreferredWidth(70);
 
 		//Disabling dragging action of columns
 		table.setTableHeader(new JTableHeader(columnModel) {
@@ -78,6 +81,10 @@ public class RacerEditFrame extends TemplateFrame {
 		nameL.setBounds(120, 10, 80, 25);
 		nameL.setFont(super.defaultPlainFont);
 
+                sexL = new JLabel("Gender:");
+                sexL.setBounds(320, 10, 80, 25);
+		sexL.setFont(super.defaultPlainFont);
+
 		//TextField
 		id = new JTextField();
 		id.setBounds(50, 10, 60, 25);
@@ -86,6 +93,11 @@ public class RacerEditFrame extends TemplateFrame {
 		name = new JTextField();
 		name.setBounds(180, 10, 120, 25);
 		name.setFont(super.defaultPlainFont);
+		
+                //ComboBox
+		sex = new JComboBox<>(new String[] {"E", "K"});
+		sex.setBounds(390, 10, 50, 25);
+		sex.setFont(super.defaultPlainFont);
 
 		//Button
 		back = new JButton("Back");
@@ -97,14 +109,20 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		add = new JButton("Add");
-		add.setBounds(330, 28, 100, 25);
+		add.setBounds(390, 60, 100, 25);
 		add.setFont(super.defaultPlainFont);
 		add.addActionListener(e -> {
 			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
 				boolean found = false; //Duplicate control state
 				for (int i = 0; i < model.getRowCount(); i++) if (!found) found = model.getValueAt(i, 0).equals(Integer.valueOf(id.getText().trim())) ? true : false; //Iteration of all entries is check
-				if (!found) model.addRow(new Object[] {Integer.valueOf(id.getText().trim()), name.getText().trim()}); //If id is unique then, add new
-			}
+				if (!found) {
+                                        model.addRow(new Object[] {
+                                                Integer.valueOf(id.getText().trim()),
+                                                name.getText().trim(),
+                                                ((String) sex.getSelectedItem()).trim()
+                                        }); //If id is unique then, add new
+                                }
+                        }
 
 			//Reset textfields
 			id.setText("");
@@ -113,7 +131,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		remove = new JButton("Remove");
-		remove.setBounds(330, 81, 100, 25);
+		remove.setBounds(390, 110, 100, 25);
 		remove.setFont(super.defaultPlainFont);
 		remove.addActionListener(e -> {
 			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
@@ -132,28 +150,50 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		save = new JButton("Save");
-		save.setBounds(330, 134, 100, 25);
+		save.setBounds(390, 160, 100, 25);
 		save.setFont(super.defaultPlainFont);
 		save.addActionListener(e -> {
-			if (model.getRowCount() != 0) saveTable(model);
+			if (model.getRowCount() != 0) {
+                                saveTable(model);
+                                JOptionPane.showMessageDialog(
+                                        this,
+                                        "Racers are saved",
+                                        "Information",
+                                        JOptionPane.INFORMATION_MESSAGE
+                                );
+                        }
 		});
 
 		load = new JButton("Load");
-		load.setBounds(330, 187, 100, 25);
+		load.setBounds(390, 210, 100, 25);
 		load.setFont(super.defaultPlainFont);
 		load.addActionListener(e -> {
 			if (model.getRowCount() == 0) loadTable(model);
+                        else {
+				int response = JOptionPane.showConfirmDialog(
+					this,
+					"Table is not empty, are you sure to load table?",
+					"Confirmation",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE
+				);
+			
+				if (response == JOptionPane.YES_OPTION) {
+					model.setRowCount(0);
+                                        loadTable(model);
+				}
+                        }
 		});
 
-		reset = new JButton("Reset");
-		reset.setBounds(330, 240, 100, 25);
+		reset = new JButton("Delete");
+		reset.setBounds(390, 260, 100, 25);
 		reset.setFont(super.defaultPlainFont);
 		reset.addActionListener(e -> {
 			if (model.getRowCount() != 0) {
 				int response = JOptionPane.showConfirmDialog(
 					this,
-					"Are you sure to reset racer info?",
-					"Reset racer info",
+					"Are you sure to delete racer info?",
+					"Confirmation",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.PLAIN_MESSAGE
 				);
@@ -161,12 +201,18 @@ public class RacerEditFrame extends TemplateFrame {
 				if (response == JOptionPane.YES_OPTION) {
 					deleteTable(model);
 					model.setRowCount(0);
+                                        JOptionPane.showMessageDialog(
+                                                this,
+                                                "Racer information is deleted",
+                                                "Information",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
 				}
 			}
 		});
 
                 choose = new JButton("Import");
-                choose.setBounds(330, 293, 100, 25);
+                choose.setBounds(390, 310, 100, 25);
                 choose.setFont(super.defaultPlainFont);
                 choose.addActionListener(e -> {
                         File file = null;
@@ -177,16 +223,36 @@ public class RacerEditFrame extends TemplateFrame {
                                 file = fileChooser.getSelectedFile();
                         }
 
-                        saveRacerInfo(file);
-                        loadTable(model);
+                        if (file == null) { //If file is null then, warn the user
+                                JOptionPane.showMessageDialog(
+                                        this,
+                                        "Invalid File Type!",
+                                        "Warning",
+                                        JOptionPane.WARNING_MESSAGE
+                                );
+
+                                return;
+                        }
+
+                        saveRacerInfo(file); //Copy the content of imported file to data/racerinfo/ location
+                        model.setRowCount(0); //Clear the table content
+                        loadTable(model); //Load with new informations
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "File content is imported",
+                                "Information",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
                 });
 
 		//Composition part
 		panel.add(back);
 		panel.add(idL);
 		panel.add(nameL);
+                panel.add(sexL);
 		panel.add(id);
 		panel.add(name);
+                panel.add(sex);
 		panel.add(add);
 		panel.add(remove);
 		panel.add(save);
@@ -208,13 +274,15 @@ public class RacerEditFrame extends TemplateFrame {
 		
 			while (row != null) {
 				String[] temp = row.split(","); //Simple split method to seperate ID and Name
-				model.addRow(new Object[] {Integer.valueOf(temp[0]), temp[1]});
+				model.addRow(new Object[] {Integer.valueOf(temp[0]), temp[1], temp[2]});
 				row = reader.readLine(); //Update row with next line
 			}
 
 			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                } catch (IOException e2) {
+			e2.printStackTrace();
 		}
 	}
 
@@ -247,17 +315,6 @@ public class RacerEditFrame extends TemplateFrame {
 
         private void saveRacerInfo(File file) {
                 try {
-                        if (file == null) { //If file is null then, warn the user
-                                JOptionPane.showMessageDialog(
-                                        this,
-                                        "Invalid File Type!",
-                                        "Warning",
-                                        JOptionPane.WARNING_MESSAGE
-                                );
-
-                                return;
-                        }
-
                         //Create require tools to read-write files
                         File saved = new File("data/racerinfo/racers.csv");
                         BufferedReader reader = new BufferedReader(new FileReader(file));
