@@ -127,7 +127,7 @@ public class RecordFrame extends TemplateFrame {
 		});
 
 		DefaultTableModel model2 = new DefaultTableModel();
-		model2.setColumnIdentifiers(new String[] {"ID", "Name"});
+		model2.setColumnIdentifiers(new String[] {"ID", "Name", "Gender"});
 		
 		racers = new JTable(model2);
 		racers.setFillsViewportHeight(false);
@@ -141,6 +141,7 @@ public class RecordFrame extends TemplateFrame {
 		//Column size
 		columnModel2.getColumn(0).setPreferredWidth(50);
 		columnModel2.getColumn(1).setPreferredWidth(200);
+                columnModel2.getColumn(2).setPreferredWidth(70);
 	
 		//To disable column dragging action we need to override drag function
 		racers.setTableHeader(new JTableHeader(columnModel2) {
@@ -417,7 +418,7 @@ public class RecordFrame extends TemplateFrame {
 			while (row != null) {
 				String[] temp = row.split(","); //Simple split method to seperate ID and Name
 				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
-				model.addRow(new Object[] {temp[0], temp[1]});
+				model.addRow(new Object[] {temp[0], temp[1], temp[2]});
 				row = reader.readLine(); //Update row with next line
 			}
 
