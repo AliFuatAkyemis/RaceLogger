@@ -247,7 +247,7 @@ public class RacerEditFrame extends TemplateFrame {
 
         private void saveRacerInfo(File file) {
                 try {
-                        if (file == null) {
+                        if (file == null) { //If file is null then, warn the user
                                 JOptionPane.showMessageDialog(
                                         this,
                                         "Invalid File Type!",
@@ -258,22 +258,25 @@ public class RacerEditFrame extends TemplateFrame {
                                 return;
                         }
 
+                        //Create require tools to read-write files
                         File saved = new File("data/racerinfo/racers.csv");
                         BufferedReader reader = new BufferedReader(new FileReader(file));
                         BufferedWriter writer = new BufferedWriter(new FileWriter(saved));
-                        String str = reader.readLine();
+                        String str = reader.readLine(); //Initialization
 
                         while (str != null) {
-                                String[] row = str.split(",");
+                                String[] row = str.split(","); //Information parsing part
 
+                                //Writing part
                                 writer.write(str);
-                                writer.newLine();
+                                writer.newLine(); //CR-LF characters
 
-                                str = reader.readLine();
+                                str = reader.readLine(); //Read next line
                         }
 
+                        //Freeing up the objects from memory
                         reader.close();
-                        writer.close();
+                        writer.close(); //This is essential to apply changes on file
                 } catch (IOException e) {
                         e.printStackTrace();
                 }
