@@ -322,8 +322,6 @@ public class RacerEditFrame extends TemplateFrame {
                         String str = reader.readLine(); //Initialization
 
                         while (str != null) {
-                                String[] row = str.split(","); //Information parsing part
-
                                 //Writing part
                                 writer.write(str);
                                 writer.newLine(); //CR-LF characters
