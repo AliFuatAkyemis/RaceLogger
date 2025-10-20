@@ -139,7 +139,7 @@ public class RacerEditFrame extends TemplateFrame {
 			//Reset textfields
 			id.setText("");
 			name.setText("");
-                        team.setText("");
+                        //team.setText("");
 			id.requestFocusInWindow();
 		});
 
