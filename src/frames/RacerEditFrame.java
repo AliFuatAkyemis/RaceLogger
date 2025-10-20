@@ -124,11 +124,14 @@ public class RacerEditFrame extends TemplateFrame {
 			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
 				boolean found = false; //Duplicate control state
 				for (int i = 0; i < model.getRowCount(); i++) if (!found) found = model.getValueAt(i, 0).equals(Integer.valueOf(id.getText().trim())) ? true : false; //Iteration of all entries is check
+                                String teamInfo = (!team.getText().trim().equals("")) ? team.getText().trim() : "none";
+
 				if (!found) {
                                         model.addRow(new Object[] {
                                                 Integer.valueOf(id.getText().trim()),
                                                 name.getText().trim(),
-                                                ((String) sex.getSelectedItem()).trim()
+                                                ((String) sex.getSelectedItem()).trim(),
+                                                teamInfo
                                         }); //If id is unique then, add new
                                 }
                         }
@@ -136,6 +139,7 @@ public class RacerEditFrame extends TemplateFrame {
 			//Reset textfields
 			id.setText("");
 			name.setText("");
+                        team.setText("");
 			id.requestFocusInWindow();
 		});
 
@@ -285,8 +289,7 @@ public class RacerEditFrame extends TemplateFrame {
 		
 			while (row != null) {
 				String[] temp = row.split(","); //Simple split method to seperate ID and Name
-                                String team = "none"; //team variable is initialized with a placeholder due to a missing information
-                                if (temp.length > 3) team = temp[3]; //updating the team team variable
+                                String team = (temp.length > 3) ? temp[3] : "none"; //Initialize a String variable for team information
 				model.addRow(new Object[] {Integer.valueOf(temp[0]), temp[1], temp[2], team});
 				row = reader.readLine(); //Update row with next line
 			}
