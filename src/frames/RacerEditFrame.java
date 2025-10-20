@@ -295,10 +295,8 @@ public class RacerEditFrame extends TemplateFrame {
 			}
 
 			reader.close();
-		} catch (ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                } catch (IOException e2) {
-			e2.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
