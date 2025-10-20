@@ -26,10 +26,10 @@ import java.io.IOException;
 
 public class RacerEditFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int width = 520, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
+	private int width = 580, height = 400, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
-	private JLabel idL, nameL, sexL;
-	private JTextField id, name;
+	private JLabel idL, nameL, sexL, teamL;
+	private JTextField id, name, team;
         private JComboBox<String> sex;
 	private JButton add, remove, save, load, back, reset, choose;
 	private JTable table;
@@ -48,7 +48,7 @@ public class RacerEditFrame extends TemplateFrame {
 
 		//Table
 		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(new String[] {"ID", "Name", "Gender"});
+		model.setColumnIdentifiers(new String[] {"ID", "Name", "Gender", "Team"});
 		
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
@@ -60,7 +60,8 @@ public class RacerEditFrame extends TemplateFrame {
 		//Resize columns
 		columnModel.getColumn(0).setPreferredWidth(50);
 		columnModel.getColumn(1).setPreferredWidth(200);
-		columnModel.getColumn(2).setPreferredWidth(70);
+		columnModel.getColumn(2).setPreferredWidth(100);
+                columnModel.getColumn(3).setPreferredWidth(100);
 
 		//Disabling dragging action of columns
 		table.setTableHeader(new JTableHeader(columnModel) {
@@ -82,21 +83,29 @@ public class RacerEditFrame extends TemplateFrame {
 		nameL.setFont(super.defaultPlainFont);
 
                 sexL = new JLabel("Gender:");
-                sexL.setBounds(320, 10, 80, 25);
+                sexL.setBounds(310, 10, 80, 25);
 		sexL.setFont(super.defaultPlainFont);
+
+                teamL = new JLabel("Team:");
+                teamL.setBounds(440, 10, 80, 25);
+		teamL.setFont(super.defaultPlainFont);
 
 		//TextField
 		id = new JTextField();
-		id.setBounds(50, 10, 60, 25);
+		id.setBounds(45, 10, 60, 25);
 		id.setFont(super.defaultPlainFont);
 
 		name = new JTextField();
-		name.setBounds(180, 10, 120, 25);
+		name.setBounds(175, 10, 120, 25);
 		name.setFont(super.defaultPlainFont);
+
+                team = new JTextField();
+                team.setBounds(490, 10, 60, 25);
+                team.setFont(super.defaultPlainFont);
 		
                 //ComboBox
 		sex = new JComboBox<>(new String[] {"E", "K"});
-		sex.setBounds(390, 10, 50, 25);
+		sex.setBounds(375, 10, 50, 25);
 		sex.setFont(super.defaultPlainFont);
 
 		//Button
@@ -109,7 +118,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		add = new JButton("Add");
-		add.setBounds(390, 60, 100, 25);
+		add.setBounds(330, 80, 100, 50);
 		add.setFont(super.defaultPlainFont);
 		add.addActionListener(e -> {
 			if (id.getText().trim().matches("\\d+") && !name.getText().trim().equals("")) { //ID must be digit so we first check it and name must be entered
@@ -131,7 +140,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		remove = new JButton("Remove");
-		remove.setBounds(390, 110, 100, 25);
+		remove.setBounds(450, 80, 100, 50);
 		remove.setFont(super.defaultPlainFont);
 		remove.addActionListener(e -> {
 			if (id.getText().matches("\\d+")) { //Deletion is being done by id so we only check id
@@ -150,7 +159,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		save = new JButton("Save");
-		save.setBounds(390, 160, 100, 25);
+		save.setBounds(330, 160, 100, 50);
 		save.setFont(super.defaultPlainFont);
 		save.addActionListener(e -> {
 			if (model.getRowCount() != 0) {
@@ -165,7 +174,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		load = new JButton("Load");
-		load.setBounds(390, 210, 100, 25);
+		load.setBounds(450, 160, 100, 50);
 		load.setFont(super.defaultPlainFont);
 		load.addActionListener(e -> {
 			if (model.getRowCount() == 0) loadTable(model);
@@ -186,7 +195,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
 		reset = new JButton("Delete");
-		reset.setBounds(390, 260, 100, 25);
+		reset.setBounds(330, 240, 100, 50);
 		reset.setFont(super.defaultPlainFont);
 		reset.addActionListener(e -> {
 			if (model.getRowCount() != 0) {
@@ -212,7 +221,7 @@ public class RacerEditFrame extends TemplateFrame {
 		});
 
                 choose = new JButton("Import");
-                choose.setBounds(390, 310, 100, 25);
+                choose.setBounds(450, 240, 100, 50);
                 choose.setFont(super.defaultPlainFont);
                 choose.addActionListener(e -> {
                         File file = null;
@@ -250,9 +259,11 @@ public class RacerEditFrame extends TemplateFrame {
 		panel.add(idL);
 		panel.add(nameL);
                 panel.add(sexL);
+                panel.add(teamL);
 		panel.add(id);
 		panel.add(name);
                 panel.add(sex);
+                panel.add(team);
 		panel.add(add);
 		panel.add(remove);
 		panel.add(save);
