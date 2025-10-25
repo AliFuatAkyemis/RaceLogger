@@ -79,11 +79,13 @@ public class RecordFrame extends TemplateFrame {
 						);
 						if (str != null) {
 							saveResults(0, str);
+                                                        chronoThread = null;
 							System.exit(0);
 						}
 						break;
 					case JOptionPane.NO_OPTION: //Do not save and close
                                                 saveResults(0, "Deleted-"+System.currentTimeMillis());
+                                                chronoThread = null;
 						System.exit(0);
 						break;
 					}
@@ -91,6 +93,7 @@ public class RecordFrame extends TemplateFrame {
 					//If cancelled do nothing...
 
 				} else { //If file is not exist close normally
+                                        chronoThread = null;
 					System.exit(0);
 				}
 			}
@@ -270,6 +273,7 @@ public class RecordFrame extends TemplateFrame {
 				);
 				if (str != null) { //According to input results are saved
 					saveResults(0, str); //Save the results into /data/oldResults
+                                        chronoThread = null;
 					this.dispose();
 					Main.showDash();
 				}
@@ -299,12 +303,14 @@ public class RecordFrame extends TemplateFrame {
 					);
 					if (str != null) {
 						saveResults(0, str);
+                                                chronoThread = null;
 						this.dispose();
 						Main.showDash();
 					}
 					break;
 				case JOptionPane.NO_OPTION: //Do not save and close
                                         saveResults(0, "Deleted-"+System.currentTimeMillis());
+                                        chronoThread = null;
 					this.dispose();
 					Main.showDash();
 					break;
@@ -313,6 +319,7 @@ public class RecordFrame extends TemplateFrame {
 				//If it is cancelled do nothing...
 
 			} else { //If file is not exist go back
+                                chronoThread = null;
 				this.dispose();
 				Main.showDash();
 			}
