@@ -132,7 +132,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		});
 
                 teamMode = new JButton("Team Mode");
-                teamMode.setBounds(280, 10, 110, 25);
+                teamMode.setBounds(260, 50, 130, 25);
                 teamMode.setFont(super.defaultPlainFont);
                 teamMode.addActionListener(e -> {
                         Main.showTeamAnalyze();
@@ -147,6 +147,7 @@ public class AnalyzeFrame extends TemplateFrame {
 		panel.add(minute);
                 panel.add(lap);
 		panel.add(calculate);
+                panel.add(teamMode);
 		panel.add(scrollPane);
 
 		this.add(panel);
