@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.JTableHeader;
@@ -19,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AnalyzeFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -88,8 +92,11 @@ public class AnalyzeFrame extends TemplateFrame {
 		
 		//Table sorting configurations
 		table.setAutoCreateRowSorter(true);
-		table.getRowSorter().toggleSortOrder(3); //There is double occurrance of toggleSortOrder(3) because
-		table.getRowSorter().toggleSortOrder(3); //first one is toggles to ascending order but we need descending order. So, it is called twice
+
+                List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+                sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
+                sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+                table.getRowSorter().setSortKeys(sortKeys);
 
 		//Column size fix
 		TableColumnModel columnModel = table.getColumnModel();
