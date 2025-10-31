@@ -1,5 +1,6 @@
 package frames;
 
+import controller.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -30,7 +31,7 @@ public class AnalyzeFrame extends TemplateFrame {
 	private JPanel panel;
 	private JLabel timeLimit, hourLabel, minuteLabel, lapLimit;
 	private JComboBox<Integer> hour, minute, lap;
-	private JButton calculate;
+	private JButton calculate, teamMode;
 	private JTable table;
 	private JScrollPane scrollPane;
 
@@ -93,10 +94,10 @@ public class AnalyzeFrame extends TemplateFrame {
 		//Table sorting configurations
 		table.setAutoCreateRowSorter(true);
 
-                List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-                sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING));
-                sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
-                table.getRowSorter().setSortKeys(sortKeys);
+                List<RowSorter.SortKey> sortKeys = new ArrayList<>(); //A list for sort keys
+                sortKeys.add(new RowSorter.SortKey(3, SortOrder.DESCENDING)); //Primary sort key
+                sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING)); //Secondary sort key
+                table.getRowSorter().setSortKeys(sortKeys); //Setting the sort keys
 
 		//Column size fix
 		TableColumnModel columnModel = table.getColumnModel();
@@ -129,6 +130,13 @@ public class AnalyzeFrame extends TemplateFrame {
 				model.addRow(rows[i]);
 			}
 		});
+
+                teamMode = new JButton("Team Mode");
+                teamMode.setBounds(280, 10, 110, 25);
+                teamMode.setFont(super.defaultPlainFont);
+                teamMode.addActionListener(e -> {
+                        Main.showTeamAnalyze();
+                });
 
 		//Composition part
 		panel.add(timeLimit);
