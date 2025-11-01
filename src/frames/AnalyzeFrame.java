@@ -135,7 +135,7 @@ public class AnalyzeFrame extends TemplateFrame {
                 teamMode.setBounds(260, 50, 130, 25);
                 teamMode.setFont(super.defaultPlainFont);
                 teamMode.addActionListener(e -> {
-                        Main.showTeamAnalyze();
+                        Main.showTeamAnalyze(filename);
                 });
 
 		//Composition part

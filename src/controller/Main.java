@@ -68,9 +68,9 @@ public class Main {
 		racerEdit.setVisible(true);
 	}
 
-        public static void showTeamAnalyze() {
+        public static void showTeamAnalyze(String filename) {
                 if (teamAnalyze != null) teamAnalyze.dispose();
-                teamAnalyze = new TeamAnalyzeFrame();
+                teamAnalyze = new TeamAnalyzeFrame(filename);
                 teamAnalyze.setVisible(true);
         }
 }
