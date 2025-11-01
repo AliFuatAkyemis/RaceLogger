@@ -66,7 +66,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 		//Label
                 Male = new JLabel("Male");
                 Male.setFont(super.defaultBoldFont);
-                Male.setBounds(120, 5, 70, 25);
+                Male.setBounds(130, 5, 70, 25);
 
                 Female = new JLabel("Female");
                 Female.setFont(super.defaultBoldFont);
@@ -189,7 +189,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                 //Button
                 calcMale = new JButton("Calculate");
-                calcMale.setBounds(180, 75, 110, 25);
+                calcMale.setBounds(75, 40, 150, 50);
                 calcMale.setFont(super.defaultPlainFont);
                 calcMale.addActionListener(e -> {
                         modelMale.setRowCount(0);
@@ -238,13 +238,13 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 });
 
                 calcFemale = new JButton("Calculate");
-                calcFemale.setBounds(480, 75, 110, 25);
+                calcFemale.setBounds(375, 40, 150, 50);
                 calcFemale.setFont(super.defaultPlainFont);
                 calcFemale.addActionListener(e -> {
                         modelFemale.setRowCount(0);
 			modelTemp.setRowCount(0);
-			long milliseconds = ((int) hourMale.getSelectedItem())*60*60*1000 + ((int) minuteMale.getSelectedItem())*60*1000;
-                        int maxLap = ((int) lapMale.getSelectedItem());
+			long milliseconds = ((int) hourFemale.getSelectedItem())*60*60*1000 + ((int) minuteFemale.getSelectedItem())*60*1000;
+                        int maxLap = ((int) lapFemale.getSelectedItem());
 			Object[][] rows = prepareToDisplay(calculateAverage(getData(filename), milliseconds, maxLap));
 
 			for (int i = 0; i < rows.length; i++) {
@@ -290,6 +290,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 panel.add(separator);
                 panel.add(Male);
                 panel.add(Female);
+                /*
                 panel.add(timeLimitMale);
                 panel.add(hourLabelMale);
                 panel.add(minuteLabelMale);
@@ -304,6 +305,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 panel.add(hourFemale);
                 panel.add(minuteFemale);
                 panel.add(lapFemale);
+                */
                 panel.add(calcMale);
                 panel.add(calcFemale);
                 panel.add(scrollPaneMale);
