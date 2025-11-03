@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class TeamAnalyzeFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int width = 600, height = 480, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
+	private int width = 600, height = 420, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
         private JSeparator separator;
 	private JLabel timeLimitMale, hourLabelMale, minuteLabelMale, lapLimitMale,
@@ -184,14 +184,14 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                 //ScrollPane
                 scrollPaneMale = new JScrollPane(tableMale);
-                scrollPaneMale.setBounds(10, 110, 280, 330);
+                scrollPaneMale.setBounds(10, 80, 280, 300);
 
                 scrollPaneFemale = new JScrollPane(tableFemale);
-                scrollPaneFemale.setBounds(310, 110, 280, 330);
+                scrollPaneFemale.setBounds(310, 80, 280, 300);
 
                 //Button
                 calcMale = new JButton("Calculate");
-                calcMale.setBounds(75, 40, 150, 50);
+                calcMale.setBounds(95, 40, 110, 25);
                 calcMale.setFont(super.defaultPlainFont);
                 calcMale.addActionListener(e -> {
                         modelMale.setRowCount(0);
@@ -241,7 +241,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 });
 
                 calcFemale = new JButton("Calculate");
-                calcFemale.setBounds(375, 40, 150, 50);
+                calcFemale.setBounds(395, 40, 110, 25);
                 calcFemale.setFont(super.defaultPlainFont);
                 calcFemale.addActionListener(e -> {
                         modelFemale.setRowCount(0);
@@ -280,7 +280,6 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("K") && map2.get(racerInfo[3]) < 2) {
                                         map.put(racerInfo[3], map.get(racerInfo[3])+i+1);
-                                        System.out.println(racerInfo[1] + ", " + racerInfo[3] + ", " + (i+1));
                                         map2.put(racerInfo[3], map2.get(racerInfo[3])+1);
                                 }
                         }
