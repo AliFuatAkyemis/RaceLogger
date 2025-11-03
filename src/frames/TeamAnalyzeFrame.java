@@ -145,8 +145,10 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 //Table Sorting Configurations
                 tableMale.setAutoCreateRowSorter(true);
                 tableMale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
+                tableMale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
                 
                 tableFemale.setAutoCreateRowSorter(true);
+                tableFemale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
                 tableFemale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
 
                 //Column model initialization
@@ -172,7 +174,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 		tableTemp.setFillsViewportHeight(false);
 		tableTemp.setEnabled(false);
 		
-		//Table sorting configurations
+                //Table sorting configurations
 		tableTemp.setAutoCreateRowSorter(true);
 
                 List<RowSorter.SortKey> sortKeys = new ArrayList<>(); //A list for sort keys
@@ -207,8 +209,9 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         Object[][] temp = new Object[a][b];
 
                         for (int i = 0; i < a; i++) {
+                                int modelRow = tableTemp.convertRowIndexToModel(i);
                                 for (int j = 0; j < b; j++) {
-                                        temp[i][j] = modelTemp.getValueAt(i, j);
+                                        temp[i][j] = modelTemp.getValueAt(modelRow, j);
                                 }
                         }
 
@@ -226,14 +229,14 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                                 String[] racerInfo = getTeamInfo((int) temp[i][0]);
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("E") && map2.get(racerInfo[3]) < 3) {
-                                        map.put(racerInfo[3], map.get(racerInfo[3])+convertToMillisecond((String) temp[i][2]));
+                                        map.put(racerInfo[3], map.get(racerInfo[3])+i+1);
                                         map2.put(racerInfo[3], map2.get(racerInfo[3])+1);
                                 }
                         }
 
                         for (String str : map.keySet()) {
                                 if (map.get(str) == 0) continue;
-                                modelMale.addRow(new Object[] {str, convertTime(map.get(str)/3)});
+                                modelMale.addRow(new Object[] {str, map.get(str)});
                         }
                 });
 
@@ -256,8 +259,9 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         Object[][] temp = new Object[a][b];
 
                         for (int i = 0; i < a; i++) {
+                                int modelRow = tableTemp.convertRowIndexToModel(i);
                                 for (int j = 0; j < b; j++) {
-                                        temp[i][j] = modelTemp.getValueAt(i, j);
+                                        temp[i][j] = modelTemp.getValueAt(modelRow, j);
                                 }
                         }
 
@@ -275,14 +279,15 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                                 String[] racerInfo = getTeamInfo((int) temp[i][0]);
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("K") && map2.get(racerInfo[3]) < 2) {
-                                        map.put(racerInfo[3], map.get(racerInfo[3])+convertToMillisecond((String) temp[i][2]));
+                                        map.put(racerInfo[3], map.get(racerInfo[3])+i+1);
+                                        System.out.println(racerInfo[1] + ", " + racerInfo[3] + ", " + (i+1));
                                         map2.put(racerInfo[3], map2.get(racerInfo[3])+1);
                                 }
                         }
 
                         for (String str : map.keySet()) {
                                 if (map.get(str) == 0) continue;
-                                modelFemale.addRow(new Object[] {str, convertTime(map.get(str)/3)});
+                                modelFemale.addRow(new Object[] {str, map.get(str)});
                         }
                 });
 
