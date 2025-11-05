@@ -85,7 +85,16 @@ public class AnalyzeFrame extends TemplateFrame {
                 lap.setFont(super.defaultPlainFont);
 
 		//Table
-		DefaultTableModel model = new DefaultTableModel();
+		DefaultTableModel model = new DefaultTableModel() {
+                        @Override
+                        public Class<?> getColumnClass(int columnIndex) {
+                                if (columnIndex == 0 || columnIndex == 3) {
+                                        return Integer.class; // ID column is Integer
+                                }
+                                return String.class; // Other columns are String
+                        }
+                };
+
 		model.setColumnIdentifiers(new String[] {"ID", "Name", "Average", "Laps"});
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);

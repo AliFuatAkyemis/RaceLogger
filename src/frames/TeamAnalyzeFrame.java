@@ -130,13 +130,31 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 lapFemale.setFont(super.defaultPlainFont);
 
                 //Table
-                DefaultTableModel modelMale = new DefaultTableModel();
+                DefaultTableModel modelMale = new DefaultTableModel() {
+                        @Override
+                        public Class<?> getColumnClass(int columnIndex) {
+                                if (columnIndex == 1) {
+                                        return Integer.class; // ID column is Integer
+                                }
+                                return String.class; // Other columns are String
+                        }
+                };
+                
                 modelMale.setColumnIdentifiers(new String[] {"Name", "Average"});
                 tableMale = new JTable(modelMale);
                 tableMale.setFillsViewportHeight(false);
                 tableMale.setEnabled(false);
 
-                DefaultTableModel modelFemale = new DefaultTableModel();
+                DefaultTableModel modelFemale = new DefaultTableModel() {
+                        @Override
+                        public Class<?> getColumnClass(int columnIndex) {
+                                if (columnIndex == 1) {
+                                        return Integer.class; // ID column is Integer
+                                }       
+                                return String.class; // Other columns are String
+                        }
+                };
+                
                 modelFemale.setColumnIdentifiers(new String[] {"Name", "Average"});
                 tableFemale = new JTable(modelFemale);
                 tableFemale.setFillsViewportHeight(false);
@@ -145,10 +163,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 //Table Sorting Configurations
                 tableMale.setAutoCreateRowSorter(true);
                 tableMale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
-                tableMale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
                 
                 tableFemale.setAutoCreateRowSorter(true);
-                tableFemale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
                 tableFemale.getRowSorter().toggleSortOrder(1); //Sort by average in ascending order
 
                 //Column model initialization

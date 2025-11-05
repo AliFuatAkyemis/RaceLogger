@@ -129,8 +129,17 @@ public class RecordFrame extends TemplateFrame {
 		    public void setDraggedColumn(TableColumn column) {}
 		});
 
-		DefaultTableModel model2 = new DefaultTableModel();
-		model2.setColumnIdentifiers(new String[] {"ID", "Name", "Gender"});
+		DefaultTableModel model2 = new DefaultTableModel() {
+                        @Override
+                        public Class<?> getColumnClass(int columnIndex) {
+                                if (columnIndex == 0) {
+                                        return Integer.class; // ID column is Integer
+                                }
+                                return String.class; // Other columns are String
+                        }
+                };
+		
+                model2.setColumnIdentifiers(new String[] {"ID", "Name", "Gender"});
 		
 		racers = new JTable(model2);
 		racers.setFillsViewportHeight(false);
@@ -425,7 +434,7 @@ public class RecordFrame extends TemplateFrame {
 			while (row != null) {
 				String[] temp = row.split(","); //Simple split method to seperate ID and Name
 				map.put(Integer.valueOf(temp[0]), temp[1]); //Mapping IDs and Names
-				model.addRow(new Object[] {temp[0], temp[1], temp[2]});
+				model.addRow(new Object[] {Integer.valueOf(temp[0]), temp[1], temp[2]});
 				row = reader.readLine(); //Update row with next line
 			}
 
