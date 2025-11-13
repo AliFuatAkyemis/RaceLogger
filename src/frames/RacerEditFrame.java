@@ -310,7 +310,8 @@ public class RacerEditFrame extends TemplateFrame {
 					row[j] = String.valueOf(model.getValueAt(i, j));
 				}
 				String str = String.join(",", row);
-				writer.write(str+"\n");
+				writer.write(str);
+                                if (i < model.getRowCount()-1) writer.newLine();
 			}
 
 			writer.close();
