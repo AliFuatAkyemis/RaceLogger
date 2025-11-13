@@ -95,7 +95,7 @@ public class TeamAdjustFrame extends TemplateFrame {
                         while (str != null) {
                                 String[] temp = str.split(","); 
                                 if (!isContain(racerData, Integer.valueOf(temp[0]))) {
-                                        racerData[i++] = new String[] {temp[0], temp[1], "empty", "empty"};
+                                        racerData[i++] = new String[] {temp[0], temp[1], "empty", "none"};
                                 }
                         }
 
@@ -111,7 +111,7 @@ public class TeamAdjustFrame extends TemplateFrame {
         private void saveRacerData(String[][] racerData, String filename) {
                 try {
                         String[] temp = filename.split("/");
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("data/racerinfo/recovered/"+temp[temp.length-1]));
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("data/racerinfo/recovered/RacersOf"+temp[temp.length-1]));
 
                         for (int i = 0; i < racerData.length; i++) {
                                 String str = String.join(",", racerData[i]);
@@ -154,7 +154,7 @@ public class TeamAdjustFrame extends TemplateFrame {
         }
 
         private void checkFileStructure() {
-                File folder = new File("data/racerinfo/recovered");
+                File folder = new File("data/racerinfo/recovered/");
 
                 if (!folder.exists()) folder.mkdirs();
         }

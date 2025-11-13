@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -360,7 +361,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
         private String[][] getRacerInfo(String target) {
                 try {
-                        String filename = "data/racerinfo/recovered/" + target;
+                        String filename = "data/racerinfo/recovered/RacersOf" + target;
                         int lineCount = lineCount(filename);
                         String[][] data = new String[lineCount][4];
                         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -375,6 +376,12 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         reader.close();
                         return data;
                 } catch (FileNotFoundException e2) {
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Racers are saved",
+                                "Information",
+                                JOptionPane.WARNING_MESSAGE
+                        );
                         return null;
                 } catch (IOException e) {
                         e.printStackTrace();
