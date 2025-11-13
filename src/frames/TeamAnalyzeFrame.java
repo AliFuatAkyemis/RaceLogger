@@ -22,6 +22,7 @@ import javax.swing.table.TableColumn;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -233,16 +234,19 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         HashMap<String, Long> map = new HashMap<>();
                         HashMap<String, Integer> map2 = new HashMap<>();
+                        String[] temp2 = filename.split("/");
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 map.put(racerInfo[3], 0L);
                                 map2.put(racerInfo[3], 0);
                         }
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("E") && map2.get(racerInfo[3]) < 3) {
                                         map.put(racerInfo[3], map.get(racerInfo[3])+i+1);
@@ -283,16 +287,19 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         HashMap<String, Long> map = new HashMap<>();
                         HashMap<String, Integer> map2 = new HashMap<>();
+                        String[] temp2 = filename.split("/");
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 map.put(racerInfo[3], 0L);
                                 map2.put(racerInfo[3], 0);
                         }
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("K") && map2.get(racerInfo[3]) < 2) {
                                         map.put(racerInfo[3], map.get(racerInfo[3])+i+1);
@@ -341,8 +348,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 		return arr;
 	}
 
-        private String[] getTeamInfo(int id) {
-                String[][] racerData = getRacerInfo();
+        private String[] getTeamInfo(int id, String target) {
+                String[][] racerData = getRacerInfo(target);
 
                 for (int i = 0; i < racerData.length; i++) {
                         if (Integer.valueOf(racerData[i][0]) == id) return racerData[i];
@@ -351,9 +358,9 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 return null;
         }
 
-        private String[][] getRacerInfo() {
+        private String[][] getRacerInfo(String target) {
                 try {
-                        String filename = "data/racerinfo/racers.csv";
+                        String filename = "data/racerinfo/recovered/" + target;
                         int lineCount = lineCount(filename);
                         String[][] data = new String[lineCount][4];
                         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -367,6 +374,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         reader.close();
                         return data;
+                } catch (FileNotFoundException e2) {
+                        return null;
                 } catch (IOException e) {
                         e.printStackTrace();
                 }

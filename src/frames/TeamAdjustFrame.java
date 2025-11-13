@@ -55,7 +55,14 @@ public class TeamAdjustFrame extends TemplateFrame {
                         }
                 };
 
-                racerTable = new JTable();
+                model.setColumnIdentifiers(new String[] {"ID", "Name", "Gender", "Team"});
+
+                racerTable = new JTable(model);
+                racerTable.setFillsViewportHeight(false);
+                racerTable.setEnabled(true);
+
+                //ScrollPane
+                racerPane = new JScrollPane(racerTable);
 
                 //Button
                 recover = new JButton("Recover");
@@ -72,6 +79,8 @@ public class TeamAdjustFrame extends TemplateFrame {
                 save.addActionListener(e -> {
                         //Save Function
                 });
+
+                this.add(panel);
         }
 
         //Utility
