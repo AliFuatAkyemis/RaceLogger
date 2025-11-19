@@ -23,7 +23,7 @@ public class TeamAdjustFrame extends TemplateFrame {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int width = 480, height = 450, x = (screenSize.width-width)/2, y = (screenSize.height-height)/2;
 	private JPanel panel;
-        private JButton recover, save, retrieve;
+        private JButton recover, save, retrieve, clear;
         private JTable racerTable;
         private JScrollPane racerPane;
 
@@ -80,7 +80,7 @@ public class TeamAdjustFrame extends TemplateFrame {
                 //Button
                 recover = new JButton("Recover");
                 recover.setFont(super.defaultPlainFont);
-                recover.setBounds(10, 10, 100, 25);
+                recover.setBounds(24, 10, 100, 25);
                 recover.addActionListener(e -> {
                         if (model.getRowCount() != 0) {
                                 int response = JOptionPane.showConfirmDialog(
@@ -111,15 +111,29 @@ public class TeamAdjustFrame extends TemplateFrame {
 
                 save = new JButton("Save");
                 save.setFont(super.defaultPlainFont);
-                save.setBounds(390, 10, 80, 25);
+                save.setBounds(372, 10, 80, 25);
                 save.addActionListener(e -> {
                         if (model.getRowCount() == 0) {
-                                JOptionPane.showMessageDialog(
+                                if (!new File("data/racerinfo/recovered/RacersOf_"+filename).exists()) return;
+
+                                int response = JOptionPane.showConfirmDialog(
                                         this,
-                                        "Table is empty!",
+                                        "Table is empty!\nDo you want to delete existing file?",
                                         "Warning",
+                                        JOptionPane.YES_NO_OPTION,
                                         JOptionPane.WARNING_MESSAGE
                                 );
+
+                                if (response == JOptionPane.YES_OPTION) {
+                                        new File("data/racerinfo/recovered/RacersOf_"+filename).delete();
+
+                                        JOptionPane.showMessageDialog(
+                                                this,
+                                                "The file is deleted",
+                                                "Information",
+                                                JOptionPane.INFORMATION_MESSAGE
+                                        );
+                                }
 
                                 return;
                         }
@@ -161,7 +175,7 @@ public class TeamAdjustFrame extends TemplateFrame {
                 });
 
                 retrieve = new JButton("Retrieve");
-                retrieve.setBounds(190, 10, 100, 25);
+                retrieve.setBounds(148, 10, 100, 25);
                 retrieve.setFont(super.defaultPlainFont);
                 retrieve.addActionListener(e -> {
                         if (model.getRowCount() != 0) {
@@ -196,11 +210,20 @@ public class TeamAdjustFrame extends TemplateFrame {
                         );
                 });
 
+                clear = new JButton("Clear");
+                clear.setBounds(272, 10, 80, 25);
+                clear.setFont(super.defaultPlainFont);
+                clear.addActionListener(e -> {
+                        if (model.getRowCount() == 0) return;
+                        else model.setRowCount(0);
+                });
+
                 //Composition Part
                 panel.add(racerPane);
                 panel.add(recover);
                 panel.add(save);
                 panel.add(retrieve);
+                panel.add(clear);
 
                 this.add(panel);
         }
@@ -240,7 +263,7 @@ public class TeamAdjustFrame extends TemplateFrame {
                         while (str != null) {
                                 String[] temp = str.split(","); 
                                 if (!isContain(racerData, Integer.valueOf(temp[0]))) {
-                                        racerData[i++] = new String[] {temp[0], temp[1], "?", "none"};
+                                        racerData[i++] = new String[] {temp[0], temp[1], "", ""};
                                 }
 
                                 str = reader.readLine();
