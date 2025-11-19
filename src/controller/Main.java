@@ -12,6 +12,7 @@ public class Main {
 	private static SettingFrame setting;
 	private static RacerEditFrame racerEdit;
         private static TeamAnalyzeFrame teamAnalyze;
+        private static TeamAdjustFrame teamAdjust;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
@@ -52,6 +53,7 @@ public class Main {
 	}
 
 	public static void closeAnalyze() { //It is required for a special case that causes a bug
+                if (teamAdjust != null) teamAdjust.dispose();
                 if (teamAnalyze != null) teamAnalyze.dispose();
 		if (analyze != null) analyze.dispose();
 	}
@@ -72,5 +74,11 @@ public class Main {
                 if (teamAnalyze != null) teamAnalyze.dispose();
                 teamAnalyze = new TeamAnalyzeFrame(filename);
                 teamAnalyze.setVisible(true);
+        }
+
+        public static void showTeamAdjust(String filename) {
+                if (teamAdjust != null) teamAdjust.dispose();
+                teamAdjust = new TeamAdjustFrame(filename);
+                teamAdjust.setVisible(true);
         }
 }

@@ -96,6 +96,7 @@ public class AnalyzeFrame extends TemplateFrame {
                 };
 
 		model.setColumnIdentifiers(new String[] {"ID", "Name", "Average", "Laps"});
+
 		table = new JTable(model);
 		table.setFillsViewportHeight(false);
 		table.setEnabled(false);

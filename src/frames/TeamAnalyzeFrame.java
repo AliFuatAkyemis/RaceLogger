@@ -1,5 +1,6 @@
 package frames;
 
+import controller.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,13 +40,13 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         Male, Female;
 	private JComboBox<Integer> hourMale, minuteMale, lapMale,
                                         hourFemale, minuteFemale, lapFemale;
-        private JButton calcMale, calcFemale;
+        private JButton calcMale, calcFemale, racerEdit;
 	private JTable tableMale, tableFemale, tableTemp;
 	private JScrollPane scrollPaneMale, scrollPaneFemale;
 
         public TeamAnalyzeFrame(String filename) {
 		//Frame
-		this.setTitle("Analyze");
+		this.setTitle("Team Analyze");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.addWindowListener(new WindowAdapter() {
@@ -232,13 +234,17 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                                         temp[i][j] = modelTemp.getValueAt(modelRow, j);
                                 }
                         }
-
+                        
                         HashMap<String, Long> map = new HashMap<>();
                         HashMap<String, Integer> map2 = new HashMap<>();
-                        String[] temp2 = filename.split("/");
+
+                        if (!new File("data/racerinfo/recovered/RacersOf_"+filename).exists()) {
+                                Main.showTeamAdjust(filename);
+                                return;
+                        };
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], filename);
                                 if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 map.put(racerInfo[3], 0L);
@@ -246,7 +252,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         }
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], filename);
                                 if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("E") && map2.get(racerInfo[3]) < 3) {
@@ -288,10 +294,14 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         HashMap<String, Long> map = new HashMap<>();
                         HashMap<String, Integer> map2 = new HashMap<>();
-                        String[] temp2 = filename.split("/");
+                        
+                        if (!new File("data/racerinfo/recovered/RacersOf_"+filename).exists()) {
+                                Main.showTeamAdjust(filename);
+                                return;
+                        };
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], filename);
                                 if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 map.put(racerInfo[3], 0L);
@@ -299,7 +309,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         }
 
                         for (int i = 0; i < a; i++) {
-                                String[] racerInfo = getTeamInfo((int) temp[i][0], temp2[temp2.length-1]);
+                                String[] racerInfo = getTeamInfo((int) temp[i][0], filename);
                                 if (racerInfo == null) return;
                                 if (racerInfo[3].equals("none")) continue;
                                 if (racerInfo[2].equals("K") && map2.get(racerInfo[3]) < 2) {
@@ -312,6 +322,13 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                                 if (map.get(str) == 0) continue;
                                 modelFemale.addRow(new Object[] {str, map.get(str)});
                         }
+                });
+
+                racerEdit = new JButton("Edit Team");
+                racerEdit.setBounds(240, 20, 120, 25);
+                racerEdit.setFont(super.defaultPlainFont);
+                racerEdit.addActionListener(e -> {
+                        Main.showTeamAdjust(filename);
                 });
 
                 //Composition Part
@@ -338,6 +355,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 panel.add(calcFemale);
                 panel.add(scrollPaneMale);
                 panel.add(scrollPaneFemale);
+                panel.add(racerEdit);
 
                 this.add(panel);
         }
@@ -361,7 +379,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
         private String[][] getRacerInfo(String target) {
                 try {
-                        String filename = "data/racerinfo/recovered/RacersOf" + target;
+                        checkFileStructure();
+                        String filename = "data/racerinfo/recovered/RacersOf_"+target;
                         int lineCount = lineCount(filename);
                         String[][] data = new String[lineCount][4];
                         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -378,8 +397,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                 } catch (FileNotFoundException e2) {
                         JOptionPane.showMessageDialog(
                                 this,
-                                "Racers are saved",
-                                "Information",
+                                "Racer file not found",
+                                "Warning",
                                 JOptionPane.WARNING_MESSAGE
                         );
                         return null;
@@ -505,4 +524,10 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 		String[] temp = time.split(":");
 		return (Integer.valueOf(temp[0])*60*60*1000)+(Integer.valueOf(temp[1])*60*1000)+(Integer.valueOf(temp[2])*1000)+Integer.valueOf(temp[3]);
 	}
+
+        private void checkFileStructure() {
+                File folder = new File("data/racerinfo/recovered/");
+
+                if (!folder.exists()) folder.mkdirs();
+        }
 }
