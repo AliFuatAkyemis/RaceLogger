@@ -154,6 +154,8 @@ public class TeamAnalyzeFrame extends TemplateFrame {
                         public Class<?> getColumnClass(int columnIndex) {
                                 if (columnIndex == 1) {
                                         return Integer.class; // ID column is Integer
+                                } else if (columnIndex == 3) {
+                                        return Double.class; // Average column is Double
                                 }       
                                 return String.class; // Other columns are String
                         }
@@ -263,7 +265,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         for (String str : map.keySet()) {
                                 if (map.get(str) == 0) continue;
-                                modelMale.addRow(new Object[] {str, map.get(str)});
+                                modelMale.addRow(new Object[] {str, ((double) map.get(str)/(double) map2.get(str))});
                         }
                 });
 
@@ -320,7 +322,7 @@ public class TeamAnalyzeFrame extends TemplateFrame {
 
                         for (String str : map.keySet()) {
                                 if (map.get(str) == 0) continue;
-                                modelFemale.addRow(new Object[] {str, map.get(str)});
+                                modelFemale.addRow(new Object[] {str, ((double) map.get(str)/(double) map2.get(str))});
                         }
                 });
 
